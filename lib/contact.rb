@@ -36,19 +36,19 @@ module Mints
       return response
     end
 
-    def change_password
+    def change_password(data)
       return @client.raw("post", "/contacts/change-password", nil, data)
     end
 
-    def recover_password
+    def recover_password(data)
       return @client.raw("post", "/contacts/recover-password", nil, data)
     end
 
-    def reset_password
+    def reset_password(data)
       return @client.raw("post", "/contacts/reset-password", nil, data)
     end
 
-    def auth_login
+    def auth_login(data)
       return @client.raw("post", "/contacts/oauth-login", nil, data)
     end
 
