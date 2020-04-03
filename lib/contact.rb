@@ -13,7 +13,7 @@ module Mints
         email: email,
         password: password
       }
-      return @client.raw("post", "/contacts/register", {data: data})
+      return @client.raw("post", "/contacts/register", nil, {data: data})
     end
 
     def login(email, password)
@@ -21,7 +21,7 @@ module Mints
         email: email,
         password: password
       }
-      response = @client.raw("post", "/contacts/login", {data: data})
+      response = @client.raw("post", "/contacts/login", nil, {data: data})
       if response.key? "session_token"
         @client.session_token = response["session_token"]
       end
@@ -29,7 +29,7 @@ module Mints
     end
 
     def logout
-      response = @client.raw("post", "/contacts/logout", nil) if session_token?
+      response = @client.raw("post", "/contacts/logout") if session_token?
       if response["success"]
         @client.session_token = nil
       end
@@ -37,19 +37,19 @@ module Mints
     end
 
     def change_password
-      return @client.raw("post", "/contacts/change-password", data)
+      return @client.raw("post", "/contacts/change-password", nil, data)
     end
 
     def recover_password
-      return @client.raw("post", "/contacts/recover-password", data)
+      return @client.raw("post", "/contacts/recover-password", nil, data)
     end
 
     def reset_password
-      return @client.raw("post", "/contacts/reset-password", data)
+      return @client.raw("post", "/contacts/reset-password", nil, data)
     end
 
     def auth_login
-      return @client.raw("post", "/contacts/oauth-login", data)
+      return @client.raw("post", "/contacts/oauth-login", nil, data)
     end
 
     def me
@@ -61,7 +61,7 @@ module Mints
     end
 
     def update
-      return @client.raw("put", "/contacts/update", data)
+      return @client.raw("put", "/contacts/update", nil, data)
     end
 
     private
