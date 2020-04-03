@@ -16,18 +16,25 @@ module Mints
           self.set_scope(scope)
       end
 
-      def raw(action, url, data = nil, base_url = nil)
+      def raw(action, url, options = nil, data = nil, base_url = nil)
         base_url = @base_url if !base_url        
-        full_url = "#{@host}#{base_url}#{url}"
-        p full_url
+        
+        if (options && options.class == Hash)
+          uri = Addressable::URI.new
+          uri.query_values = options
+        else
+          uri = ""
+        end
+
+        full_url = "#{@host}#{base_url}#{url}#{uri}"
         if action === 'get'          
-          response = self.send("#{@scope}_#{action}", full_url)
+          response = self.send("#{@scope}_#{action}", "#{full_url}")
         elsif action === 'create' or action === 'post'
           action = 'post'
-          response = self.send("#{@scope}_#{action}", full_url, data)          
+          response = self.send("#{@scope}_#{action}", "#{full_url}", data)          
         elsif action === 'put' or action === 'patch' or action ==='update'
           action = 'put'
-          response = self.send("#{@scope}_#{action}", full_url, data)
+          response = self.send("#{@scope}_#{action}", "#{full_url}", data)
         end
         if (response.response.code == "404")
           raise 'NotFoundError'
@@ -63,36 +70,53 @@ module Mints
             route_array.push n
         end
         route = route_array.join("/")
-        if args.first.class == Hash
-          uri = Addressable::URI.new
-          uri.query_values = args.first if action === 'get'
-        elsif args.first.class == String or Integer
-          slug = args.first
-          uri = Addressable::URI.new
-          uri.query_values = args[1] if action === 'get'
-        end
-        if (slug)
-          url = "#{@host}#{@base_url}/#{route}/#{object}/#{slug}#{uri}"
-        else
-          url = "#{@host}#{@base_url}/#{route}/#{object}#{uri}"
-        end
-        if action === 'get'          
+        
+        
+        slug = nil
+        uri = Addressable::URI.new
+        if action == "get"
+          if args.first.class == Hash
+            uri.query_values = args.first
+          elsif args.first.class == String or Integer
+            slug = args.first
+            uri.query_values = args[1]
+          end
+          url = self.get_url(route, object, uri, slug)
           response = self.send("#{@scope}_#{action}", url)
-        elsif action === 'post' or action === 'create'
+        elsif action == "post" or action == "create"
+          if args[1].class == Hash
+            uri.query_values = args[1]
+          end
+          url = self.get_url(route, object, uri, slug)
           action = 'post'
           data = args[0]
           response = self.send("#{@scope}_#{action}", url, {data: data})
-        elsif action === 'put' or action === 'update'
+        elsif action == "put" or action == "update"
+           if args.first.class == String or Integer
+            slug = args.first
+            uri.query_values = args[2]
+          end
+          url = self.get_url(route, object, uri, slug)
           action = 'put'
           id = args[0]
           data = args[1]
-          response = self.send("#{@scope}_#{action}", "#{url}", data)
+          response = self.send("#{@scope}_#{action}", "#{url}", {data: data})
         end
-        p url
-        if (response.response.code == "404")
-            raise 'NotFoundError'
+
+        if response.response.code == "404"
+          raise 'NotFoundError'
+        elsif response.response.code == "500"
+          raise 'InternalServerError'  
         end
         return JSON.parse(response.body)        
+      end
+
+      def get_url(route, object, uri, slug = nil)
+        if (slug)
+          return "#{@host}#{@base_url}/#{route}/#{object}/#{slug}#{uri}"
+        else
+          return "#{@host}#{@base_url}/#{route}/#{object}#{uri}"
+        end
       end
       
       def replacements
