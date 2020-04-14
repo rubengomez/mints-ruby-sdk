@@ -6,8 +6,7 @@ This is a library to connect apps built on ruby to Mints.Cloud
 
 Add gem to the Gemfile
 ```bash
-gem 'mints', git: 'https://github.com/rubengomez/mints-ruby-sdk'
-bundle install
+gem 'mints'
 ```
 
 ## Usage

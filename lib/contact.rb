@@ -2,10 +2,18 @@ require_relative "./client.rb"
 module Mints
   class Contact
     attr_reader :client
+    ##
+    # === Initialize.
+    # Class constructor
+    #
     def initialize(host, api_key, session_token = nil)      
       @client = Mints::Client.new(host, api_key, "contact", session_token)
     end
 
+    ##
+    # === Register.
+    # Register a new contact
+    #
     def register(given_name, last_name, email, password)
       data = {
         given_name: given_name,
@@ -16,6 +24,10 @@ module Mints
       return @client.raw("post", "/contacts/register", nil, {data: data})
     end
 
+    ##
+    # === Login.
+    # Starts a contact session
+    #
     def login(email, password)
       data = {
         email: email,
@@ -28,39 +40,71 @@ module Mints
       return response
     end
 
+    ##
+    # === Logout.
+    # Ends a contact session
+    #
     def logout
       response = @client.raw("post", "/contacts/logout") if session_token?
       if response["success"]
         @client.session_token = nil
-      end
+      end 
       return response
     end
 
+    ##
+    # === Change Password.
+    # Change password
+    #
     def change_password(data)
       return @client.raw("post", "/contacts/change-password", nil, data)
     end
 
+    ##
+    # === Recover Password.
+    # Recover password
+    #
     def recover_password(data)
       return @client.raw("post", "/contacts/recover-password", nil, data)
     end
 
+    ##
+    # === Reset Password.
+    # Reset password
+    #
     def reset_password(data)
       return @client.raw("post", "/contacts/reset-password", nil, data)
     end
 
-    def auth_login(data)
+    ##
+    # === OAuth Login.
+    # Login a contact using oauth
+    #
+    def oauth_login(data)
       return @client.raw("post", "/contacts/oauth-login", nil, data)
     end
 
+    ##
+    # === Me.
+    # Get contact logged info
+    #
     def me
       return @client.raw("get", "/contacts/me")
     end
 
+    ##
+    # === Status.
+    # Get contact logged status
+    #
     def status
       return @client.raw("get", "/contacts/status")
     end
 
-    def update
+    ##
+    # === Update.
+    # Update logged contact attributes
+    #
+    def update(data)
       return @client.raw("put", "/contacts/update", nil, data)
     end
 
