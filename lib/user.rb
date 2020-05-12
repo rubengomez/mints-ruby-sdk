@@ -1,5 +1,31 @@
 require_relative './client.rb'
 module Mints
+  ##
+  # == User context API
+  # User class contains functions that needs an API key and a session token as authentication
+  # == Usage example
+  # Initialize
+  #     client = Mints::User.new(mints_url, api_key)
+  # Call any function
+  #     client.get_contacts
+  # == Single resource options
+  # * +include+ - [String] include a relationship
+  # * +attributes+ - [Boolean] attach attributes to response
+  # * +categories+ - [Boolean] attach categories to response
+  # * +tags+ - [Boolean] attach tags to response
+  # == Resource collections options 
+  # * +search+ - [String] filter by a search word
+  # * +scopes+ - [String] filter by a scope
+  # * +filters+ - [String] filter by where clauses
+  # * +jfilters+ - [String] filter using complex condition objects
+  # * +catfilters+ - [String] filter by categories
+  # * +fields+ - [String] indicates the columns that will be selected
+  # * +sort+ - [String] indicates the columns that will be selected
+  # * +include+ - [String] include a relationship
+  # * +attributes+ - [Boolean] attach attributes to response
+  # * +categories+ - [Boolean] attach categories to response
+  # * +taxonomies+ - [Boolean] attach categories to response
+  # * +tags+ - [Boolean] attach tags to response
   class User
     attr_reader :client
     def initialize(host, api_key, session_token = nil)
@@ -18,7 +44,12 @@ module Mints
       return response
     end
     ######################################### CRM #########################################
-    ### Contacts ###
+    ##
+    # === Get contacts.
+    # Get a collection of contacts
+    #
+    # ==== Parameters
+    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
     def get_contacts(options = nil)
       return @client.get__crm__contacts(options)
     end
@@ -34,7 +65,12 @@ module Mints
     def update_contact(id, data, options = nil)
       return @client.update__crm__contacts(id, data, options)
     end
-    ### Companies ###
+    
+    # === Get companies.
+    # Get a collection of companies
+    #
+    # ==== Parameters
+    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
     def get_companies(options = nil)
       return @client.get__crm__companies(options)
     end
@@ -51,7 +87,11 @@ module Mints
       return @client.update__crm__companies(id, data, options)
     end
 
-    ### Deals ###
+    # === Get deals.
+    # Get a collection of deals
+    #
+    # ==== Parameters
+    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
     def get_deals(options = nil)
       return @client.get__crm__deals(options)
     end
@@ -69,7 +109,11 @@ module Mints
     end
 
     ######################################### Content #########################################
-    ### Stories ###
+    # === Get stories.
+    # Get a collection of stories
+    #
+    # ==== Parameters
+    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
     def get_stories(options = nil)
       return @client.get__content__stories(options)
     end
@@ -86,7 +130,11 @@ module Mints
       return @client.update__content__stories(id, data, options)
     end
 
-    ### Stories templates ###
+    # === Get story templates.
+    # Get a collection of story templates
+    #
+    # ==== Parameters
+    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
     def get_story_templates(options = nil)
       return @client.get__content__story_templates(options)
     end
@@ -103,7 +151,11 @@ module Mints
       return @client.update__content__story_templates(id, data, options)
     end
 
-    ### Content instances ###
+    # === Get content instances.
+    # Get a collection of content instances
+    #
+    # ==== Parameters
+    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
     def get_content_instances(options = nil)
       return @client.get__content__instances(options)
     end
@@ -120,7 +172,11 @@ module Mints
       return @client.update__content__instances(id, data, options)
     end
 
-    ### Content pages ###
+    # === Get content pages.
+    # Get a collection of content pages
+    #
+    # ==== Parameters
+    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
     def get_content_pages(options = nil)
       return @client.get__content__pages(options)
     end
@@ -137,25 +193,32 @@ module Mints
       return @client.update__content__pages(id, data, options)
     end
 
-    ### Content templates ###
+    # === Get content templates.
+    # Get a collection of content templates
+    #
+    # ==== Parameters
+    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
     def get_content_templates(options = nil)
       return @client.get__content__templates(options)
     end
 
-    def get_content_page(id, options = nil)
+    def get_content_template(id, options = nil)
       return @client.get__content__templates(id, options)
     end
 
-    def create_content_page(data, options = nil)
+    def create_content_template(data, options = nil)
       return @client.create__content__templates(data, options)
     end
 
-    def update_content_page(id, data, options = nil)
+    def update_content_template(id, data, options = nil)
       return @client.update__content__templates(id, data, options)
     end
 
-    ######################################### Ecommerce #########################################
-    ### Products ###
+    # === Get products.
+    # Get a collection of products
+    #
+    # ==== Parameters
+    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
     def get_products(options = nil)
       return @client.get__ecommerce__products(options)
     end
@@ -172,7 +235,11 @@ module Mints
       return @client.update__ecommerce__products(id, data, options)
     end
 
-    ### SKUs ###
+    # === Get skus.
+    # Get a collection of skus
+    #
+    # ==== Parameters
+    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
     def get_skus(options = nil)
       return @client.get__ecommerce__skus(options)
     end
@@ -189,7 +256,11 @@ module Mints
       return @client.update__ecommerce__skus(id, data, options)
     end
 
-    ### Prices ###
+    # === Get prices.
+    # Get a collection of prices
+    #
+    # ==== Parameters
+    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
     def get_prices(options = nil)
       return @client.get__ecommerce__prices(options)
     end
@@ -206,7 +277,11 @@ module Mints
       return @client.update__ecommerce__prices(id, data, options)
     end
 
-    ### Price lists ###
+    # === Get prece lists.
+    # Get a collection of prece lists
+    #
+    # ==== Parameters
+    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
     def get_price_lists(options = nil)
       return @client.get__ecommerce__price_lists(options)
     end
@@ -223,7 +298,11 @@ module Mints
       return @client.update__ecommerce__price_lists(id, data, options)
     end
 
-    ### Product brands ###
+    # === Get product brands.
+    # Get a collection of product brands
+    #
+    # ==== Parameters
+    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
     def get_product_brands(options = nil)
       return @client.get__ecommerce__product_brands(options)
     end
@@ -240,7 +319,11 @@ module Mints
       return @client.update__ecommerce__product_brands(id, data, options)
     end
 
-    ### Product types ###
+    # === Get product types.
+    # Get a collection of product types
+    #
+    # ==== Parameters
+    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
     def get_product_types(options = nil)
       return @client.get__ecommerce__product_types(options)
     end
@@ -257,7 +340,11 @@ module Mints
       return @client.update__ecommerce__product_types(id, data, options)
     end
 
-    ### Product templates ###
+    # === Get product templates.
+    # Get a collection of product templates
+    #
+    # ==== Parameters
+    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
     def get_product_templates(options = nil)
       return @client.get__ecommerce__product_templates(options)
     end
@@ -275,7 +362,11 @@ module Mints
     end
 
 
-    ### Locations ###
+    # === Get locations.
+    # Get a collection of locations
+    #
+    # ==== Parameters
+    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
     def get_locations(options = nil)
       return @client.get__ecommerce__locations(options)
     end
@@ -291,5 +382,26 @@ module Mints
     def update_location(id, data, options = nil)
       return @client.update__ecommerce__locations(id, data, options)
     end
-  end
+  
+    # === Get taxonomies.
+    # Get a collection of taxonomies
+    #
+    # ==== Parameters
+    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
+    def get_taxonomies(options = nil)
+      return @client.get__config__taxonomies(options)
+    end
+
+    def get_taxonomy(id, options = nil)
+      return @client.get__config__taxonomies(id, options)
+    end
+
+    def create_taxonomy(data, options = nil)
+      return @client.create__config__taxonomies(data, options)
+    end
+
+    def update_taxonomy(id, data, options = nil)
+      return @client.update__config__taxonomies(id, data, options)
+    end
+  end  
 end

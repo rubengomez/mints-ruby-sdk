@@ -1,0 +1,4 @@
+# Mints connection configuration
+mints:
+    host: http://your_host_goes_here.com
+    api_key: your_mints_api_key_goes_here

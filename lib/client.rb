@@ -216,7 +216,12 @@ module Mints
       # End User Context
       
       def public_get(url, headers = nil)
-        h = {"Accept" => "application/json", "Contet-Type" => "application/json", "ApiKey" => @api_key}
+        h = {
+          "Accept" => "application/json",
+          "Contet-Type" => "application/json",
+          "ApiKey" => @api_key,
+          "ContactToken" => @session_token
+        }
         if headers
           headers.each do |k,v|
             h[k] = v
@@ -226,7 +231,12 @@ module Mints
       end
 
       def public_post(url, headers = nil, data)
-        h = {"Accept" => "application/json", "Contet-Type" => "application/json", "ApiKey" => @api_key}
+        h = {
+          "Accept" => "application/json",
+          "Contet-Type" => "application/json",
+          "ApiKey" => @api_key,
+          "ContactToken" => @session_token
+        }
         if headers
           headers.each do |k,v|
             h[k] = v
@@ -236,7 +246,12 @@ module Mints
       end
 
       def public_put(url, headers = nil, data)
-        h = {"Accept" => "application/json", "Contet-Type" => "application/json", "ApiKey" => @api_key}
+        h = {
+          "Accept" => "application/json", 
+          "Contet-Type" => "application/json", 
+          "ApiKey" => @api_key,
+          "ContactToken" => @session_token
+        }
         if headers
           headers.each do |k,v|
             h[k] = v
