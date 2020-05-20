@@ -9,21 +9,20 @@ module Mints
       attr_reader :base_url
       attr_accessor :session_token      
 
-      def initialize(host, api_key, scope = nil, session_token = nil)
+      def initialize(host, api_key, scope = nil, session_token = nil, debug = false)
           @host = host
           @api_key = api_key
           @session_token = session_token
+          @debug = debug
           self.set_scope(scope)
       end
 
       def raw(action, url, options = nil, data = nil, base_url = nil)
-        base_url = @base_url if !base_url        
-        
+        base_url = @base_url if !base_url
+        uri = ""
         if (options && options.class == Hash)
           uri = Addressable::URI.new
           uri.query_values = options
-        else
-          uri = ""
         end
 
         full_url = "#{@host}#{base_url}#{url}#{uri}"
@@ -46,7 +45,8 @@ module Mints
         return parsed_response
       end
   
-      def method_missing(name, *args, &block)     
+      def method_missing(name, *args, &block)
+        puts name
         name.to_s.include?("__") ? separator = "__" : separator = "_"        
         # split the name to identify their elements
         name_spplited = name.to_s.split(separator)
@@ -144,16 +144,38 @@ module Mints
       ##### HTTTP CLIENTS ######
       # Simple HTTP GET
       def http_get(url, headers = nil)
+        if @debug
+          puts "Url:"
+          puts url
+          puts "Headers:"
+          puts headers
+        end
         return headers ? HTTParty.get(url, :headers => headers) : HTTParty.get(url)
       end    
 
       # Simple HTTP POST
       def http_post(url, headers = nil, data = nil)
+        if @debug
+          puts "Url:"
+          puts url
+          puts "Headers:"
+          puts headers
+          puts "Data:"
+          puts data
+        end
         return headers ? HTTParty.post(url, :headers=> headers, :body => data) : HTTParty.post(url, :body => data)  
       end
 
       # Simple HTTP PUT
       def http_put(url, headers = nil, data = nil)
+        if @debug
+          puts "Url:"
+          puts url
+          puts "Headers:"
+          puts headers
+          puts "Data:"
+          puts data
+        end
         return headers ? HTTParty.put(url, :headers=> headers, :body => data) : HTTParty.put(url, :body => data)
       end
 
@@ -208,7 +230,7 @@ module Mints
         headers = {
           "ApiKey" => @api_key,
           "Accept" => "application/json",
-          "Contet-Type" => "application/json"
+          "Content-Type" => "application/json"
         }
         headers["Authorization"] = "Bearer #{@session_token}" if @session_token
         return self.http_put(url, headers, data)
@@ -218,7 +240,7 @@ module Mints
       def public_get(url, headers = nil)
         h = {
           "Accept" => "application/json",
-          "Contet-Type" => "application/json",
+          "Content-Type" => "application/json",
           "ApiKey" => @api_key,
           "ContactToken" => @session_token
         }
@@ -233,7 +255,7 @@ module Mints
       def public_post(url, headers = nil, data)
         h = {
           "Accept" => "application/json",
-          "Contet-Type" => "application/json",
+          "Content-Type" => "application/json",
           "ApiKey" => @api_key,
           "ContactToken" => @session_token
         }
@@ -248,7 +270,7 @@ module Mints
       def public_put(url, headers = nil, data)
         h = {
           "Accept" => "application/json", 
-          "Contet-Type" => "application/json", 
+          "Content-Type" => "application/json", 
           "ApiKey" => @api_key,
           "ContactToken" => @session_token
         }

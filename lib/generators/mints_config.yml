@@ -2,3 +2,5 @@
 mints:
     host: http://your_host_goes_here.com
     api_key: your_mints_api_key_goes_here
+sdk:
+    debug: false
