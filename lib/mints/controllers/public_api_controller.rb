@@ -1,4 +1,5 @@
 require 'reverse_proxy/controller'
+require 'reverse_proxy/client'
 module Mints
     class PublicAPIController < ActionController::API
         include ReverseProxy::Controller

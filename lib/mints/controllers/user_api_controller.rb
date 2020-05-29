@@ -1,4 +1,5 @@
 require 'reverse_proxy/controller'
+require 'reverse_proxy/client'
 module Mints
     class UserAPIController < ActionController::API
         include AbstractController::Helpers
