@@ -21,7 +21,10 @@ module Mints
             reverse_proxy "#{@host}", headers: headers, verify_ssl: false do |config|
                 # We got a 404!
                 config.on_missing do |code, response|
-                    raise ActionController::RoutingError.new('Not Found')
+                    # We got a 404!
+                    if code == 404
+                        raise ActionController::RoutingError.new('Not Found')
+                    end
                 end
             end
         end    

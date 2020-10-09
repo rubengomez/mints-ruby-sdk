@@ -61,7 +61,7 @@ module Mints
         user_agent: user_agent || request.user_agent,
         url: url || request.fullpath
       }
-      response = @client.raw("post", "/register-visit", nil, data)
+      response = @client.raw("post", "/register-visit", nil, data.to_json)
       return response
     end
 
