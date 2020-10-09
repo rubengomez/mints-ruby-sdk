@@ -24,8 +24,11 @@ module Mints
         response = @mints_contact.login(email, password)
         # Get session token from response
         session_token = response['session_token']
+        id_token = response['contact']['id_token']
         # Set a permanent cookie with the session token
         cookies.permanent[:mints_contact_session_token] = session_token
+        cookies.permanent[:mints_contact_id] = id_token
+        @contact_token = id_token
     end
 
     ##
@@ -36,6 +39,8 @@ module Mints
         @mints_contact.logout
         # Delete local cookie
         cookies.delete(:mints_contact_session_token)
+        cookies.delete(:mints_contact_id)
+        @contact_token = nil
     end
     
     private

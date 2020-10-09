@@ -1,4 +1,5 @@
 require_relative "./client.rb"
+include ActionController::Cookies
 module Mints
   class Contact
     attr_reader :client
@@ -8,20 +9,6 @@ module Mints
     #
     def initialize(host, api_key, session_token = nil, debug = false)      
       @client = Mints::Client.new(host, api_key, "contact", session_token, debug)
-    end
-
-    ##
-    # === Register.
-    # Register a new contact
-    #
-    def register(given_name, last_name, email, password)
-      data = {
-        given_name: given_name,
-        last_name: last_name,
-        email: email,
-        password: password
-      }
-      return @client.raw("post", "/contacts/register", nil, {data: data})
     end
 
     ##
