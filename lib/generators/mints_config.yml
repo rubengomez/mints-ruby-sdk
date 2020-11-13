@@ -2,5 +2,12 @@
 mints:
     host: http://your_host_goes_here.com
     api_key: your_mints_api_key_goes_here
+redis_cache:
+  use_cache: boolean_value_to_enable_and_disable_cache
+  redis_host: your_redis_host
+  groups:
+    - urls:
+        - group_of_urls
+      time: time_that_will_be_applied_to_urls_in_seconds
 sdk:
     debug: false
