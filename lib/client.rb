@@ -1,6 +1,7 @@
 require "httparty"
 require "json"
 require "addressable"
+require "redis"
 module Mints
   class Client
       attr_reader :host
@@ -24,10 +25,41 @@ module Mints
           uri = Addressable::URI.new
           uri.query_values = options
         end
-
+        
         full_url = "#{@host}#{base_url}#{url}#{uri}"
+        response = nil
         if action === 'get'
+
+          config = YAML.load_file("#{Rails.root}/mints_config.yml")
+          url_need_cache = false
+          result_from_cache = false
+          time = 0
+
+          if config['redis_cache']['use_cache']
+            config['redis_cache']['groups'].each do |group|
+              group['urls'].each do |url|
+                  if full_url.match url
+                    time = group['time']
+                    url_need_cache = true
+                    @redis_server = Redis.new(host: config['redis_cache']['redis_host'])
+                    if @redis_server.get(full_url)
+                      response = @redis_server.get(full_url)
+                      result_from_cache = true
+                    else 
+                      response = self.send("#{@scope}_#{action}", "#{full_url}")
+                      @redis_server.setex(full_url,time,response)
+                    end
+                    break
+                  end
+              end
+              break if url_need_cache    
+            end
+          end
+
+          if !url_need_cache
             response = self.send("#{@scope}_#{action}", "#{full_url}")
+          end
+
         elsif action === 'create' or action === 'post'
           action = 'post'
           response = self.send("#{@scope}_#{action}", "#{full_url}", data)          
@@ -35,14 +67,18 @@ module Mints
           action = 'put'
           response = self.send("#{@scope}_#{action}", "#{full_url}", data)
         end
-        if (response.response.code == "404")
-          raise 'NotFoundError'
-        end
-        parsed_response = JSON.parse(response.body) 
-        if parsed_response.key?('data')
-          return parsed_response['data']
-        end
-        return parsed_response
+        if result_from_cache
+          return parsed_response = JSON.parse(response)
+        else
+          if (response.response.code == "404")
+            raise 'NotFoundError'
+          end
+          parsed_response = JSON.parse(response.body) 
+          if parsed_response.key?('data')
+            return parsed_response['data']
+          end
+          return parsed_response
+        end        
       end
   
       def method_missing(name, *args, &block)
