@@ -74,9 +74,6 @@ module Mints
             raise 'NotFoundError'
           end
           parsed_response = JSON.parse(response.body) 
-          if parsed_response.key?('data')
-            return parsed_response['data']
-          end
           return parsed_response
         end        
       end
