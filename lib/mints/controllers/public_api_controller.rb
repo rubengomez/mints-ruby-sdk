@@ -71,8 +71,9 @@ module Mints
         private
 
         def set_config_variables
-            if File.exists?("#{Rails.root}/mints_config.yml")
-                config = YAML.load_file("#{Rails.root}/mints_config.yml")
+            if File.exists?("#{Rails.root}/mints_config.yml.erb")
+                template = ERB.new File.new("#{Rails.root}/mints_config.yml.erb").read
+                config = YAML.load template.result(binding)
                 @host = config["mints"]["host"]
                 @api_key = config["mints"]["api_key"]                
                 @redis_server = Redis.new(host: config['redis_cache']['redis_host']) if config['redis_cache']['use_cache']

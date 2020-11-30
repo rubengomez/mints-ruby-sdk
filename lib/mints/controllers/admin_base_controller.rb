@@ -41,8 +41,9 @@ module Mints
     # === Set Mints user client.
     # Initialize the public client and set the user token
     def set_mints_user_client
-      if File.exists?("#{Rails.root}/mints_config.yml")
-        config = YAML.load_file("#{Rails.root}/mints_config.yml")
+      if File.exists?("#{Rails.root}/mints_config.yml.erb")
+        template = ERB.new File.new("#{Rails.root}/mints_config.yml.erb").read
+        config = YAML.load template.result(binding)
         @host = config["mints"]["host"]
         @api_key = config["mints"]["api_key"]
         @debug = config["sdk"]["debug"] ? config["sdk"]["debug"] : false

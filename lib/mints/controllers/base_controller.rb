@@ -59,15 +59,16 @@ module Mints
     # === Set mints pub.
     # Initialize the public client and set the contact token
     def set_mints_pub_client
-      if File.exists?("#{Rails.root}/mints_config.yml")
-        config = YAML.load_file("#{Rails.root}/mints_config.yml")
+      if File.exists?("#{Rails.root}/mints_config.yml.erb")
+        template = ERB.new File.new("#{Rails.root}/mints_config.yml.erb").read
+        config = YAML.load template.result(binding)
         @host = config["mints"]["host"]
         @api_key = config["mints"]["api_key"]
         @debug = config["sdk"]["debug"] ? config["sdk"]["debug"] : false
       else
         raise 'MintsBadCredentialsError'
       end
-      # Initialize mints pub client, credentials taken from mints_config.yml file
+      # Initialize mints pub client, credentials taken from mints_config.yml.erb file
       @mints_pub = Mints::Pub.new(@host, @api_key, nil, @debug)
       # Set contact token from cookie
       @mints_pub.client.session_token = @contact_token
