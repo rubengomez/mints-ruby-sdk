@@ -7,7 +7,7 @@ module Mints
   # == Usage example
   # Initialize
   #     pub = Mints::Pub.new(mints_url, api_key)
-  # or if host and api_key are provided by mints_config.yml
+  # or if host and api_key are provided by mints_config.yml.erb
   #     pub = Mints::Pub.new
   # Call any function
   #     pub.get_products

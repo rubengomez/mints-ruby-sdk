@@ -30,7 +30,8 @@ module Mints
         response = nil
         if action === 'get'
 
-          config = YAML.load_file("#{Rails.root}/mints_config.yml")
+          template = ERB.new File.new("#{Rails.root}/mints_config.yml.erb").read
+          config = YAML.load template.result(binding)
           url_need_cache = false
           result_from_cache = false
           time = 0
