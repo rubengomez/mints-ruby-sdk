@@ -42,8 +42,8 @@ module Mints
     # * +contact_token+ - [String] Cookie 'mints_contact_id' value (mints_contact_token)
     # ==== Return
     # Returns a Client object
-    def initialize(host, api_key, contact_token = nil, debug = false)
-      @client = Mints::Client.new(host, api_key, contact_token, debug)
+    def initialize(host, api_key, contact_token = nil, debug = false)      
+      @client = Mints::Client.new(host, api_key, 'public', contact_token, debug)
     end
     
     ##
@@ -178,7 +178,7 @@ module Mints
     # ==== Parameters
     # * +data+ - [Hash] Data to be submited
     def submit_form(data)
-      return @client.raw("post", "/forms/store", nil, data)
+      return @client.raw("post", "/content/forms/submit", nil, data)
     end
 
     ##

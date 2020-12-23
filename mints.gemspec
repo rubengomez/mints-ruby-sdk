@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = %q{mints}
-  s.version = "0.0.10"
+  s.version = "0.0.11"
   s.date = %q{2020-11-30}
   s.summary = %q{MINTS gem allows to connect your Rails App to MINTS.CLOUD}
   s.authors = %q{Ruben Gomez Garcia, Omar Mora, Luis Payan}
