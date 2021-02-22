@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name = %q{mints}
-  s.version = "0.0.10"
-  s.date = %q{2020-11-30}
+  s.version = "0.0.11"
+  s.date = %q{2021-02-22}
   s.summary = %q{MINTS gem allows to connect your Rails App to MINTS.CLOUD}
   s.authors = %q{Ruben Gomez Garcia, Omar Mora}
   s.homepage  = "https://github.com/rubengomez/mints-ruby-sdk"
@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
     'lib/generators/mints_contact_controller.rb',
     'lib/generators/mints_user_controller.rb',
     'lib/mints/controllers/base_controller.rb',
+    'lib/mints/controllers/base_api_controller.rb',
     'lib/mints/controllers/admin_base_controller.rb',
     'lib/mints/controllers/public_api_controller.rb',
     'lib/mints/controllers/contact_api_controller.rb',

@@ -80,7 +80,7 @@ module Mints
                 config = YAML.load template.result(binding)
                 @host = config["mints"]["host"]
                 @api_key = config["mints"]["api_key"]
-                @redis_server = Redis.new(host: config['redis_cache']['redis_host'])
+                @redis_server = Redis.new(host: config['redis_cache']['redis_host'], port: config['redis_cache']['redis_port'] ? config['redis_cache']['redis_port'] : 6379, db: config['redis_cache']['redis_db'] ? config['redis_cache']['redis_db'] : 1) if config['redis_cache']['use_cache']
                 @redis_config = config['redis_cache']
                 @use_cache = config['redis_cache']['use_cache'] if config['redis_cache']['use_cache']
             end

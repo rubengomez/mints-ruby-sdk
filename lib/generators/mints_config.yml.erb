@@ -2,12 +2,22 @@
 mints:
     host: http://your_host_goes_here.com
     api_key: your_mints_api_key_goes_here
+    mints_slug: slug_id #save id and token in redis
+    user_email: mints_user_email
+    user_password: mints_user_password
 redis_cache:
   use_cache: boolean_value_to_enable_and_disable_cache
-  redis_host: your_redis_host
+  redis_host: your_redis_server_host
+  redis_port: your_redis_server_port
+  redis_db: your_redis_database
   groups:
     - urls:
         - group_of_urls
       time: time_that_will_be_applied_to_urls_in_seconds
 sdk:
     debug: false
+cookies_iframe:
+  activated: boolean_value_to_enable_and_disable_cookies_iframe
+  expire_time: expire_time_of_cookies_iframe_in_hours
+  hosts:
+    - array_of_host_to_send_cookies
