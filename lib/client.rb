@@ -42,7 +42,7 @@ module Mints
                   if full_url.match url
                     time = group['time']
                     url_need_cache = true
-                    @redis_server = Redis.new(host: config['redis_cache']['redis_host'])
+                    @redis_server = Redis.new(host: config['redis_cache']['redis_host'], port: config['redis_cache']['redis_port'] ? config['redis_cache']['redis_port'] : 6379, db: config['redis_cache']['redis_db'] ? config['redis_cache']['redis_db'] : 1)
                     if @redis_server.get(full_url)
                       response = @redis_server.get(full_url)
                       result_from_cache = true
