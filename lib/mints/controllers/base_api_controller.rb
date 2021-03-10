@@ -1,20 +1,6 @@
 module Mints
-  class BaseController < ActionController::Base
-    before_action :set_contact_token
+  class BaseApiController < ActionController::Base
     before_action :set_mints_pub_client
-    before_action :register_visit
-    before_action :set_mints_contact_client
-
-    def mints_contact_signed_in?
-        # Check status in mints
-        response = @mints_contact.status
-        status = response['success'] ? response['success'] : false
-        unless status
-          # if mints response is negative delete the session cookie
-          cookies.delete(:mints_contact_session_token)
-        end
-        return status
-    end
 
     ##
     # === Mints Contact Login.
@@ -46,16 +32,6 @@ module Mints
     private
 
     ##
-    # === Register visit.
-    # Call register visit method from the public client and set/renew the cookie mints_contact_id
-    def register_visit
-      response = @mints_pub.register_visit(request)
-      @contact_token = response['user_token']
-      @visit_id = response['visit_id']
-      cookies.permanent[:mints_contact_id] = @contact_token
-    end
-
-    ##
     # === Set mints pub.
     # Initialize the public client and set the contact token
     def set_mints_pub_client
@@ -72,21 +48,6 @@ module Mints
       @mints_pub = Mints::Pub.new(@host, @api_key, nil, @debug)
       # Set contact token from cookie
       @mints_pub.client.session_token = @contact_token
-    end
-
-    ##
-    # === Set contact token.
-    # Set contact token variable from the mints_contact_id cookie value
-    def set_contact_token
-      @contact_token = cookies[:mints_contact_id]
-    end
-
-    ##
-    # === Set mints contact client.
-    # Initialize the public client and set the contact token
-    def set_mints_contact_client
-      # Initialize mints clontact client
-      @mints_contact = Mints::Contact.new(@host, @api_key, nil, @debug)
     end
   end
 end

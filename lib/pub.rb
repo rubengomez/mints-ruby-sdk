@@ -7,7 +7,7 @@ module Mints
   # == Usage example
   # Initialize
   #     pub = Mints::Pub.new(mints_url, api_key)
-  # or if host and api_key are provided by mints_config.yml
+  # or if host and api_key are provided by mints_config.yml.erb
   #     pub = Mints::Pub.new
   # Call any function
   #     pub.get_products
@@ -42,8 +42,8 @@ module Mints
     # * +contact_token+ - [String] Cookie 'mints_contact_id' value (mints_contact_token)
     # ==== Return
     # Returns a Client object
-    def initialize(host, api_key, contact_token = nil, debug = false)
-      @client = Mints::Client.new(host, api_key, contact_token, debug)
+    def initialize(host, api_key, contact_token = nil, debug = false)      
+      @client = Mints::Client.new(host, api_key, 'public', contact_token, debug)
     end
     
     ##
@@ -61,7 +61,7 @@ module Mints
         user_agent: user_agent || request.user_agent,
         url: url || request.fullpath
       }
-      response = @client.raw("post", "/register-visit", nil, data)
+      response = @client.raw("post", "/register-visit", nil, data.to_json)
       return response
     end
 
@@ -178,7 +178,7 @@ module Mints
     # ==== Parameters
     # * +data+ - [Hash] Data to be submited
     def submit_form(data)
-      return @client.raw("post", "/forms/store", nil, data)
+      return @client.raw("post", "/content/forms/submit", nil, data)
     end
 
     ##

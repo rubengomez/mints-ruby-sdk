@@ -1,6 +1,7 @@
 require "httparty"
 require "json"
 require "addressable"
+require "redis"
 module Mints
   class Client
       attr_reader :host
@@ -24,10 +25,42 @@ module Mints
           uri = Addressable::URI.new
           uri.query_values = options
         end
-
+        
         full_url = "#{@host}#{base_url}#{url}#{uri}"
-        if action === 'get'          
-          response = self.send("#{@scope}_#{action}", "#{full_url}")
+        response = nil
+        if action === 'get'
+
+          template = ERB.new File.new("#{Rails.root}/mints_config.yml.erb").read
+          config = YAML.load template.result(binding)
+          url_need_cache = false
+          result_from_cache = false
+          time = 0
+
+          if config['redis_cache']['use_cache']
+            config['redis_cache']['groups'].each do |group|
+              group['urls'].each do |url|
+                  if full_url.match url
+                    time = group['time']
+                    url_need_cache = true
+                    @redis_server = Redis.new(host: config['redis_cache']['redis_host'], port: config['redis_cache']['redis_port'] ? config['redis_cache']['redis_port'] : 6379, db: config['redis_cache']['redis_db'] ? config['redis_cache']['redis_db'] : 1)
+                    if @redis_server.get(full_url)
+                      response = @redis_server.get(full_url)
+                      result_from_cache = true
+                    else 
+                      response = self.send("#{@scope}_#{action}", "#{full_url}")
+                      @redis_server.setex(full_url,time,response)
+                    end
+                    break
+                  end
+              end
+              break if url_need_cache    
+            end
+          end
+
+          if !url_need_cache
+            response = self.send("#{@scope}_#{action}", "#{full_url}")
+          end
+
         elsif action === 'create' or action === 'post'
           action = 'post'
           response = self.send("#{@scope}_#{action}", "#{full_url}", data)          
@@ -35,14 +68,15 @@ module Mints
           action = 'put'
           response = self.send("#{@scope}_#{action}", "#{full_url}", data)
         end
-        if (response.response.code == "404")
-          raise 'NotFoundError'
-        end
-        parsed_response = JSON.parse(response.body) 
-        if parsed_response.key?('data')
-          return parsed_response['data']
-        end
-        return parsed_response
+        if result_from_cache
+          return parsed_response = JSON.parse(response)
+        else
+          if (response.response.code == "404")
+            raise 'NotFoundError'
+          end
+          parsed_response = JSON.parse(response.body) 
+          return parsed_response
+        end        
       end
   
       def method_missing(name, *args, &block)
@@ -183,7 +217,8 @@ module Mints
       def contact_get(url)
         headers = {
           "ApiKey" => @api_key,
-          "Accept" => "application/json"
+          "Accept" => "application/json",
+          "ContactToken" => @contact_token
         }
         headers["Authorization"] = "Bearer #{@session_token}" if @session_token
         return self.http_get(url, headers)
@@ -192,7 +227,8 @@ module Mints
       def contact_post(url, data)
         headers = {
           "ApiKey" => @api_key,
-          "Accept" => "application/json"
+          "Accept" => "application/json",
+          "ContactToken" => @contact_token
         }
         headers["Authorization"] = "Bearer #{@session_token}" if @session_token
         return self.http_post(url, headers, data)
@@ -201,7 +237,8 @@ module Mints
       def contact_put(url, data)
         headers = {
           "ApiKey" => @api_key,
-          "Accept" => "application/json"
+          "Accept" => "application/json",
+          "ContactToken" => @contact_token
         }
         headers["Authorization"] = "Bearer #{@session_token}" if @session_token
         return self.http_post(url, headers, data)
@@ -241,9 +278,9 @@ module Mints
         h = {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "ApiKey" => @api_key,
-          "ContactToken" => @session_token
+          "ApiKey" => @api_key
         }
+        h["ContactToken"] = @contact_token if @contact_token
         if headers
           headers.each do |k,v|
             h[k] = v
@@ -256,9 +293,9 @@ module Mints
         h = {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "ApiKey" => @api_key,
-          "ContactToken" => @session_token
+          "ApiKey" => @api_key
         }
+        h["ContactToken"] = @session_token if @session_token
         if headers
           headers.each do |k,v|
             h[k] = v
@@ -271,9 +308,9 @@ module Mints
         h = {
           "Accept" => "application/json", 
           "Content-Type" => "application/json", 
-          "ApiKey" => @api_key,
-          "ContactToken" => @session_token
+          "ApiKey" => @api_key
         }
+        h["ContactToken"] = @contact_token if @contact_token
         if headers
           headers.each do |k,v|
             h[k] = v

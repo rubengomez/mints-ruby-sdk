@@ -30,7 +30,7 @@ con.login(email, password)
 con.get_contacts
 ```
 ## Generate mints files
-This command will generate the mints_config.yml file, API controlles and routes to have available the mints endpoints
+This command will generate the mints_config.yml.erb file, API controlles and routes to have available the mints endpoints
 ```bash
 rails generate mints_files
 ```
@@ -46,8 +46,8 @@ This heritance will make the following class variables available:
 
 | Variable        | Description                                                                          |
 |   ---           |    :---:                                                                             |
-| @host           | Host defined in mints_config.yml file                                                |
-| @api_key        | API key defined in mints_config.yml file                                             |
+| @host           | Host defined in mints_config.yml.erb file                                                |
+| @api_key        | API key defined in mints_config.yml.erb file                                             |
 | @mints_pub      | An already instanced public client                                                   |
 | @contact_token  | A token used by mints to identify the contact                                        |
 | @visit_id       | An identifier of the visit registered                                                |
@@ -73,8 +73,8 @@ end
 This heritance will make the following class variables available:
 | Variable        | Description                                                                          |
 |   ---           |    :---:                                                                             |
-| @host           | Host defined in mints_config.yml file                                                |
-| @api_key        | API key defined in mints_config.yml file                                             |
+| @host           | Host defined in mints_config.yml.erb file                                                |
+| @api_key        | API key defined in mints_config.yml.erb file                                             |
 | @mints_user     | An already instanced user client  (not usable until call the user login method)      |
 
 And the following controller methods:
