@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.homepage  = "https://github.com/rubengomez/mints-ruby-sdk"
   s.files = [
     "Gemfile",
-    "Readme.md",
+    "README.md",
     "lib/client.rb",
     "lib/user.rb",
     "lib/contact.rb",
