@@ -5,6 +5,10 @@ module Mints
   # == Public context API
   # Pub class contains functions that needs only an API key as authentication
   # == Usage example
+  # === For Mints::BaseController inheritance:
+  # If the controller is inheriting from Mints::BaseController, Only use the class variable *mints_pub*  _Example:_
+  #     @mints_pub.get_stories
+  # === For standalone usage:
   # Initialize
   #     pub = Mints::Pub.new(mints_url, api_key)
   # or if host and api_key are provided by mints_config.yml.erb
@@ -12,23 +16,58 @@ module Mints
   # Call any function
   #     pub.get_products
   # == Single resource options
-  # * +include+ - [String] include a relationship
-  # * +attributes+ - [Boolean] attach attributes to response
-  # * +categories+ - [Boolean] attach categories to response
-  # * +tags+ - [Boolean] attach tags to response
+  # * +include+ - [_String_] Specify additional information to be included in the results from the objects relations. _Example:_
+  #     { "include": "events" }
+  # * +attributes+ - [_Boolean_] If present, attributes will be returned for each record in the results. _Example:_
+  #     { "attributes": true }
+  # * +categories+ - [_Boolean_] If present, categories will be returned for each record in the results. _Example:_
+  #     { "categories": true }
+  # * +tags+ - [_Boolean_] If present, tags will be returned for each record in the results. _Example:_
+  #     { "tags": true }
+  # * +fields+ - [_String_] Specify the fields that you want to be returned. If empty, all fields are returned. The object index can also be used to specify specific fields from relations. _Example:_
+  #     { "fields": "id, title, slug" }
+  #     { "fields[products]": "id, title, slug" }
+  #
   # == Resource collections options 
-  # * +search+ - [String] filter by a search word
-  # * +scopes+ - [String] filter by a scope
-  # * +filters+ - [String] filter by where clauses
-  # * +jfilters+ - [String] filter using complex condition objects
-  # * +catfilters+ - [String] filter by categories
-  # * +fields+ - [String] indicates the columns that will be selected
-  # * +sort+ - [String] indicates the columns that will be selected
-  # * +include+ - [String] include a relationship
-  # * +attributes+ - [Boolean] attach attributes to response
-  # * +categories+ - [Boolean] attach categories to response
-  # * +taxonomies+ - [Boolean] attach categories to response
-  # * +tags+ - [Boolean] attach tags to response
+  # * +search+ - [_String_] If present, it will search for records matching the search string. _Example:_
+  #     { "search": "searchstring" }
+  # * +scopes+ - [_String_] If present, it will apply the specified Model's scopes. _Example:_
+  #     { "scopes": "approved, recent" }
+  # * +filters+ - [_String_] This is a powerful parameter that allows the data to be filtered by any of its fields. Currently only exact matches are supported. _Example:_
+  #     { "filters[title]": "titleToFilter" }
+  # * +jfilters+ - [_String_] A complex filter configuration, as used in segments, in JSON format, base64 encoded and URLencoded. _Example:_
+  #     jfilter = {
+  #       "type":"group",
+  #       "items":[
+  #         {
+  #           "type":"attribute",
+  #           "operator":"==",
+  #           "slug":"title",
+  #           "value":"Action movies"
+  #         }
+  #       ],
+  #       "operator":"or"
+  #     } 
+  #     options = { "jfilters": jfilter }
+  # * +catfilters+ - [_String_] filter by categories. _Example:_
+  #     { "catfilters": "categoryName" }
+  # * +fields+ - [_String_] Specify the fields that you want to be returned. If empty, all fields are returned. The object index can also be used to specify specific fields from relations. _Example:_
+  #     { "fields": "id, title, slug" }
+  #     { "fields[products]": "id, title, slug" }
+  # * +sort+ - [_String_] The name of the field to perform the sort. Prefix the value with a minus sign - for ascending order. _Example:_
+  #     { "sort": "title" }
+  #     { "sort": "-title" }
+  # * +include+ - [_String_] Specify additional information to be included in the results from the objects relations. _Example:_
+  #     { "include": "events" }
+  # * +attributes+ - [_Boolean_] If present, attributes will be returned for each record in the results. _Example:_
+  #     { "attributes": true }
+  # * +categories+ - [_Boolean_] If present, categories will be returned for each record in the results. _Example:_
+  #     { "categories": true }
+  # * +taxonomies+ - [_Boolean_] If present, taxonomies will be returned for each record in the results. _Example:_
+  #     { "taxonomies": true }
+  # * +tags+ - [_Boolean_] If present, tags will be returned for each record in the results. _Example:_
+  #     { "tags": true }
+
   class Pub
     attr_reader :client
 
@@ -77,58 +116,15 @@ module Mints
     end
 
     ##
-    # === Get Content Page.
-    # Get a single content page
+    # === Get Asset Info.
+    # Get a description of an Asset
     #
     # ==== Parameters
-    # * +slug+ - [String] It's the slug 
-    # * +options+ - [Hash] List of {Single Resource Options}[#class-Mints::Pub-label-Single+resource+options] shown above can be used as parameter
-    def get_content_page(slug, options = nil)
-      return @client.raw("get", "/content/content-pages/#{slug}", options)
+    # * +slug+ - [String] It's the string identifier of the asset.
+    def get_asset_info(slug)
+      return @client.raw("get", "/content/asset-info/#{slug}")
     end
-
-    ##
-    # === Get Content Templates.
-    # Get a collection of content templates
-    #
-    # ==== Parameters
-    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::Pub-label-Resource+collections+options+] shown above can be used as parameter
-    def get_content_templates(options = nil)
-      return @client.raw("get", "/content/content-templates", options)
-    end
-
-    ##
-    # === Get Content Template.
-    # Get a single content template.
-    #
-    # ==== Parameters
-    # * +slug+ - [String] It's the string identifier generated by Mints
-    # * +options+ - [Hash] List of {Single Resource Options}[#class-Mints::Pub-label-Single+resource+options] shown above can be used as parameter
-    def get_content_template(slug, options = nil)
-      return @client.raw("get", "/content/content-templates/#{slug}", options)
-    end
-
-    ##
-    # === Get Content Instances.
-    # Get a collection of content instances
-    #
-    # ==== Parameters
-    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::Pub-label-Resource+collections+options+] shown above can be used as parameter
-    def get_content_instances(options) 
-      return @client.raw("get", "/content/content-instances", options)
-    end
-
-    ##
-    # === Get Content Instance.
-    # Get a single content instance.
-    #
-    # ==== Parameters
-    # * +slug+ - [String] It's the string identifier generated by Mints
-    # * +options+ - [Hash] List of {Single Resource Options}[#class-Mints::Pub-label-Single+resource+options] shown above can be used as parameter
-    def get_content_instance(slug, options = nil)
-      return @client.raw("get", "/content/content-instances/#{slug}", options)
-    end
-
+    
     ##
     # === Get Stories.
     # Get a collection of stories
@@ -179,6 +175,58 @@ module Mints
     # * +data+ - [Hash] Data to be submited
     def submit_form(data)
       return @client.raw("post", "/content/forms/submit", nil, data)
+    end    
+
+    ##
+    # === Get Content Instances.
+    # Get a collection of content instances
+    #
+    # ==== Parameters
+    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::Pub-label-Resource+collections+options+] shown above can be used as parameter
+    def get_content_instances(options = nil) 
+      return @client.raw("get", "/content/content-instances", options)
+    end
+
+    ##
+    # === Get Content Instance.
+    # Get a single content instance.
+    #
+    # ==== Parameters
+    # * +slug+ - [String] It's the string identifier generated by Mints
+    # * +options+ - [Hash] List of {Single Resource Options}[#class-Mints::Pub-label-Single+resource+options] shown above can be used as parameter
+    def get_content_instance(slug, options = nil)
+      return @client.raw("get", "/content/content-instances/#{slug}", options)
+    end
+
+    ##
+    # === Get Content Pages.
+    # Get all content pages.
+    #
+    # ==== Parameters
+    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::Pub-label-Resource+collections+options+] shown above can be used as parameter
+    def get_content_pages(options = nil)
+      return @client.raw("get", "/content/content-pages", options)
+    end
+
+    ##
+    # === Get Content Page.
+    # Get a single content page
+    #
+    # ==== Parameters
+    # * +slug+ - [String] It's the slug 
+    # * +options+ - [Hash] List of {Single Resource Options}[#class-Mints::Pub-label-Single+resource+options] shown above can be used as parameter
+    def get_content_page(slug, options = nil)
+      return @client.raw("get", "/content/content-pages/#{slug}", options)
+    end
+
+    ##
+    # === Get Locations.
+    # Get all locations.
+    #
+    # ==== Parameters
+    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::Pub-label-Resource+collections+options+] shown above can be used as parameter
+    def get_locations(options = nil)
+      return @client.raw("get", "/ecommerce/locations", options)
     end
 
     ##
@@ -202,48 +250,6 @@ module Mints
       return @client.raw("get", "/ecommerce/products/#{slug}", options)
     end
 
-    ##
-    # === Get Product Brands.
-    # Get a collection of product brands.
-    #
-    # ==== Parameters
-    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::Pub-label-Resource+collections+options+] shown above can be used as parameter
-    def get_product_brands(options = nil)
-      return @client.raw("get", "/ecommerce/product-brands", options)
-    end
-
-    ##
-    # === Get Product Brand.
-    # Get a product brand.
-    #
-    # ==== Parameters
-    # * +slug+ - [String] It's the string identifier generated by Mints
-    # * +options+ - [Hash] List of {Single Resource Options}[#class-Mints::Pub-label-Single+resource+options] shown above can be used as parameter
-    def get_product_brand(slug, options = nil)
-      return @client.raw("get", "/ecommerce/product-brands/#{slug}", options)
-    end
-
-    ##
-    # === Get SKUs.
-    # Get a collection of SKUs.
-    #
-    # ==== Parameters
-    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::Pub-label-Resource+collections+options+] shown above can be used as parameter
-    def get_skus(options = nil)
-      return @client.raw("get", "/ecommerce/skus", options)
-    end
-
-    ##
-    # === Get SKU.
-    # Get a single SKU.
-    #
-    # ==== Parameters
-    # * +slug+ - [String] It's the string identifier generated by Mints
-    # * +options+ - [Hash] List of {Single Resource Options}[#class-Mints::Pub-label-Single+resource+options] shown above can be used as parameter
-    def get_sku(slug, options = nil)
-      return @client.raw("get", "/ecommerce/skus/#{slug}", options)
-    end
-    
     ##
     # === Get categories.
     # Get a collection of categories.
@@ -287,16 +293,6 @@ module Mints
     end
 
     ##
-    # === Get Attributes.
-    # Get a collection of attributes.
-    #
-    # ==== Parameters
-    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::Pub-label-Resource+collections+options+] shown above can be used as parameter
-    def get_attributes(options = nil)
-      return @client.raw("get", "/config/attributes", options)
-    end
-
-    ##
     # === Get Taxonomies.
     # Get a collection of taxonomies.
     #
@@ -315,6 +311,16 @@ module Mints
     # * +options+ - [Hash] List of {Single Resource Options}[#class-Mints::Pub-label-Single+resource+options] shown above can be used as parameter
     def get_taxonomy(slug, options = nil)
       return @client.raw("get", "/config/taxonomies/#{slug}", options)
+    end
+
+    ##
+    # === Get Attributes.
+    # Get a collection of attributes.
+    #
+    # ==== Parameters
+    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::Pub-label-Resource+collections+options+] shown above can be used as parameter
+    def get_attributes(options = nil)
+      return @client.raw("get", "/config/attributes", options)
     end
   end
 end
