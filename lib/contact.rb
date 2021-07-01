@@ -7,8 +7,8 @@ module Mints
     # === Initialize.
     # Class constructor
     #
-    def initialize(host, api_key, session_token = nil, debug = false)      
-      @client = Mints::Client.new(host, api_key, "contact", session_token, debug)
+    def initialize(host, api_key, session_token = nil, contact_token_id = nil, debug = false)
+      @client = Mints::Client.new(host, api_key, "contact", session_token, contact_token_id, debug)
     end
 
     ##

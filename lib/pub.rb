@@ -81,8 +81,8 @@ module Mints
     # * +contact_token+ - [String] Cookie 'mints_contact_id' value (mints_contact_token)
     # ==== Return
     # Returns a Client object
-    def initialize(host, api_key, contact_token = nil, debug = false)      
-      @client = Mints::Client.new(host, api_key, 'public', contact_token, debug)
+    def initialize(host, api_key, contact_token_id = nil,  debug = false)
+      @client = Mints::Client.new(host, api_key, 'public', nil, contact_token_id, debug)
     end
     
     ##

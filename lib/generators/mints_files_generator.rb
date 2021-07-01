@@ -9,9 +9,10 @@ class MintsFilesGenerator < Rails::Generators::Base
       route <<-eos
         # Mints auto-generated routes (proxy to send request to mints.cloud)
         namespace :api, defaults: { format: :json } do
-          match '/user/v1/*path' => 'mints_user#index', via: [:get, :post, :put, :patch, :delete]  
+          match '/user/v1/*path' => 'mints_user#index', via: [:get, :post, :put, :patch, :delete]
+          match '/contact/v1/*path' => 'mints_contact#index', via: [:get, :post, :put, :patch, :delete]  
           namespace :v1 do     
-            match '/contacts/*path' => 'mints_contact#index', via: [:get, :post, :put, :patch, :delete]  
+            match '/contacts/*path' => 'mints_contact#index', via: [:get, :post, :put, :patch, :delete]              
             match '/*path' => 'mints_public#index', via: [:get, :post, :put, :patch, :delete]
           end
         end
