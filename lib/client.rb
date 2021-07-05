@@ -24,6 +24,9 @@ module Mints
         base_url = @base_url if !base_url
         uri = ""
         if (options && options.class == Hash)
+          if (options[:jfilters] && options[:jfilters].class == Hash)
+            options[:jfilters] = Base64.encode64(JSON.generate(options[:jfilters]))
+          end
           uri = Addressable::URI.new
           uri.query_values = options
         end
