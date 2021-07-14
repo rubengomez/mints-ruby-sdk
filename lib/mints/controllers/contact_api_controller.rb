@@ -14,6 +14,11 @@ module Mints
                 'Content-Type'=> 'application/json', 
                 'Accept'=> 'application/json'
             }
+            # Set contact token id as header
+            if cookies[:mints_contact_id]
+                headers['ContactToken'] = cookies[:mints_contact_id]
+            end
+            # Set contact session token as header
             if cookies[:mints_contact_session_token]
                 session_token = cookies[:mints_contact_session_token]
                 headers["Authorization"] = "Bearer #{session_token}"

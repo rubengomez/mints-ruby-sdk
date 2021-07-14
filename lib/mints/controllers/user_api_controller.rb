@@ -14,7 +14,7 @@ module Mints
                 'Content-Type'=> 'application/json', 
                 'Accept'=> 'application/json'
             }
-            if cookies[:mints_contact_session_token]
+            if cookies[:mints_user_session_token]
                 session_token = cookies[:mints_user_session_token]
                 headers["Authorization"] = "Bearer #{session_token}"
             end            

@@ -8,12 +8,14 @@ module Mints
       attr_reader :api_key
       attr_reader :scope
       attr_reader :base_url
-      attr_accessor :session_token      
+      attr_accessor :session_token
+      attr_accessor :contact_token_id
 
-      def initialize(host, api_key, scope = nil, session_token = nil, debug = false)
+      def initialize(host, api_key, scope = nil, session_token = nil, contact_token_id = nil, debug = false)
           @host = host
           @api_key = api_key
           @session_token = session_token
+          @contact_token_id = contact_token_id
           @debug = debug
           self.set_scope(scope)
       end
@@ -22,6 +24,9 @@ module Mints
         base_url = @base_url if !base_url
         uri = ""
         if (options && options.class == Hash)
+          if (options[:jfilters] && options[:jfilters].class == Hash)
+            options[:jfilters] = Base64.encode64(JSON.generate(options[:jfilters]))
+          end
           uri = Addressable::URI.new
           uri.query_values = options
         end
@@ -218,7 +223,7 @@ module Mints
         headers = {
           "ApiKey" => @api_key,
           "Accept" => "application/json",
-          "ContactToken" => @contact_token
+          "ContactToken" => @contact_token_id
         }
         headers["Authorization"] = "Bearer #{@session_token}" if @session_token
         return self.http_get(url, headers)
@@ -228,7 +233,7 @@ module Mints
         headers = {
           "ApiKey" => @api_key,
           "Accept" => "application/json",
-          "ContactToken" => @contact_token
+          "ContactToken" => @contact_token_id
         }
         headers["Authorization"] = "Bearer #{@session_token}" if @session_token
         return self.http_post(url, headers, data)
@@ -238,7 +243,7 @@ module Mints
         headers = {
           "ApiKey" => @api_key,
           "Accept" => "application/json",
-          "ContactToken" => @contact_token
+          "ContactToken" => @contact_token_id
         }
         headers["Authorization"] = "Bearer #{@session_token}" if @session_token
         return self.http_post(url, headers, data)
@@ -280,7 +285,7 @@ module Mints
           "Content-Type" => "application/json",
           "ApiKey" => @api_key
         }
-        h["ContactToken"] = @contact_token if @contact_token
+        h["ContactToken"] = @contact_token_id if @contact_token_id
         if headers
           headers.each do |k,v|
             h[k] = v
@@ -310,7 +315,7 @@ module Mints
           "Content-Type" => "application/json", 
           "ApiKey" => @api_key
         }
-        h["ContactToken"] = @contact_token if @contact_token
+        h["ContactToken"] = @contact_token_id if @contact_token_id
         if headers
           headers.each do |k,v|
             h[k] = v
