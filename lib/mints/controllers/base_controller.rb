@@ -32,6 +32,21 @@ module Mints
     end
 
     ##
+    # === Mints Contact Magic Link Login.
+    # Starts a contact session in mints.cloud and set a session cookie
+    def mints_contact_magic_link_login(token)
+      # Login in mints
+      response = @mints_contact.login(email, password)
+      # Get session token from response
+      session_token = response['session_token']
+      id_token = response['contact']['id_token']
+      # Set a permanent cookie with the session token
+      cookies.permanent[:mints_contact_session_token] = session_token
+      cookies.permanent[:mints_contact_id] = id_token
+      @contact_token = id_token
+  end
+
+    ##
     # === Mints Contact Logout.
     # Destroy session from mints.cloud and delete local session cookie
     def mints_contact_logout
@@ -86,7 +101,9 @@ module Mints
     # Initialize the public client and set the contact token
     def set_mints_contact_client
       # Initialize mints clontact client
-      @mints_contact = Mints::Contact.new(@host, @api_key, nil, @debug)
+      session_token = cookies[:mints_contact_session_token] ? cookies[:mints_contact_session_token] : nil
+      contact_token_id = cookies[:mints_contact_id] ? cookies[:mints_contact_id] : nil
+      @mints_contact = Mints::Contact.new(@host, @api_key, session_token, contact_token_id, @debug)
     end
   end
 end
