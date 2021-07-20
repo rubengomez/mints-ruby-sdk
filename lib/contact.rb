@@ -28,6 +28,32 @@ module Mints
     end
 
     ##
+    # === Magic Link Login.
+    # Starts a contact session
+    #
+    def magic_link_login(token)
+      response = @client.raw("get", "/contacts/magic-link-login/#{token}", nil, '/api/v1')
+      if response.key? "session_token"
+        @client.session_token = response["session_token"]
+      end
+      return response
+    end
+
+    ##
+    # === Send magic link to contact
+    def send_magic_link(email, template_slug, redirectUrl = '', lifeTime = 1440, maxVisits = nil)
+      data = {
+        email: email,
+        lifeTime: lifeTime,
+        maxVisits: maxVisits,
+        redirectUrl: redirectUrl,
+        templateId: template_slug
+      }
+      response = @client.raw("post", "/contacts/magic-link", nil, { data: data }, '/api/v1')
+      return response
+    end
+
+    ##
     # === Logout.
     # Ends a contact session
     #

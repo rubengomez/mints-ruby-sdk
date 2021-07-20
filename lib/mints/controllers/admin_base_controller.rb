@@ -2,16 +2,16 @@ module Mints
   class AdminBaseController < ActionController::Base
     before_action :set_mints_user_client
 
-    # def mints_user_signed_in?
-    #     # Check status in mints
-    #     response = @mints_user.status
-    #     status = response['success'] ? response['success'] : false
-    #     unless status
-    #       # if mints response is negative delete the session cookie
-    #       cookies.delete(:mints_user_session_token)
-    #     end
-    #     return status
-    # end
+    def mints_user_signed_in?
+        # Check status in mints
+        response = @mints_user.me
+        status = response['data'] ? true : false
+        unless status
+          # if mints response is negative delete the session cookie
+          #cookies.delete(:mints_user_session_token)
+        end
+        return status
+    end
 
     ##
     # === Mints user Login.
@@ -23,6 +23,21 @@ module Mints
         session_token = response['api_token']
         # Set a permanent cookie with the session token
         cookies.permanent[:mints_user_session_token] = session_token
+    end
+
+    ##
+    # === Mints user Login.
+    # Starts a user session in mints.cloud and set a session cookie
+    def mints_user_magic_link_login(hash)
+      # Login in mints
+      response = @mints_user.magic_link_login(hash)
+      if response['data'] && response['data']['redirect_url']
+        # Set a cookie with the session token
+        cookies[:mints_user_session_token] = { value: response['data']['api_token'], expires: 1.day }
+        redirect_to response['data']['redirect_url']
+      else
+        redirect_to '/'
+      end
     end
 
     ##
@@ -51,7 +66,8 @@ module Mints
         raise 'MintsBadCredentialsError'
       end
       # Initialize mints user client
-      @mints_user = Mints::User.new(@host, @api_key, nil, @debug)
+      session_token = cookies[:mints_user_session_token] ? cookies[:mints_user_session_token] : nil
+      @mints_user = Mints::User.new(@host, @api_key, session_token, @debug)
     end
   end
 end

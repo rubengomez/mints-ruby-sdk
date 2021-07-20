@@ -43,6 +43,31 @@ module Mints
       end
       return response
     end
+
+    def magic_link_login(token)
+      response = @client.raw("get", "/users/magic-link-login/#{token}", nil, nil, '/api/v1')
+      return response
+    end
+
+    ##
+    # === Send magic link to user
+    def send_magic_link(email, redirectUrl = '', lifeTime = 24)
+      data = {
+        email: email,
+        redirectUrl: redirectUrl,
+        lifeTime: lifeTime
+      }
+      response = @client.raw("post", "/users/magic-link", nil, { data: data }, '/api/v1')
+      return response
+    end
+
+    ##
+    # === Me.
+    # Get contact logged info
+    #
+    def me
+      return @client.get__profile__me
+    end
     ######################################### CRM #########################################
     ##
     # === Get contacts.
