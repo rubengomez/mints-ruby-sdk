@@ -117,7 +117,7 @@ module Mints
     # === Register Visit timer.
     # Register a page visit time
     #
-    # ==== Parameters (To check)
+    # ==== Parameters
     # * +visit+ - [String] It's the visitor IP
     # * +time+ - [Integer] The visitor's browser user agent
     #
