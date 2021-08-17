@@ -20,7 +20,7 @@ module Mints
     # * +password+ - [_String_] The password of the email.
     #
     # ==== Example
-    #     @datos = @mints_contact.login("alonso@mints.cloud", "helloword")
+    #     @mints_contact.login("brown.abigail@dubuque.com", "helloword")
     #
     def login(email, password)
       data = {
@@ -42,7 +42,7 @@ module Mints
     # * +token+ - [_String_] The email that will be logged.
     #
     # ==== Example
-    #     @datos = @mints_contact.magic_link_login(
+    #     @mints_contact.magic_link_login(
     #       "d8618c6d-a165-41cb-b3ec-d053cbf30059:zm54HtRdfHED8dpILZpjyqjPIceiaXNLfOklqM92fveBS0nDtyPYBlI4CPlPe3zq"
     #     )
     #
@@ -66,10 +66,10 @@ module Mints
     # * +maxVisits+ - [_Integer_] The maximum number of uses of a token. 
     #
     # ==== First Example
-    #     @datos = @mints_contact.send_magic_link("alonso@mints.cloud", "")
+    #     @mints_contact.send_magic_link("brown.abigail@dubuque.com", "")
     #
     # ==== Second Example
-    #     @datos = @mints_contact.send_magic_link("alonso@mints.cloud", "", "", 1440, 3)
+    #     @mints_contact.send_magic_link("brown.abigail@dubuque.com", "", "", 1440, 3)
     #
     def send_magic_link(email, template_slug, redirectUrl = '', lifeTime = 1440, maxVisits = nil)
       data = {
@@ -88,8 +88,8 @@ module Mints
     # Ends a contact session previously logged.
     #
     # ==== Example
-    #     @datos = @mints_contact.login('alonso@mints.cloud', 'helloword')
-    #     @datos1 = @mints_contact.logout
+    #     @mints_contact.login('brown.abigail@dubuque.com', 'helloword')
+    #     @mints_contact.logout
     #
     def logout
       response = @client.raw("post", "/contacts/logout") if session_token?
@@ -107,9 +107,9 @@ module Mints
     # * +data+ - [] A new password allocated in a data key.
     #
     # ==== Example
-    #     @datos = @mints_contact.login('alonso@mints.cloud', 'helloword')
+    #     @mints_contact.login('brown.abigail@dubuque.com', 'helloword')
     #     data = { "data": { "password": "123456" } }
-    #     @datos1 = @mints_contact.change_password(data)
+    #     @mints_contact.change_password(data)
     #
     def change_password(data)
       return @client.raw("post", "/contacts/change-password", nil, data)
@@ -123,8 +123,8 @@ module Mints
     # * +data+ - [] It's a data key where will be hosted the destination email. 
     #
     # ==== Example
-    #     data = { "data": { "email": "alonso@mints.cloud" } }
-    #     @datos = @mints_contact.recover_password(data)
+    #     data = { "data": { "email": "brown.abigail@dubuque.com" } }
+    #     @mints_contact.recover_password(data)
     #
     def recover_password(data)
       return @client.raw("post", "/contacts/recover-password", nil, data)
@@ -139,12 +139,12 @@ module Mints
     #
     # ==== Example
     #     data = { "data": { 
-    #       "email": "alonso@mints.cloud", 
+    #       "email": "brown.abigail@dubuque.com", 
     #       "password": "helloword", 
     #       "password_confirmation": "helloword", 
     #       "token": "644aa3aa0831d782cc42e42b11aedea9a2234389af4f429a8d96651295ecfa09" 
     #     } }
-    #     @datos = @mints_contact.reset_password(data)
+    #     @mints_contact.reset_password(data)
     #
     def reset_password(data)
       return @client.raw("post", "/contacts/reset-password", nil, data)
@@ -163,7 +163,7 @@ module Mints
     # Get contact logged info.
     #
     # ==== Example
-    #     @datos = @mints_contact.me
+    #     @mints_contact.me
     #
     def me
       return @client.raw("get", "/contacts/me")
@@ -174,7 +174,7 @@ module Mints
     # Get contact logged status.
     #
     # ==== Example
-    #     @datos = @mints_contact.status
+    #     @mints_contact.status
     #
     def status
       return @client.raw("get", "/contacts/status")
@@ -188,12 +188,12 @@ module Mints
     # * +data+ - [] It's the data to update with a session active.
     #
     # ==== Example
-    #     @datos = @mints_contact.login("alonso@mints.cloud", "helloword")
+    #     @mints_contact.login("brown.abigail@dubuque.com", "helloword")
     #     data = { "data": { 
     #       "given_name": "Alonso", 
     #       "last_name": "Garcia"
     #     } }
-    #     @datos1 = @mints_contact.update(data)
+    #     @mints_contact.update(data)
     #
     def update(data)
       return @client.raw("put", "/contacts/update", nil, data)
@@ -213,7 +213,7 @@ module Mints
     #       "last_name": "Fernandez",
     #       "password": "123456"
     #     } }
-    #     @datos = @mints_contact.register(data);
+    #     @mints_contact.register(data);
     #
     def register(data)
       return @client.raw("post", "/contacts/register", nil, data)
