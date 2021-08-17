@@ -84,7 +84,7 @@ module Mints
         raise 'MintsBadCredentialsError'
       end
       # Initialize mints pub client, credentials taken from mints_config.yml.erb file
-      @mints_pub = Mints::Pub.new(@host, @api_key, nil, @debug)
+      @mints_pub = Mints::Pub.new(@host, @api_key, @contact_token, @debug)
       # Set contact token from cookie
       @mints_pub.client.session_token = @contact_token
     end
