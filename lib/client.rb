@@ -246,7 +246,7 @@ module Mints
           "ContactToken" => @contact_token_id
         }
         headers["Authorization"] = "Bearer #{@session_token}" if @session_token
-        return self.http_post(url, headers, data)
+        return self.http_put(url, headers, data)
       end
 
       # Start User context
