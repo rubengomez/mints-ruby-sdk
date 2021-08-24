@@ -321,8 +321,8 @@ module Mints
       return @client.raw("get", "/crm/segments/support-data")
     end
 
-    def get_segment_attributes(data, options = nil) #FIXME: method doesn't work because cannot send data in get
-      return @client.raw("get", "/crm/segments/attributes", options, data)
+    def get_segment_attributes(options = nil)
+      return @client.raw("get", "/crm/segments/attributes", options)
     end
 
     def get_segment_group(groupId)
@@ -538,16 +538,12 @@ module Mints
     # == dam
     #
 
-    def get_dam #FIXME: Method works but response is a html document.
-      return @client.raw("get", "/content/dam")
-    end
-
     def get_dam_loadtree
       return @client.raw("get", "/content/dam/loadtree")
     end
 
-    def get_dam_asset_locations(data) #FIXME: Get cannot receive data
-      return @client.raw("get", "/content/dam/asset-locations", nil, data)
+    def get_dam_asset_locations(options)
+      return @client.raw("get", "/content/dam/asset-locations", options)
     end
     
     def paste_dam(data) #FIXME: Invalid argument supplied for foreach()
@@ -606,10 +602,6 @@ module Mints
       return @client.raw("post", "/content/assets/updateVariation/#{id}", nil, data)
     end
 
-    def get_asset_thumbnails(id) #FIXME: DOESNT RETURN JSON, RETURN AN IMAGE
-      return @client.raw("get", "/content/assets/thumbnails/#{id}")
-    end
-
     def get_asset_sizes(id) #FIXME: wrong number of arguments (given 1, expected 0)
       return @client.raw("get", "/content/assets/sizes/#{id}")
     end
@@ -624,12 +616,12 @@ module Mints
       return @client.raw("get", "/content/assets/variation/#{id}")
     end
 
-    def get_asset_sizes(data) #FIXME: Get cannot receive data
-      return @client.raw("get", "/content/assets/getSizes", nil, data)
+    def get_asset_sizes(options)
+      return @client.raw("get", "/content/assets/getSizes", options)
     end
 
-    def get_asset_usage(data) #FIXME: Get cannot receive data
-      return @client.raw("get", "/content/assets/usage", nil, data)
+    def get_asset_usage(options)
+      return @client.raw("get", "/content/assets/usage", options)
     end
 
     def delete_asset_variation #TODO: Not tested
@@ -640,8 +632,8 @@ module Mints
       return @client.raw("get", "/content/assets/deleteSize")
     end
 
-    def get_asset_info(data) #FIXME: Get cannot receive data
-      return @client.raw("get", "/content/assets/getAssetInfo", nil, data)
+    def get_asset_info(options)
+      return @client.raw("get", "/content/assets/getAssetInfo", options)
     end
 
     def generate_asset_variation(data) #FIXME: Trying to get property 'width' of non-object
@@ -732,7 +724,7 @@ module Mints
     # == Email Template
     #
 
-    def get_content_pages_from_email_template(id) #FIXME: ContentController doesnt have getContentPage mathod
+    def get_content_pages_from_email_template(id) #FIXME: ContentController doesnt have getContentPage method
       return @client.raw("get", "/content/email-templates/content-pages/#{id}")
     end
 
@@ -991,10 +983,6 @@ module Mints
     def update_location_template(id, data)
       return @client.raw("put", "/ecommerce/location-templates/#{id}", nil, data)
     end
-
-    ##
-    # == Product Variation
-    #
     
   end  
 end
