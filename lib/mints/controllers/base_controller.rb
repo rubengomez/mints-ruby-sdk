@@ -24,10 +24,10 @@ module Mints
         response = @mints_contact.login(email, password)
         # Get session token from response
         session_token = response['session_token']
-        id_token = response['contact']['id_token']
+        id_token = response['contact']['contact_token']
         # Set a permanent cookie with the session token
-        cookies.permanent[:mints_contact_session_token] = session_token
-        cookies.permanent[:mints_contact_id] = id_token
+        cookies.permanent[:mints_contact_session_token] = { value: session_token, secure: true, httponly: true }
+        cookies.permanent[:mints_contact_id] = { value: id_token, secure: true, httponly: true }
         @contact_token = id_token
     end
 
@@ -39,10 +39,10 @@ module Mints
       response = @mints_contact.login(email, password)
       # Get session token from response
       session_token = response['session_token']
-      id_token = response['contact']['id_token']
+      id_token = response['contact']['contact_token']
       # Set a permanent cookie with the session token
-      cookies.permanent[:mints_contact_session_token] = session_token
-      cookies.permanent[:mints_contact_id] = id_token
+      cookies.permanent[:mints_contact_session_token] = { value: session_token, secure: true, httponly: true }
+      cookies.permanent[:mints_contact_id] = { value: id_token, secure: true, httponly: true }
       @contact_token = id_token
   end
 
@@ -80,9 +80,9 @@ module Mints
       if @debug
         puts "RESPONSE IN REGISTER VISIT: #{response}"
       end
-      @contact_token = response['user_token']
+      @contact_token = response['contact_token']
       @visit_id = response['visit_id']
-      cookies.permanent[:mints_contact_id] = @contact_token
+      cookies.permanent[:mints_contact_id] = { value: @contact_token, secure: true, httponly: true }
     end
 
     ##
