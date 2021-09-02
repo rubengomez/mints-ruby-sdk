@@ -72,6 +72,9 @@ module Mints
         elsif action === 'put' or action === 'patch' or action ==='update'
           action = 'put'
           response = self.send("#{@scope}_#{action}", "#{full_url}", data)
+        elsif action === 'delete' or action === 'destroy'
+          action = 'delete'
+          response = self.send("#{@scope}_#{action}", "#{full_url}", data)
         end
         if result_from_cache
           return parsed_response = JSON.parse(response)
@@ -93,7 +96,7 @@ module Mints
         name_len = name_spplited.size
         # the action always be the first element
         action = name_spplited.first
-        raise 'NoActionError' unless ['get', 'create', 'post', 'update', 'put'].include?(action)
+        raise 'NoActionError' unless ['get', 'create', 'post', 'update', 'put', 'delete', 'destroy'].include?(action)
         # the object always be the last element
         object = separator == "__" ? name_spplited.last.gsub("_","-") : name_spplited.last
         # get intermediate url elements
@@ -188,6 +191,7 @@ module Mints
           puts url
           puts "Headers:"
           puts headers
+          puts "Method: get"
         end
         return headers ? HTTParty.get(url, :headers => headers) : HTTParty.get(url)
       end    
@@ -201,6 +205,7 @@ module Mints
           puts headers
           puts "Data:"
           puts data
+          puts "Method: post"
         end
         return headers ? HTTParty.post(url, :headers=> headers, :body => data) : HTTParty.post(url, :body => data)  
       end
@@ -214,8 +219,23 @@ module Mints
           puts headers
           puts "Data:"
           puts data
+          puts "Method: put"
         end
         return headers ? HTTParty.put(url, :headers=> headers, :body => data) : HTTParty.put(url, :body => data)
+      end
+
+      # Simple HTTP DELETE
+      def http_delete(url, headers = nil, data = nil)
+        if @debug
+          puts "Url:"
+          puts url
+          puts "Headers:"
+          puts headers
+          puts "Data:"
+          puts data
+          puts "Method: delete"
+        end
+        return headers ? HTTParty.delete(url, :headers=> headers, :body => data) : HTTParty.delete(url, :body => data)  
       end
 
       # Start contact context
@@ -276,6 +296,15 @@ module Mints
         }
         headers["Authorization"] = "Bearer #{@session_token}" if @session_token
         return self.http_put(url, headers, data)
+      end
+
+      def user_delete(url, data)
+        headers = {
+          "ApiKey" => @api_key,
+          "Accept" => "application/json"
+        }
+        headers["Authorization"] = "Bearer #{@session_token}" if @session_token
+        return self.http_delete(url, headers, data)
       end
       # End User Context
       

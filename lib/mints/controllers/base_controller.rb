@@ -64,7 +64,22 @@ module Mints
     # === Register visit.
     # Call register visit method from the public client and set/renew the cookie mints_contact_id
     def register_visit
+      if @debug
+        puts "REQUEST IN REGISTER VISIT: #{request}"
+        puts "BODY REQUEST: #{request.body}"
+        puts "AUTH REQUEST: #{request.authorization}"
+        puts "LENGTH REQUEST: #{request.content_length}"
+        puts "FORM DATA REQUEST: #{request.form_data?}"
+        puts "FULLPATH REQUEST: #{request.fullpath}"
+        puts "HEADERS REQUEST: #{request.headers}"
+        puts "IP REQUEST: #{request.ip}"
+        puts "REQUEST IP ADRESS: #{request['ip_address']}"
+        puts "REQUEST REMOTE IP: #{request['remote_ip']}"
+      end
       response = @mints_pub.register_visit(request)
+      if @debug
+        puts "RESPONSE IN REGISTER VISIT: #{response}"
+      end
       @contact_token = response['user_token']
       @visit_id = response['visit_id']
       cookies.permanent[:mints_contact_id] = @contact_token
