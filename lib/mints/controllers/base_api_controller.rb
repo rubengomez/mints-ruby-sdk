@@ -18,15 +18,15 @@ module Mints
       end
       
     ##
-    # === Mints cotnact Login.
-    # Starts a cotnact session in mints.cloud and set a session cookie
+    # === Mints contact Login.
+    # Starts a contact session in mints.cloud and set a session cookie
     def mints_contact_magic_link_login(hash)
       # Login in mints
       response = @mints_contact.magic_link_login(hash)
       if response['data']
         # Get session token from response
         session_token = response['data']['session_token']
-        id_token = response['data']['contact']['contact_token']
+        id_token = response['data']['contact']['contact_token'] ? response['data']['contact']['contact_token'] : response['data']['contact']['id_token']
         # Set a permanent cookie with the session token
         cookies.permanent[:mints_contact_session_token] = { value: session_token, secure: true, httponly: true }
         cookies.permanent[:mints_contact_id] = { value: id_token, secure: true, httponly: true }
