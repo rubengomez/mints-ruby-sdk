@@ -22,7 +22,7 @@ module Mints
         # Get session token from response
         session_token = response['api_token']
         # Set a permanent cookie with the session token
-        cookies.permanent[:mints_user_session_token] = { value: session_token, secure: true, httponly: true }
+        cookies[:mints_user_session_token] = { value: session_token, secure: true, httponly: true, expires: 1.day }
     end
 
     ##

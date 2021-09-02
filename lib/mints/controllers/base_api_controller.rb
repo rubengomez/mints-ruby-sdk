@@ -58,7 +58,7 @@ module Mints
       # Get session token from response
       session_token = response['api_token']
       # Set a permanent cookie with the session token
-      cookies.permanent[:mints_user_session_token] = { value: session_token, secure: true, httponly: true }
+      cookies[:mints_user_session_token] = { value: session_token, secure: true, httponly: true, expires: 1.day }
     end
 
     ##
@@ -69,7 +69,7 @@ module Mints
       response = @mints_user.magic_link_login(hash)
       if response['data']
         # Set a cookie with the session token
-        cookies[:mints_user_session_token] = { value: response['data']['api_token'], expires: 1.day, secure: true, httponly: true }
+        cookies[:mints_user_session_token] = { value: response['data']['api_token'], secure: true, httponly: true,  expires: 1.day }
         redirect_to response['data']['redirect_url'] ? response['data']['redirect_url'] : '/'
       else
         redirect_to '/'
