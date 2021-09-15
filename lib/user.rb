@@ -78,10 +78,11 @@ module Mints
     end
     
     ##
-    # === Get contacts online activity.
+    # === Get online activity.
+    # Get online activity of a contact.
     #
     # ==== Parameters
-    # * +id+ - [Integer] Contact id
+    # id:: (Integer) -- Contact id.
     #
     # ==== Example
     #     @data = @mints_user.get_online_activity(5)
@@ -94,18 +95,27 @@ module Mints
     # Get a collection of contacts.
     #
     # ==== Parameters
-    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    # use_post:: (Boolean) -- Variable to determine if the request is by 'post' or 'get' functions.
     #
     # ==== First Example
     #     @data = @mints_user.get_contacts
+    #
     # ==== Second Example
     #     options = { 
     #       "sort": "id",
     #       "fields[contacts]": "id, email"
     #     }
     #     @data = @mints_user.get_contacts(options)
-    def get_contacts(options = nil)
-      return @client.raw("get", "/crm/contacts", options)
+    #
+    # ==== Third Example
+    #     options = { 
+    #       "sort": "id",
+    #       "fields[contacts]": "id, email"
+    #     }
+    #     @data = @mints_user.get_contacts(options, true)
+    def get_contacts(options = nil, use_post = true)
+      return get_query_results("/crm/contacts", options, use_post)
     end
 
     ##
@@ -113,11 +123,12 @@ module Mints
     # Get a contact data.
     #
     # ==== Parameters
-    # * +id+ - [Integer] Contact id
-    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
+    # id:: (Integer) -- Contact id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
     #
     # ==== First Example
     #     @data = @mints_user.get_contact(5)
+    #
     # ==== Second Example
     #     options = { 
     #       "sort": "id",
@@ -133,20 +144,18 @@ module Mints
     # Create a contact with data.
     #
     # ==== Parameters
-    # * +data+ - [Hash] Data to be submited
+    # data:: (Hash) -- Data to be submited.
     #
     # ==== Example
     #     data = {
-    #       "data": {
-    #         "email": "email@example.com",
-    #         "given_name": "Given_Name",
-    #         "last_name": "Last_Name",
-    #         "password": "123456"
-    #       }
+    #       "email": "email@example.com",
+    #       "given_name": "Given_Name",
+    #       "last_name": "Last_Name",
+    #       "password": "123456"
     #     }
     #     @data = @mints_user.create_contact(data)
     def create_contact(data)
-      return @client.raw("post", "/crm/contacts", nil, data)
+      return @client.raw("post", "/crm/contacts", nil, data_transform(data))
     end
 
     ##
@@ -154,18 +163,17 @@ module Mints
     # Update contact data.
     #
     # ==== Parameters
-    # * +id+ - [Integer] Contact id
-    # * +data+ - [Hash] Data to be submited
+    # id:: (Integer) -- Contact id.
+    # data:: (Hash) -- Data to be submited.
     #
     # ==== Example
     #     data = {
-    #       "data": {
-    #         "email": "mail_modified@example.com"
-    #       }
+    #       "email": "email_modified@example.com",
+    #       "company_id": 3
     #     }
-    #     @data = @mints_user.update_contact(156, data.to_json)
+    #     @data = @mints_user.update_contact(65, data)
     def update_contact(id, data)
-      return @client.raw("put", "/crm/contacts/#{id}", nil, data)
+      return @client.raw("put", "/crm/contacts/#{id}", nil, data_transform(data))
     end
 
     ##
@@ -173,7 +181,7 @@ module Mints
     # Get a collection of deals of a contact.
     #
     # ==== Parameters
-    # * +contact_id+ - [Integer] Contact id
+    # contact_id:: (Integer) -- Contact id.
     #
     # ==== Example
     #     @data = @mints_user.get_contact_deal(5)
@@ -186,8 +194,8 @@ module Mints
     # Create a contact deal with data.
     #
     # ==== Parameters
-    # * +contact_id+ - [Integer] Contact id
-    # * +data+ - [Hash] Data to be submited
+    # contact_id:: (Integer) -- Contact id.
+    # data:: (Hash) -- Data to be submited.
     #
     # ==== Example
     #     data = {
@@ -203,8 +211,8 @@ module Mints
     # Delete a contact deal with data.
     #
     # ==== Parameters
-    # * +contact_id+ - [Integer] Contact id
-    # * +data+ - [Hash] Data to be submited
+    # contact_id:: (Integer) -- Contact id.
+    # deal_id:: (Integer) -- Deal id.
     #
     # ==== Example
     #     @data = @mints_user.delete_contact_deal(5, 100)
@@ -217,43 +225,43 @@ module Mints
     # Get user data of a contact.
     #
     # ==== Parameters
-    # * +contact_id+ - [Integer] Contact id
-    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
+    # contact_id:: (Integer) -- Contact id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
     #
     # ==== Example
-    #     @data = @mints_user.get_contact_user(153)
-    def get_contact_user(contact_id, options = nil)
-      return @client.raw("get", "/crm/contacts/#{contact_id}/users", options)
+    #     @data = @mints_user.get_contact_user(66)
+    def get_contact_user(contact_id)
+      return @client.raw("get", "/crm/contacts/#{contact_id}/users")
     end
 
     ##
     # === Create contact user.
-    # Relate a contact with a user.
+    # Relate a contact with an user.
     #
     # ==== Parameters
-    # * +contact_id+ - [Integer] Contact id
-    # * +data+ - [Hash] Data to be submited
+    # contact_id:: (Integer) -- Contact id.
+    # data:: (Hash) -- Data to be submited.
     #
     # ==== Example
     #     data = { 
     #       "user_id": 9
     #     }
-    #     @data = @mints_user.create_contact_user(153, data)
+    #     @data = @mints_user.create_contact_user(66, data)
     def create_contact_user(contact_id, data)
       return @client.raw("post", "/crm/contacts/#{contact_id}/users", nil, data)
     end
 
     ##
     # === Delete contact user.
-    # Delete a relationship between a contact and a user.
+    # Delete a relationship between a contact and an user.
     #
     # ==== Parameters
-    # * +contact_id+ - [Integer] Contact id
-    # * +id+ - [Integer] User id
+    # contact_id:: (Integer) -- Contact id.
+    # id:: (Integer) -- User id.
     #
     # ==== Example
     #     @data = @mints_user.delete_contact_user(153, 9)
-    def delete_contact_users(contact_id, id)
+    def delete_contact_user(contact_id, id)
       return @client.raw("delete", "/crm/contacts/#{contact_id}/users/#{id}")
     end
 
@@ -262,7 +270,7 @@ module Mints
     # Get segments of a contact.
     #
     # ==== Parameters
-    # * +contact_id+ - [Integer] Contact id
+    # contact_id:: (Integer) -- Contact id.
     #
     # ==== Example
     #     @data = @mints_user.get_contact_segments(1)
@@ -275,7 +283,7 @@ module Mints
     # Get submissions of a contact.
     #
     # ==== Parameters
-    # * +contact_id+ - [Integer] Contact id
+    # contact_id:: (Integer) -- Contact id.
     #
     # ==== Example
     #     @data = @mints_user.get_contact_submissions(146)
@@ -288,7 +296,7 @@ module Mints
     # Get tags of a contact.
     #
     # ==== Parameters
-    # * +contact_id+ - [Integer] Contact id
+    # contact_id:: (Integer) -- Contact id.
     #
     # ==== Example
     #     @data = @mints_user.get_contact_tags(1)
@@ -301,7 +309,7 @@ module Mints
     # Get magic links of a contact.
     #
     # ==== Parameters
-    # * +contact_id+ - [Integer] Contact id
+    # contact_id:: (Integer) -- Contact id.
     #
     # ==== Example
     #     @data = @mints_user.get_contact_magic_links(150)
@@ -314,18 +322,16 @@ module Mints
     # Merge contacts.
     #
     # ==== Parameters
-    # * +id+ - [Integer] Contact id
-    # * +data+ - [Hash] Data to be submited. It contains id to be merged
+    # id:: (Integer) -- Contact id.
+    # data:: (Hash) -- Data to be submited. It contains ids to be merged.
     #
     # ==== Example
     #     data = {
-    #       "data": {
-    #         "mergeContactIds": [152]
-    #       }
+    #       "mergeContactIds": [152]
     #     }
-    #     @data = @mints_user.create_contact_merge(151, data)
-    def create_contact_merge(id, data)
-      return @client.raw("post", "/crm/contacts/#{id}/merge", nil, data)
+    #     @data = @mints_user.merge_contacts(151, data)
+    def merge_contacts(id, data)
+      return @client.raw("post", "/crm/contacts/#{id}/merge", nil, data_transform(data))
     end
 
     ##
@@ -333,21 +339,19 @@ module Mints
     # Send magic links to contacts.
     #
     # ==== Parameters
-    # * +data+ - [Hash] Data to be submited.
+    # data:: (Hash) -- Data to be submited.
     #
     # ==== Example
     #     data = { 
-    #       "data": {
-    #         "contacts": ["email_1@example.com", "email_2@example.com", "email_3@example.com"],
-    #         "templateId": 2,
-    #         "redirectUrl": "",
-    #         "lifeTime": 1440,
-    #         "maxVisits": 3
-    #       }
+    #       "contacts": ["email_1@example.com", "email_2@example.com", "email_3@example.com"],
+    #       "templateId": 2,
+    #       "redirectUrl": "",
+    #       "lifeTime": 1440,
+    #       "maxVisits": 3
     #     }
     #     @data = @mints_user.send_magic_links(data)
     def send_magic_links(data)
-      return @client.raw("post", "/crm/contacts/send-magic-link", nil, data)
+      return @client.raw("post", "/crm/contacts/send-magic-link", nil, data_transform(data))
     end
 
     ##
@@ -359,17 +363,15 @@ module Mints
     # Delete different contacts.
     #
     # ==== Parameters
-    # * +data+ - [Hash] Data to be submited.
+    # data:: (Hash) -- Data to be submited.
     #
     # ==== Example
     #     data = { 
-    #       "data": {
-    #         "ids": [ 154, 155 ]
-    #       } 
+    #       "ids": [ 67, 68, 69 ]
     #     }
     #     @data = @mints_user.delete_contacts(data)
-    def delete_contacts(data)
-      return @client.raw("delete", "/crm/contacts/delete", nil, data)
+    def delete_contacts(data) #TODO: ContactController.delete need a success output
+      return @client.raw("delete", "/crm/contacts/delete", nil, data_transform(data))
     end
 
     ##
@@ -381,7 +383,7 @@ module Mints
     # Get permits of a deal.
     #
     # ==== Parameters
-    # * +id+ - [Integer] Deal id.
+    # id:: (Integer) -- Deal id.
     #
     # ==== Example
     #     @data = @mints_user.get_deal_permits(7)
@@ -413,7 +415,8 @@ module Mints
     # Get a collection of deals.
     #
     # ==== Parameters
-    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    # use_post:: (Boolean) -- Variable to determine if the request is by 'post' or 'get' functions.
     #
     # ==== First Example
     #     @data = @mints_user.get_deals
@@ -421,16 +424,20 @@ module Mints
     # ==== Second Example
     #     options = { "fields": "id, title" }
     #     @data = @mints_user.get_deals(options)
-    def get_deals(options = nil)
-      return @client.raw("get", "/crm/deals", options)
+    #
+    # ==== Third Example
+    #     options = { "fields": "id, title" }
+    #     @data = @mints_user.get_deals(options, false)
+    def get_deals(options = nil, use_post = true)
+      return get_query_results("/crm/deals", options, use_post)
     end
 
     # === Get deal.
     # Get a deal info.
     #
     # ==== Parameters
-    # * +id+ - [Integer] Deal id.
-    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
+    # id:: (Integer) -- Deal id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
     #
     # ==== First Example
     #     @data = @mints_user.get_deal(1)
@@ -446,7 +453,7 @@ module Mints
     # Create a deal with data.
     #
     # ==== Parameters
-    # * +data+ - [Hash] Data to be submited.
+    # data:: (Hash) -- Data to be submited.
     #
     # ==== Example
     #     data = {
@@ -465,14 +472,16 @@ module Mints
     # Update a deal data.
     #
     # ==== Parameters
-    # * +id+ - [Integer] Deal id.
-    # * +data+ - [Hash] Data to be submited.
+    # id:: (Integer) -- Deal id.
+    # data:: (Hash) -- Data to be submited.
     #
     # ==== Example
-    #     data = { "title": "Dolor dolor ut." }
-    #     @data = @mints_user.update_deal(104, data.to_json)
+    #     data = {
+    #       "title": "New Deal Modified"
+    #     }
+    #     @data = @mints_user.update_deal(102, data)
     def update_deal(id, data)
-      return @client.raw("put", "/crm/deals/#{id}", nil, data)
+      return @client.raw("put", "/crm/deals/#{id}", nil, correct_json(data))
     end
 
     ##
@@ -493,7 +502,8 @@ module Mints
     # Get a collection of companies.
     #
     # ==== Parameters
-    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    # use_post:: (Boolean) -- Variable to determine if the request is by 'post' or 'get' functions.
     #
     # ==== First Example
     #     @data = @mints_user.get_companies
@@ -501,16 +511,20 @@ module Mints
     # ==== Second Example
     #     options = { "fields": "id, title", "sort": "-id" }
     #     @data = @mints_user.get_companies(options)
-    def get_companies(options = nil)
-      return @client.raw("get", "/crm/companies", options)
+    #
+    # ==== Third Example
+    #     options = { "fields": "id, title", "sort": "-id" }
+    #     @data = @mints_user.get_companies(options, false)
+    def get_companies(options = nil, use_post = true)
+      return get_query_results("/crm/companies", options, use_post)
     end
 
     # === Get company.
     # Get a company info.
     #
     # ==== Parameters
-    # * +id+ - [Integer] Company id.
-    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
+    # id:: (Integer) -- Company id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
     #
     # ==== First Example
     #     @data = @mints_user.get_company(21)
@@ -526,39 +540,39 @@ module Mints
     # Create a company with data.
     #
     # ==== Parameters
-    # * +data+ - [Hash] Data to be submited.
+    # data:: (Hash) -- Data to be submited.
     #
     # ==== Example
     #     data = {
-    #       "data": {
-    #         "title": "Company Title",
-    #         "alias": "Alias",
-    #         "website": "www.company.example.com",
-    #         "street1": "Company St",
-    #         "city": "Company City",
-    #         "region": "Company Region",
-    #         "postal_code": "12345",
-    #         "country_id": 144,
-    #         "tax_identifier": nil
-    #       }
+  #         "title": "Company Title",
+  #         "alias": "Alias",
+  #         "website": "www.company.example.com",
+  #         "street1": "Company St",
+  #         "city": "Company City",
+  #         "region": "Company Region",
+  #         "postal_code": "12345",
+  #         "country_id": 144,
+  #         "tax_identifier": nil
     #     }
     #     @data = @mints_user.create_company(data)
     def create_company(data)
-      return @client.raw("post", "/crm/companies/", nil, data)
+      return @client.raw("post", "/crm/companies/", nil, data_transform(data))
     end
 
     # === Update company.
     # Update a company info.
     #
     # ==== Parameters
-    # * +id+ - [Integer] Company id.
-    # * +data+ - [Hash] Data to be submited.
+    # id:: (Integer) -- Company id.
+    # data:: (Hash) -- Data to be submited.
     #
     # ==== Example
-    #     data = { "data": {"title": "Company title"}}
-    #     @data = @mints_user.update_company(28, data.to_json)
+    #     data = { 
+    #       "title": "Company Title Modified"
+    #     }
+    #     @data = @mints_user.update_company(23, data)
     def update_company(id, data)
-      return @client.raw("put", "/crm/companies/#{id}", nil, data)
+      return @client.raw("put", "/crm/companies/#{id}", nil, data_transform(data))
     end
 
     ##
@@ -569,17 +583,15 @@ module Mints
     # Delete a group of companies.
     #
     # ==== Parameters
-    # * +data+ - [Hash] Data to be submited.
+    # data:: (Hash) -- Data to be submited.
     #
     # ==== Example
     #     data = {
-    #       "data": {
-    #         "ids": [ 22, 23, 24 ]
-    #       }
+    #       "ids": [ 21, 22 ]
     #     }
     #     @data = @mints_user.delete_companies(data)
     def delete_companies(data)
-      return @client.raw("delete", "/crm/companies/delete", nil, data)
+      return @client.raw("delete", "/crm/companies/delete", nil, data_transform(data))
     end
 
     ##
@@ -590,7 +602,7 @@ module Mints
     # Get a collection of workflows.
     #
     # ==== Parameters
-    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
     #
     # ==== First Example
     #     @data = @mints_user.get_workflows
@@ -606,8 +618,8 @@ module Mints
     # Get a workflow.
     #
     # ==== Parameters
-    # * +id+ - [Integer] Workflow id.
-    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
+    # id:: (Integer) -- Workflow id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
     #
     # ==== First Example
     #     @data = @mints_user.get_workflow(1)
@@ -623,7 +635,7 @@ module Mints
     # Create a workflow with data.
     #
     # ==== Parameters
-    # * +data+ - [Hash] Data to be submited.
+    # data:: (Hash) -- Data to be submited.
     #
     # ==== Example
     #     data = {
@@ -639,16 +651,16 @@ module Mints
     # Update a workflow info.
     #
     # ==== Parameters
-    # * +id+ - [Integer] Workflow id.
-    # * +data+ - [Hash] Data to be submited.
+    # id:: (Integer) -- Workflow id.
+    # data:: (Hash) -- Data to be submited.
     #
     # ==== Example
     #     data = {
     #       "title": "New Workflow Modified"
     #     }
-    #     @data = @mints_user.update_workflow(11, data.to_json)
+    #     @data = @mints_user.update_workflow(7, data)
     def update_workflow(id, data)
-      return @client.raw("put", "/crm/workflows/#{id}", nil, data)
+      return @client.raw("put", "/crm/workflows/#{id}", nil, correct_json(data))
     end
 
     ##
@@ -659,7 +671,7 @@ module Mints
     # Get a collection of workflow step objects.
     #
     # ==== Parameters
-    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
     #
     # ==== First Example
     #     @data = @mints_user.get_step_objects
@@ -675,8 +687,8 @@ module Mints
     # Get a workflow step object info.
     #
     # ==== Parameters
-    # * +id+ - [Integer] Workflow step object id.
-    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
+    # id:: (Integer) -- Workflow step object id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
     #
     # ==== First Example
     #     @data = @mints_user.get_step_object(1)
@@ -692,51 +704,49 @@ module Mints
     # Create a workflow step object with data.
     #
     # ==== Parameters
-    # * +data+ - [Hash] Data to be submited.
+    # data:: (Hash) -- Data to be submited.
     #
     # ==== Example
     #     data = {
-    #       "data": {
-    #         "objectType": "deals",
-    #         "stepId": 9,
-    #         "objectId": "1"
-    #       }
+    #       "objectType": "deals",
+    #       "stepId": 9,
+    #       "objectId": 1
     #     }
     #     @data = @mints_user.create_step_object(data)
     def create_step_object(data)
-      return @client.raw("post", "/crm/step-objects/", nil, data)
+      return @client.raw("post", "/crm/step-objects/", nil, data_transform(data))
     end
 
     # === Update workflow step object.
     # Update a workflow step object info.
     #
     # ==== Parameters
-    # * +id+ - [Integer] Workflow step object id.
-    # * +data+ - [Hash] Data to be submited.
+    # id:: (Integer) -- Workflow step object id.
+    # data:: (Hash) -- Data to be submited.
     #
     # ==== Example
     #     data = {
     #       "stepId": 10
     #     }
-    #     @data = @mints_user.update_step_object(127, data.to_json)
+    #     @data = @mints_user.update_step_object(128, data)
     def update_step_object(id, data)
-      return @client.raw("put", "/crm/step-objects/#{id}", nil, data)
+      return @client.raw("put", "/crm/step-objects/#{id}", nil, correct_json(data))
     end
 
     # === Get workflow step object by object type.
     # Get a workflow step object info by an object type.
     #
     # ==== Parameters
-    # * +objectType+ - [String] Object type.
-    # * +objectId+ - [Integer] Workflow step object id.
-    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
+    # objectType:: (String) -- Object type.
+    # objectId:: (Integer) -- Workflow step object id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
     #
     # ==== First Example
     #     @data = @mints_user.get_step_object_by_object_type("deals", 1)
     #
     # ==== Second Example
     #     options = { "fields": "id, object_id" }
-    #     @mints_user.get_step_object_by_object_type("deals", 1, options)
+    #     @data = @mints_user.get_step_object_by_object_type("deals", 1, options)
     def get_step_object_by_object_type(objectType, objectId, options = nil)
       return @client.raw("get", "/crm/step-objects/#{objectType}/#{objectId}", options)
     end
@@ -749,7 +759,7 @@ module Mints
     # Create a workflow step with data.
     #
     # ==== Parameters
-    # * +data+ - [Hash] Data to be submited.
+    # data:: (Hash) -- Data to be submited.
     #
     # ==== Example
     #     data = { 
@@ -765,27 +775,24 @@ module Mints
     # Update a workflow step info.
     #
     # ==== Parameters
-    # * +id+ - [Integer] Workflow step id.
-    # * +data+ - [Hash] Data to be submited.
+    # id:: (Integer) -- Workflow step id.
+    # data:: (Hash) -- Data to be submited.
     #
     # ==== Example
-    #     data = { 
-    #       "stepTitle": "Step Title",
-    #       "workflowId": 1
-    #     }
-    #     @datos = @mints_user.create_workflow_step(data)
+    #     data = { "stepTitle": "Step Title Modified" }
+    #     @data = @mints_user.update_workflow_step(23, data)
     def update_workflow_step(id, data)
-      return @client.raw("put", "/crm/steps/#{id}", nil, data)
+      return @client.raw("put", "/crm/steps/#{id}", nil, correct_json(data))
     end
 
     # === Delete workflow step.
     # Delete a workflow step.
     #
     # ==== Parameters
-    # * +id+ - [Integer] Workflow step id.
+    # id:: (Integer) -- Workflow step id.
     #
     # ==== Example
-    #     @datos = @mints_user.delete_workflow_step(51)
+    #     @data = @mints_user.delete_workflow_step(51)
     def delete_workflow_step(id)
       return @client.raw("delete", "/crm/steps/#{id}")
     end
@@ -823,7 +830,7 @@ module Mints
     # Get segments attributes.
     #
     # ==== Parameters
-    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
     #
     # ==== Example
     #     options = { "object_type": "contacts" }
@@ -836,7 +843,7 @@ module Mints
     # Get segment group.
     #
     # ==== Parameters
-    # * +groupId+ - [String] Group's name
+    # groupId:: (String) -- Group's name.
     #
     # ==== Example
     #     @data = @mints_user.get_segment_group("users")
@@ -848,8 +855,8 @@ module Mints
     # Duplicate a segment.
     #
     # ==== Parameters
-    # * +id+ - [Integer] Segment id.
-    # * +data+ - [Hash] Data to be submited.
+    # id:: (Integer) -- Segment id.
+    # data:: (Hash) -- Data to be submited.
     #
     # ==== Example
     #     data = { 
@@ -864,7 +871,7 @@ module Mints
     # Get a collection of segments.
     #
     # ==== Parameters
-    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
     #
     # ==== First Example
     #     @data = @mints_user.get_segments
@@ -877,11 +884,11 @@ module Mints
     end
 
     # === Get segment.
-    # Get a segment.
+    # Get a segment info.
     #
     # ==== Parameters
-    # * +id+ - [Integer] Segment id.
-    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
+    # id:: (Integer) -- Segment id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
     #
     # ==== First Example
     #     @data = @mints_user.get_segment(1)
@@ -897,43 +904,39 @@ module Mints
     # Create a segment with data.
     #
     # ==== Parameters
-    # * +data+ - [Hash] Data to be submited.
+    # data:: (Hash) -- Data to be submited.
     #
     # ==== Example
     #     data = { 
-    #       "data": {
-    #         "title": "New segment",
-    #         "object_type": "deals"
-    #       }
+    #       "title": "New Segment",
+    #       "object_type": "deals"
     #     }
     #     @data = @mints_user.create_segment(data)
     def create_segment(data)
-      return @client.raw("post", "/crm/segments", nil, data)
+      return @client.raw("post", "/crm/segments", nil, data_transform(data))
     end
 
     # === Update segment.
     # Update a segment info.
     #
     # ==== Parameters
-    # * +id+ - [Integer] Segment id.
-    # * +data+ - [Hash] Data to be submited.
+    # id:: (Integer) -- Segment id.
+    # data:: (Hash) -- Data to be submited.
     #
     # ==== Example
     #     data = { 
-    #       "data": {
-    #         "title": "Tio McPato's pub. segment for tag 'ad-0'" 
-    #       }  
+    #       "title": "New Segment Modified"
     #     }
-    #     @data = @mints_user.update_segment(113, data.to_json)
+    #     @data = @mints_user.update_segment(118, data)
     def update_segment(id, data)
-      return @client.raw("put", "/crm/segments/#{id}", nil, data)
+      return @client.raw("put", "/crm/segments/#{id}", nil, data_transform(data))
     end
 
     # === Delete segment.
     # Delete a segment.
     #
     # ==== Parameters
-    # * +id+ - [Integer] Segment id.
+    # id:: (Integer) -- Segment id.
     #
     # ==== Example
     #     @mints_user.delete_segment(113)
@@ -950,7 +953,7 @@ module Mints
     # Get users info.
     #
     # ==== Parameters
-    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
     #
     # ==== First Example
     #     @data = @mints_user.get_users
@@ -970,26 +973,78 @@ module Mints
     # == Pages
     #
 
-    def get_pages_groups
+    ###
+    # === Get page groups.
+    # Get page groups.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_page_groups
+    def get_page_groups
       return @client.raw("get", "/content/pages/groups")
     end
 
+    # === Get pages.
+    # Get a collection of pages.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_pages
     def get_pages
       return @client.raw("get", "/content/pages")
     end
 
+    # === Get page.
+    # Get a page.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Page id.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_page(1)
     def get_page(id)
       return @client.raw("get", "/content/pages/#{id}")
     end
 
+    # === Create page.
+    # Create a page with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = { 
+    #       "title": "New Page",
+    #       "slug": "new-page-slug",
+    #       "description": "New page description"
+    #     }
+    #     @data = @mints_user.create_page(data)
     def create_page(data)
-      return @client.raw("post", "/content/pages", nil, data)
+      return @client.raw("post", "/content/pages", nil, data_transform(data))
     end
 
+    # === Update page.
+    # Update a page info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Page id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = { 
+    #       "title": "New Page Modified"
+    #     }
+    #     @data = @mints_user.update_page(5, data)
     def update_page(id, data)
-      return @client.raw("put", "/content/pages/#{id}", nil, data)
+      return @client.raw("put", "/content/pages/#{id}", nil, correct_json(data))
     end
 
+    # === Delete page.
+    # Delete a page.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Page id.
+    #
+    # ==== Example
+    #     @mints_user.@mints_user.delete_page(3)
     def delete_page(id)
       return @client.raw("delete", "/content/pages/#{id}")
     end
@@ -998,147 +1053,542 @@ module Mints
     # == Forms
     #
 
+    # === Get forms.
+    # Get a collection of forms.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_forms
+    #
+    # ==== Second Example
+    #     options = { "sort": "id", "fields": "title" }
+    #     @data = @mints_user.get_forms(options)
     def get_forms(options = nil)
       return @client.raw("get", "/content/forms", options)
     end
 
+    # === Get form.
+    # Get a form info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Form id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_form(9)
+    #
+    # ==== Second Example
+    #     options = { "sort": "id", "fields": "title" }
+    #     @data = @mints_user.get_form(2, options)
     def get_form(id, options = nil)
       return @client.raw("get", "/content/forms/#{id}", options)
     end
 
-    def duplicate_form(id)
-      return @client.raw("post", "/content/forms/#{id}/duplicate")
+    # === Publish form.
+    # Publish a form.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Form id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "data": {
+    #         "slug": "new-publish"
+    #       }
+    #     }
+    #     @data = @mints_user.publish_form(1, data.to_json)
+    def publish_form(id, data) #FIXME: Doesnt work, pending to review
+      return @client.raw("put", "/content/forms/#{id}/publish", nil, data)
     end
 
-    def get_form_support_data()
-      return @client.raw("get", "/content/forms/support-data")
+    # === Schedule form.
+    # Schedule a form in a specified date.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Form id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "data": {
+    #         "scheduled_at": "2021-09-06T20:29:16+00:00"
+    #       }
+    #     }
+    #     @data = @mints_user.schedule_form(1, data.to_json)
+    def schedule_form(id, data) #FIXME: Doesnt work, pending to review
+      return @client.raw("put", "/content/forms/#{id}/schedule", nil, data)
     end
 
-    def get_form_submissions(options = nil)
-      return @client.raw("get", "/content/forms/submissions", options)
-    end
-
-    def create_form(data)
-      return @client.raw("post", "/content/forms", nil, data)
-    end
-
-    def update_form(id, data)
-      return @client.raw("put", "/content/forms/#{id}", nil, data)
-    end
-
-    def delete_form(id)
-      return @client.raw("delete", "/content/forms/#{id}")
+    # === Revert published form.
+    # Revert a published form.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Form id.
+    #
+    # ==== Example
+    #     @data = @mints_user.revert_published_form(1)
+    def revert_published_form(id) #TODO: Not tested
+      return @client.raw("get", "/content/forms/#{id}/revert-published-data")
     end
 
     ##
     # == Conversations
     #
 
+    ###
+    # === Get conversations.
+    # Get a collection of conversations.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_conversations
+    #
+    # ==== Second Example
+    #     options = { "fields": "title" }
+    #     @data = @mints_user.get_conversations(options)
     def get_conversations(options = nil)
       return @client.raw("get", "/content/conversations", options)
     end
 
+    # === Get conversation.
+    # Get a conversation info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Conversation id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_conversation(1)
+    #
+    # ==== Second Example
+    #     options = { "fields": "title" }
+    #     @data = @mints_user.get_conversation(1, options)
     def get_conversation(id, options = nil)
       return @client.raw("get", "/content/conversations/#{id}", options)
     end
 
+    # === Create conversation.
+    # Create a conversation with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "title": "New Conversation"
+    #     }
+    #     @data = @mints_user.create_conversation(data)
     def create_conversation(data)
-      return @client.raw("post", "/content/conversations", nil, data)
+      return @client.raw("post", "/content/conversations", nil, data_transform(data))
     end
 
+    # === Update conversation.
+    # Update a conversation info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Conversation id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "title": "New Conversation Modified"
+    #     }
+    #     @data = @mints_user.update_conversation(13, data)
     def update_conversation(id, data)
-      return @client.raw("put", "/content/conversations/#{id}", nil, data)
+      return @client.raw("put", "/content/conversations/#{id}", nil, data_transform(data))
     end
 
+    # === Delete conversation.
+    # Delete a conversation.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Conversation id.
+    #
+    # ==== Example
+    #     @data = @mints_user.delete_conversation(11)
     def delete_conversation(id)
       return @client.raw("delete", "/content/conversations/#{id}")
     end
     
+    # === Update conversation status.
+    # Update a conversation status.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Conversation id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "status": "read"
+    #     }
+    #     @data = @mints_user.update_conversation_status(13, data)
     def update_conversation_status(id, data)
-      return @client.raw("put", "/content/conversations/#{id}/status", nil, data)
+      return @client.raw("put", "/content/conversations/#{id}/status", nil, data_transform(data))
     end
 
+    # === Get conversation participants.
+    # Get participants in a conversation.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Conversation id.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_conversation_participants(1)
     def get_conversation_participants(id)
       return @client.raw("get", "/content/conversations/#{id}/participants")
     end
 
+    # === Attach user in conversation.
+    # Attach an user in a conversation.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Conversation id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "user_id": 2
+    #     }
+    #     @data = @mints_user.attach_user_in_conversation(13, data)
     def attach_user_in_conversation(id, data)
-      return @client.raw("post", "/content/conversations/#{id}/attach-user", nil, data)
+      return @client.raw("post", "/content/conversations/#{id}/attach-user", nil, data_transform(data))
     end
 
+    # === Detach user in conversation.
+    # Detach an user in a conversation.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Conversation id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "user_id": 2
+    #     }
+    #     @data = @mints_user.detach_user_in_conversation(13, data)
     def detach_user_in_conversation(id, data)
-      return @client.raw("post", "/content/conversations/#{id}/detach-user", nil, data)
+      return @client.raw("post", "/content/conversations/#{id}/detach-user", nil, data_transform(data))
     end
 
+    # === Attach contact in conversation.
+    # Attach a contact in a conversation.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Conversation id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "contact_id": 2
+    #     }
+    #     @data = @mints_user.attach_contact_in_conversation(1, data)
     def attach_contact_in_conversation(id, data)
-      return @client.raw("post", "/content/conversations/#{id}/attach-contact", nil, data)
+      return @client.raw("post", "/content/conversations/#{id}/attach-contact", nil, data_transform(data))
     end
 
+    # === Detach contact in conversation.
+    # Detach a contact in a conversation.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Contact id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "contact_id": 2
+    #     }
+    #     @data = @mints_user.detach_contact_in_conversation(1, data)
     def detach_contact_in_conversation(id, data)
-      return @client.raw("post", "/content/conversations/#{id}/detach-contact", nil, data)
+      return @client.raw("post", "/content/conversations/#{id}/detach-contact", nil, data_transform(data))
     end
 
     ##
     # == Messages
     #
     
+    ###
+    # === Get messages.
+    # Get a collection of messages.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_messages
+    #
+    # ==== Second Example
+    #     options = { "fields": "value" }
+    #     @data = @mints_user.get_messages(options)
     def get_messages(options = nil)
       return @client.raw("get", "/content/messages", options)
     end
 
+    # === Get message.
+    # Get a message info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Message id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_message(1)
+    #
+    # ==== Second Example
+    #     options = { "fields": "value" }
+    #     @data = @mints_user.get_message(1, options)
     def get_message(id, options = nil)
       return @client.raw("get", "/content/messages/#{id}", options)
     end
 
+    # === Create message.
+    # Create a message with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "type": "text",
+    #       "conversation_id": 1,
+    #       "sender_type": "User",
+    #       "sender_id": 1,
+    #       "value": {
+    #         "text": "Hello"
+    #       }
+    #     }
+    #     @data = @mints_user.create_message(data)
     def create_message(data)
-      return @client.raw("post", "/content/messages", nil, data)
+      return @client.raw("post", "/content/messages", nil, data_transform(data))
     end
     
+    # === Update message.
+    # Update a message info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Message id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "value": {
+    #         "text": "Hello World!"
+    #       }
+    #     }
+    #     @data = @mints_user.update_message(102, data)
     def update_message(id, data)
-      return @client.raw("put", "/content/messages/#{id}", nil, data)
+      return @client.raw("put", "/content/messages/#{id}", nil, data_transform(data))
     end
     
+    # === Delete message.
+    # Delete a message.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Message id.
+    #
+    # ==== Example
+    #     @data = @mints_user.delete_message(101)
     def delete_message(id)
       return @client.raw("delete", "/content/messages/#{id}")
+    end
+
+    ##
+    # == Forms
+    #
+
+    # === Duplicate form.
+    # Duplicate a form.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Form id.
+    #
+    # ==== Example
+    #     @data = @mints_user.duplicate_form(3)
+    def duplicate_form(id)
+      return @client.raw("post", "/content/forms/#{id}/duplicate")
+    end
+
+    # === Get form support data.
+    # Get form support data.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_form_support_data
+    def get_form_support_data
+      return @client.raw("get", "/content/forms/support-data")
+    end
+
+    # === Get form submissions.
+    # Get form submissions.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_form_submissions
+    #
+    # ==== Second Example
+    #     options = { "fields": "id" }
+    #     @data = @mints_user.get_form_submissions(options)
+    def get_form_submissions(options = nil)
+      return @client.raw("get", "/content/forms/submissions", options)
+    end
+
+    # === Create form.
+    # Create a form with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "title": "New Form",
+    #       "slug": "new-form-slug"
+    #     }
+    #     @data = @mints_user.create_form(data)
+    def create_form(data)
+      return @client.raw("post", "/content/forms", nil, data_transform(data))
+    end
+
+    # === Update form.
+    # Update a form info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Form id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "title": "New Form Modified",
+    #       "slug": "new-form-slug"
+    #     }
+    #     @data = @mints_user.update_form(3, data)
+    def update_form(id, data)
+      return @client.raw("put", "/content/forms/#{id}", nil, data_transform(data))
+    end
+
+    # === Delete form.
+    # Delete a form.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Form id.
+    #
+    # ==== Example
+    #     @data = @mints_user.delete_form(9)
+    def delete_form(id)
+      return @client.raw("delete", "/content/forms/#{id}")
     end
 
     ##
     # == Content templates
     #
 
+    # === Get content template instances.
+    # Get instances of a content template.
+    #
+    # ==== Parameters
+    # templateId:: (Integer) -- Template id.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_content_template_instances(1)
     def get_content_template_instances(templateId)
       return @client.raw("get", "/content/templates/#{templateId}/instances")
     end
 
+    # === Duplicate content template.
+    # Duplicate a content template.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Content template id.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_content_template(1)
     def duplicate_content_template(id)
       return @client.raw("post", "/content/templates/#{id}/duplicate/")
     end
 
     # === Get content templates.
-    # Get a collection of content templates
+    # Get a collection of content templates.
     #
     # ==== Parameters
-    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_content_templates
+    #
+    # ==== Second Example
+    #     options = { "sort": "title" }
+    #     @data = @mints_user.get_content_templates(options)
     def get_content_templates(options = nil)
       return @client.raw("get", "/content/templates", options)
     end
 
+    # === Get content template.
+    # Get a content template.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Content template id.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_content_template(1)
     def get_content_template(id)
       return @client.raw("get", "/content/templates/#{id}")
     end
 
+    # === Create content template.
+    # Create a content template with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "template": {
+    #         "title": "New Content Template",
+    #         "slug": "new-content-template-slug",
+    #         "description": "New Content Template Description"
+    #       }
+    #     }
+    #     @data = @mints_user.create_content_template(data)
     def create_content_template(data)
-      #FIXME: Method doesn't work, controller cannot get template info from request variable.
+      #TODO: Inform ContentTemplateController.store method has been modified
       return @client.raw("post", "/content/templates", nil, data)
     end
 
+    # === Update content template.
+    # Update a content template info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Content template id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "template": {
+    #         "title": "New Content Template Modified",
+    #         "slug": "new-content-template-slug",
+    #         "description": "New Content Template Description"
+    #       }
+    #     }
+    #     @data = @mints_user.update_content_template(7, data)
     def update_content_template(id, data)
-       #FIXME: Method doesn't work, controller cannot get template info from request variable.
-      return @client.raw("put", "/content/templates/#{id}", nil, data)
+       #TODO: Inform ContentTemplateController.update method has been modified
+      return @client.raw("put", "/content/templates/#{id}", nil, correct_json(data))
     end
 
+    # === Delete content template.
+    # Delete a content template.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Content template id.
+    #
+    # ==== Example
+    #     @data = @mints_user.delete_content_template(1)
     def delete_content_template(id)
-      #TODO: NOT TESTED
+      #TODO: Inform ContentTemplateController.destroy method has been modified
       return @client.raw("delete", "/content/templates/#{id}")
     end
 
@@ -1147,42 +1597,143 @@ module Mints
     #
 
     # === Get content instances.
-    # Get a collection of content instances
+    # Get a collection of content instances.
     #
     # ==== Parameters
-    # * +options+ - [Hash] List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_content_instances
+    #
+    # ==== Second Example
+    #     options = { "fields": "id" }
+    #     @data = @mints_user.get_content_instances(options)
     def get_content_instances(options = nil)
       return @client.raw("get", "/content/instances", options)
     end
 
+    # === Duplicate content instance.
+    # Duplicate a content instance.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Content instance id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = { 
+    #       "options": [] 
+    #     }
+    #     @data = @mints_user.duplicate_content_instance(1, data)
     def duplicate_content_instance(id, data)
       return @client.raw("post", "/content/instances/#{id}/duplicate", nil, data)
     end
     
+    # === Get content instance.
+    # Get a content instance info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Content instance id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_content_instance(1)
+    #
+    # ==== Second Example
+    #     options = { "fields": "id, title" }
+    #     @data = @mints_user.get_content_instance(1, options)
     def get_content_instance(id, options = nil)
       return @client.raw("get", "/content/instances/#{id}", options)
     end
 
+    # === Publish content instance.
+    # Publish a content instance.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Content instance id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "title": "New publish",
+    #       "slug": "new-publish",
+    #       "content_template_id": 1
+    #     }
+    #     @data = @mints_user.publish_content_instance(2, data)
     def publish_content_instance(id, data)
-      return @client.raw("put", "/content/instances/#{id}/publish", nil, data)
+      return @client.raw("put", "/content/instances/#{id}/publish", nil, data_transform(data))
     end
 
-    def schedule_content_instance(id, data) #FIXME: Undefined index: scheduled_at
-      return @client.raw("put", "/content/instances/#{id}/schedule", nil, data)
+    # === Schedule content instance.
+    # Schedule a content instance in a specified date.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Content instance id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = { 
+    #       "scheduled_at": "2021-09-06T20:29:16+00:00"
+    #     }
+    #     @data = @mints_user.schedule_content_instance(1, data)
+    def schedule_content_instance(id, data)
+      return @client.raw("put", "/content/instances/#{id}/schedule", nil, data_transform(data))
     end
 
-    def revert_published_data_from_content_instance(id)
+    # === Revert published content instance.
+    # Revert a published content instance.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Content instance id.
+    #
+    # ==== Example
+    #     @data = @mints_user.revert_published_content_instance(1)
+    def revert_published_content_instance(id)
       return @client.raw("get", "/content/instances/#{id}/revert-published-data")
     end
 
+    # === Create content instance.
+    # Create a content instance with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "title": "New Content Instance",
+    #       "content_template_id": 1,
+    #       "slug": "new-content-instance-slug"
+    #     }
+    #     @data = @mints_user.create_content_instance(data)
     def create_content_instance(data)
-      return @client.raw("post", "/content/instances",  nil, data)
+      return @client.raw("post", "/content/instances",  nil, data_transform(data))
     end
 
+    # === Update content instance.
+    # Update a content instance info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Content instance id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "title": "New Content Instance Modified",
+    #       "content_template_id": 1,
+    #       "slug": "new-content-instance-slug"
+    #     }
+    #     @data = @mints_user.update_content_instance(18, data)
     def update_content_instance(id, data)
-      return @client.raw("put", "/content/instances/#{id}", nil, data)
+      return @client.raw("put", "/content/instances/#{id}", nil, data_transform(data))
     end
 
+    # === Delete content instance.
+    # Delete a content instance.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Content instance id.
+    #
+    # ==== Example
+    #     @data = @mints_user.delete_content_instance(20)
     def delete_content_instance(id)
       return @client.raw("delete", "/content/instances/#{id}")
     end
@@ -1191,18 +1742,52 @@ module Mints
     # == OTHER
     #
 
+    # === Get authors.
+    # Get authors.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_authors
     def get_authors
       return @client.raw("get", "/content/authors")
     end
 
+    # === Get keywords.
+    # Get a collection of keywords.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_keywords
+    #
+    # ==== Second Example
+    #     options = { "fields": "title" }
+    #     @data = @mints_user.get_keywords(options)
     def get_keywords(options = nil)
       return @client.raw("get", "/content/keywords", options)
     end
 
+    # === Get public images url.
+    # Get public images url.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_public_images_url
     def get_public_images_url
       return @client.raw("get", "/content/public-images-url")
     end
 
+    # === Get stages.
+    # Get a collection of stages.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_stages
+    #
+    # ==== Second Example
+    #     options = { "fields": "title" }
+    #     @data = @mints_user.get_stages(options)
     def get_stages(options = nil)
       return @client.raw("get", "/content/stages", options)
     end
@@ -1211,22 +1796,61 @@ module Mints
     # == dam
     #
 
+    # === Get dam loadtree.
+    # Get dam loadtree.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_dam_loadtree
     def get_dam_loadtree
       return @client.raw("get", "/content/dam/loadtree")
     end
 
+    # === Get dam asset locations.
+    # Get an asset locations in dam.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_dam_asset_locations(options)
     def get_dam_asset_locations(options)
       return @client.raw("get", "/content/dam/asset-locations", options)
     end
     
-    def paste_dam(data) #FIXME: Invalid argument supplied for foreach()
+    def paste_dam(data) #FIXME: Controller detect object array like a single array.
       return @client.raw("post", "/content/dam/paste", nil, data)
     end
 
-    def rename_dam(data) #TODO: No validate
+    # === Rename dam.
+    # Rename folder or asset in dam.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "itemType": "asset",
+    #       "id": 21,
+    #       "title": "accusantium",
+    #       "description": "Ea cupiditate",
+    #       "slug": "accusantium"
+    #     }
+    #     @data = @mints_user.rename_dam(data)
+    def rename_dam(data)
       return @client.raw("post", "/content/dam/rename", nil, data)
     end
 
+    # === Search dam.
+    # Search folder or asset in dam.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "searchFor": "accusantium"
+    #     }
+    #     @data = @mints_user.search_dam(data)
     def search_dam(data)
       return @client.raw("post", "/content/dam/search", nil, data)
     end
@@ -1239,6 +1863,18 @@ module Mints
       return @client.raw("post", "/content/dam/delete", nil, data)
     end
 
+    # === Create dam folder.
+    # Create a folder in dam.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "folder_name": "new folder",
+    #       "slug": "newfolder"
+    #     }
+    #     @data = @mints_user.create_dam_folder(data)
     def create_dam_folder(data)
       return @client.raw("post", "/content/folders/create", nil, data)
     end
@@ -1247,15 +1883,32 @@ module Mints
     # == Assets
     #
 
-    def create_asset(data) #TODO: ask for renaming to 'upload asset'
+    def upload_asset(data)
       return @client.raw("post", "/content/assets/upload", nil, data)
     end
 
+    # === Get asset link info.
+    # Get information of an asset by url.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = { "link": "https://www.example.com/img/img.jpg" }
+    #     @data = @mints_user.get_asset_link_info(data)
     def get_asset_link_info(data)
       return @client.raw("post", "/content/assets/getLinkInfo", nil, data)
     end
 
-    def download_asset(id) #FIXME: File not found at path
+    # === Download asset.
+    # Get information of an asset.
+    #
+    # ==== Parameters
+    # * +id+ - [Integer] Asset id.
+    #
+    # ==== Example
+    #     @data = @mints_user.download_asset(2)
+    def download_asset(id) #FIXME: File not found at path, error in result but method works
       return @client.raw("get", "/content/assets/download/#{id}")
     end
 
@@ -1325,138 +1978,453 @@ module Mints
     # == Story Template
     #
 
+    # === Get support data of story template.
+    # Get support data used in a story template.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Story template id.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_support_data_of_story_template(1)
     def get_support_data_of_story_template(id)
       return @client.raw("get", "/content/story-templates/support-data/stories/#{id}")
     end
 
+    # === Get support data of story templates.
+    # Get support data used in story templates.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_support_data_of_story_templates
     def get_support_data_of_story_templates
       return @client.raw("get", "/content/story-templates/support-data")
     end
 
+    # === Get story templates.
+    # Get a collection of story templates.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_story_templates
+    #
+    # ==== Second Example
+    #     options = {
+    #       "fields": "id, title"
+    #     }
+    #     @data = @mints_user.get_story_templates(options)
     def get_story_templates(options = nil)
       return @client.raw("get", "/content/story-templates", options)
     end
 
+    # === Get story template.
+    # Get a story template info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Story template id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_story_template(2)
+    #
+    # ==== Second Example
+    #     options = {
+    #       "fields": "title"
+    #     }
+    #     @data = @mints_user.get_story_template(1, options)
     def get_story_template(id, options = nil)
       return @client.raw("get", "/content/story-templates/#{id}", options)
     end
 
+    # === Create story template.
+    # Create a story template with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "title": "New Story Template",
+    #       "slug": "new-story-template-slug"
+    #     }
+    #     @data = @mints_user.create_story_template(data)
     def create_story_template(data)
-      return @client.raw("post", "/content/story-templates", nil, data)
+      return @client.raw("post", "/content/story-templates", nil, data_transform(data))
     end
 
-    def update_story_template(id, data) #FIXME: InternalServerError
-      return @client.raw("put", "/content/story-templates/#{id}", nil, data)
+    # === Update story template.
+    # Update a story template info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Story template id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "title": "New Story Template Modified"
+    #     }
+    #     @data = @mints_user.update_story_template(3, data)
+    def update_story_template(id, data)
+      return @client.raw("put", "/content/story-templates/#{id}", nil, data_transform(data))
     end
 
     ##
     # == Story
     #
 
-    def publish_story(id, data) #FIXME: Invalid argument supplied for foreach()
-      return @client.raw("put", "/content/stories/#{id}/publish", nil, data)
+    # === Publish story.
+    # Publish a story.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Story id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "scheduled_at": "2021-09-06T20:29:16+00:00"
+    #     }
+    #     @data = @mints_user.publish_story(2, data)
+    def publish_story(id, data)
+      return @client.raw("put", "/content/stories/#{id}/publish", nil, data_transform(data))
     end
 
-    def schedule_story(id, data) #FIXME: Invalid argument supplied for foreach()
-      return @client.raw("put", "/content/stories/#{id}/schedule", nil, data)
+    # === Schedule story.
+    # Schedule a story in a specified date.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Story id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "scheduled_at": "2021-09-06T20:29:16+00:00"
+    #     }
+    #     @data = @mints_user.schedule_story(1, data)
+    def schedule_story(id, data)
+      return @client.raw("put", "/content/stories/#{id}/schedule", nil, data_transform(data))
     end
 
+    # === Revert published story.
+    # Revert a published story.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Story id.
+    #
+    # ==== Example
+    #     @data = @mints_user.revert_published_story(1)
     def revert_published_story(id)
       return @client.raw("get", "/content/stories/#{id}/revert-published-data")
     end
 
-    def get_story_support_data
+    # === Get stories support data.
+    # Get support data used in stories.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_stories_support_data
+    def get_stories_support_data
       return @client.raw("get", "/content/stories/support-data")
     end
 
+    # === Duplicate story.
+    # Duplicate a story.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Story id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "options": [] 
+    #     }
+    #     @data = @mints_user.duplicate_story(1, data)
     def duplicate_story(id, data)
       return @client.raw("post", "/content/stories/#{id}/duplicate", nil, data)
     end
 
+    # === Get stories.
+    # Get a collection of stories.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    # use_post:: (Boolean) -- Variable to determine if the request is by 'post' or 'get' functions.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_stories
+    #
+    # ==== Second Example
+    #     options = {
+    #       "fields": "id, title"
+    #     }
+    #     @data = @mints_user.get_stories(options)
+    #
+    # ==== Third Example
+    #     options = {
+    #       "fields": "id, title"
+    #     }
+    #     @data = @mints_user.get_stories(options, true)
     def get_stories(options = nil, use_post = true)
       return get_query_results("/content/stories", options, use_post)
     end
 
+    # === Get story.
+    # Get a story info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Story id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_story(1)
+    #
+    # ==== Second Example
+    #     options = {
+    #       "fields": "id, title"
+    #     }
+    #     @data = @mints_user.get_story(1, options)
     def get_story(id, options = nil)
       return @client.raw("get", "/content/stories/#{id}", options)
     end
 
+    # === Create story.
+    # Create a story with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "title": "New Story",
+    #       "slug": "new-story",
+    #       "social_metadata": "social metadata"
+    #     }
+    #     @data = @mints_user.create_story(data)
     def create_story(data)
-      return @client.raw("post", "/content/stories", nil, data)
+      return @client.raw("post", "/content/stories", nil, data_transform(data))
     end
 
-    def update_story(id, data) #FIXME: InternalServerError
-      return @client.raw("put", "/content/stories/#{id}", nil, data)
+    # === Update story.
+    # Update a story info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Story id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "title": "New Story Modified",
+    #       "slug": "new-story"
+    #     }
+    #     @data = @mints_user.update_story(5, data)
+    def update_story(id, data)
+      return @client.raw("put", "/content/stories/#{id}", nil, data_transform(data))
     end
 
+    # === Delete story.
+    # Delete a story.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Story id.
+    #
+    # ==== Example
+    #     @data = @mints_user.delete_story(6)
     def delete_story(id)
       return @client.raw("delete", "/content/stories/#{id}")
     end
 
     ##
-    # == Email Template
+    # == Message Template
     #
 
-    def get_content_pages_from_email_template(id) #FIXME: ContentController doesnt have getContentPage method
-      return @client.raw("get", "/content/email-templates/content-pages/#{id}")
+    # === Get variables of content page from message template.
+    # Get variables used in a specified content page located in message templates. 
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Content page id.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_variables_of_content_page_from_message_templates(2)
+    def get_variables_of_content_page_from_message_templates(id)
+      return @client.raw("get", "/content/message-templates/content-pages/#{id}/variables")
     end
 
-    def get_variables_of_content_pages_from_email_template(id)
-      return @client.raw("get", "/content/email-templates/content-pages/#{id}/variables")
-    end
-
+    # === Get recipient variables.
+    # Get recipient variables in message templates. 
+    #
+    # ==== Example
+    #     @data = @mints_user.get_recipient_variables
     def get_recipient_variables
-      return @client.raw("get", "/content/email-templates/recipient-variables")
+      return @client.raw("get", "/content/message-templates/recipient-variables")
     end
     
+    # === Get driver templates.
+    # Get driver templates in message templates. 
+    #
+    # ==== Example
+    #     @data = @mints_user.get_driver_templates
     def get_driver_templates
       return @client.raw("get", "/content/email-templates/driver/templates")
     end
 
-    def preview_email_template(data)
-      return @client.raw("post", "/content/email-templates/preview", nil, data)
+    # === Preview message template.
+    # Preview an message template based in data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     variables = {
+    #       "variable_1": 1,
+    #       "variable_2": "City"
+    #     }
+    #     data = {
+    #       "body": "Message Template {{ variable_2 }}",
+    #       "variables": variables.to_json
+    #     }
+    #     @data = @mints_user.preview_message_template(data)
+    def preview_message_template(data)
+      return @client.raw("post", "/content/message-templates/preview", nil, data_transform(data))
     end
 
-    def send_email_template(data)
-      return @client.raw("post", "/content/email-templates/send", nil, data)
+    # === Send Message Template.
+    # Send an message template to different contacts.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "contacts": [
+    #         { "id": 10 }
+    #       ],
+    #       "emailTemplateId": 1,
+    #       "resend": false
+    #     }
+    #     @data = @mints_user.send_message_template(data)
+    def send_message_template(data)
+      return @client.raw("post", "/content/message-templates/send", nil, data_transform(data))
     end
 
-    def duplicate_email_template(id, data)
-      return @client.raw("post", "/content/email-templates/#{id}/duplicate", nil, data)
+    # === Duplicate Message Template.
+    # Duplicate an message template.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Message template id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    def duplicate_message_template(id, data) #FIXME: Error in duplicating
+      return @client.raw("post", "/content/message-templates/#{id}/duplicate", nil, data)
     end
 
-    def get_email_templates(options = nil)
-      return @client.raw("get", "/content/email-templates", options)
+    # === Get message templates.
+    # Get a collection of message templates.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_message_templates
+    #
+    # ==== Second Example
+    #     options = { "fields": "id" }
+    #     @data = @mints_user.get_message_templates(options)
+    def get_message_templates(options = nil)
+      return @client.raw("get", "/content/message-templates", options)
     end
 
-    def get_email_template(id, options = nil)
-      return @client.raw("get", "/content/email-templates/#{id}", options)
+    # === Get message template.
+    # Get an message template info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Message template id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_message_template(1)
+    #
+    # ==== Second Example
+    #     options = { "fields": "id" }
+    #     @data = @mints_user.get_message_template(1, options)
+    def get_message_template(id, options = nil)
+      return @client.raw("get", "/content/message-templates/#{id}", options)
     end
 
-    def create_email_template(data)
-      return @client.raw("post", "/content/email-templates", nil, data)
+    # === Create message template.
+    # Create an message template with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "title": "New Message Template",
+    #       "slug": "new-email-template"
+    #     }
+    #     @data = @mints_user.create_message_template(data)
+    def create_message_template(data)
+      return @client.raw("post", "/content/message-templates", nil, data_transform(data))
     end
 
-    def update_email_template(id, data)
-      return @client.raw("put", "/content/email-templates/#{id}", nil, data)
+    # === Update message template.
+    # Update an message template info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Message template id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "data": {
+    #         "title": "New Message Template Modified"
+    #       }
+    #     }
+    #     @data = @mints_user.update_message_template(4, data)
+    def update_message_template(id, data) #FIXME: Method need 'data' with data_transform method, research why
+      return @client.raw("put", "/content/message-templates/#{id}", nil, data_transform(data))
     end
 
-    def delete_email_template(id)
-      return @client.raw("delete", "/content/email-templates/#{id}")
+    # === Delete message template.
+    # Delete an message template.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Message template id.
+    #
+    # ==== Example
+    #     @data = @mints_user.delete_message_template(2)
+    def delete_message_template(id)
+      return @client.raw("delete", "/content/message-templates/#{id}")
     end
 
     ##
     # == Keywords
     #
 
+    # === Get keyword.
+    # Get a keyword.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Keyword id.
+    #
     def get_keyword(id)
       return @client.raw("get", "/content/keywords/#{id}")
     end
 
+    # === Create keyword.
+    # Create a keyword with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
     def create_keyword(data)
       return @client.raw("post", "/content/keywords", nil, data)
     end
 
+    # === Update keyword.
+    # Update a keyword info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Keyword id.
+    # data:: (Hash) -- Data to be submited.
+    #
     def update_keyword(id, data) #FIXME: Method doesn't work, controller cannot get keyword info from request variable.
       return @client.raw("put", "/content/keywords/#{id}", nil, data)
     end
@@ -1465,14 +2433,33 @@ module Mints
     # == Authors
     #
 
+    # === Get author.
+    # Get an author.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Author id.
+    #
     def get_author(id)
       return @client.raw("get", "/content/authors/#{id}")
     end
 
+    # === Create author.
+    # Create an author with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
     def create_author(data)
       return @client.raw("post", "/content/authors", nil, data)
     end
 
+    # === Update author.
+    # Update an author info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Author id.
+    # data:: (Hash) -- Data to be submited.
+    #
     def update_author(id, data) #FIXME: Method doesn't work, controller cannot get author data from request variable.
       return @client.raw("put", "/content/authors/#{id}", nil, data)
     end
@@ -1481,14 +2468,33 @@ module Mints
     # == Stages
     #
 
+    # === Get stage.
+    # Get a stage.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Stage id.
+    #
     def get_stage(id)
       return @client.raw("get", "/content/stages/#{id}")
     end
 
-    def create_stage(data) #FIXME: Cannot insert data into database successfully
+    # === Create stage.
+    # Create a stage with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    def create_stage(data) #FIXME: Cannot insert data into database successfully.
       return @client.raw("post", "/content/stages", nil, data)
     end
 
+    # === Update stage.
+    # Update a stage info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Stage id.
+    # data:: (Hash) -- Data to be submited.
+    #
     def update_stage(id, data) #FIXME: Method doesn't work, controller cannot get stage data from request variable.
       return @client.raw("put", "/content/stages/#{id}", nil, data)
     end
@@ -1501,34 +2507,85 @@ module Mints
     # == Automation
     #
 
+    # === Get automations.
+    # Get a collection of automations.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
     def get_automations(options = nil)
       return @client.raw("get", "/marketing/automation", options)
     end
 
+    # === Get automation.
+    # Get an automation info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Automation id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
     def get_automation(id, options = nil)
       return @client.raw("get", "/marketing/automation/#{id}", options)
     end
 
+    # === Create automation.
+    # Create an automation with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
     def create_automation(data)
       return @client.raw("post", "/marketing/automation/", nil, data)
     end
 
+    # === Update automation.
+    # Update an automation info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Automation id.
+    # data:: (Hash) -- Data to be submited.
+    #
     def update_automation(id, data) #FIXME: Method doesn't work, controller cannot get automation data from request variable.
       return @client.raw("put", "/marketing/automation/#{id}", nil, data)
     end
 
+    # === Delete automation.
+    # Delete an automation.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Automation id.
+    #
     def delete_automation(id)
       return @client.raw("delete", "/marketing/automation/#{id}")
     end
 
+    # === Get automation executions.
+    # Get executions of an automation.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Automation id.
+    #
     def get_automation_executions(id)
       return @client.raw("get", "/marketing/automation/#{id}/executions")
     end
     
+    # === Reset automation.
+    # Reset an automation.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Automation id.
+    #
     def reset_automation(id)
       return @client.raw("post", "/marketing/automation/#{id}/reset")
     end
     
+    # === Duplicate automation.
+    # Duplicate an automation.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Automation id.
+    # data:: (Hash) -- Data to be submited.
+    #
     def duplicate_automation(id, data)
       return @client.raw("post", "/marketing/automation/#{id}/duplicate", nil, data)
     end
@@ -1541,18 +2598,44 @@ module Mints
     # == Price List
     #
 
+    # === Get price lists.
+    # Get a collection of price lists.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
     def get_price_lists(options = nil)
       return @client.raw("get", "/ecommerce/price-list", options)
     end
 
+    # === Get price list.
+    # Get a price list info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Price list id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
     def get_price_list(id, options = nil)
       return @client.raw("get", "/ecommerce/price-list/#{id}", options)
     end
 
+    # === Create price list.
+    # Create a price list with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
     def create_price_list(data)
       return @client.raw("post", "/ecommerce/price-list", nil, data)
     end
 
+    # === Update price list.
+    # Update a price list info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Price list id.
+    # data:: (Hash) -- Data to be submited.
+    #
     def update_price_list(id, data)
       return @client.raw("put", "/ecommerce/price-list/#{id}", nil, data)
     end
@@ -1561,46 +2644,118 @@ module Mints
     # == Product
     #
 
+    # === Update product variations config.
+    # Update config of product variations of a product.
+    #
+    # ==== Parameters
+    # productId:: (Integer) -- Product id.
+    # data:: (Hash) -- Data to be submited.
+    #
     def update_product_variations_config(productId, data) #TODO: Research use
       return @client.raw("post", "/ecommerce/products/update-variations-config/#{productId}", nil, data)
     end
 
+    # === Get product support data.
+    # Get support data used in products.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_product_support_data
     def get_product_support_data
       return @client.raw("get", "/ecommerce/products/support-data")
     end
 
+    # === Delete product.
+    # Delete a product.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Product id.
+    #
     def delete_product(id)
       return @client.raw("delete", "/ecommerce/products/#{id}")
     end
     
+    # === Publish product.
+    # Publish a product.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Product id.
+    # data:: (Hash) -- Data to be submited.
+    #
     def publish_product(id, data) #TODO: Research data in publish
       return @client.raw("put", "/ecommerce/products/#{id}/publish", nil, data)
     end
 
+    # === Schedule product.
+    # Schedule a product.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Product id.
+    # data:: (Hash) -- Data to be submited.
+    #
     def schedule_product(id, data)
       return @client.raw("put", "/ecommerce/products/#{id}/schedule", nil, data)
     end
 
+    # === Get product variant options config.
+    # Get variant options config used in a product.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Product id.
+    #
     def get_product_variant_options_config(id)
       return @client.raw("get", "/ecommerce/products/#{id}/variant-options-config")
     end
 
-    def revert_published_data(id)
+    # === Revert published product.
+    # Revert a published product.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Product id.
+    #
+    # ==== Example
+    #     @data = @mints_user.revert_published_product(2)
+    def revert_published_product(id)
       return @client.raw("get", "/ecommerce/products/#{id}/revert-published-data")
     end
     
+    # === Get products.
+    # Get a collection of products.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
     def get_products(options = nil)
       return @client.raw("get", "/ecommerce/products", options)
     end
 
+    # === Get product.
+    # Get a product info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Product id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
     def get_product(id, options = nil)
       return @client.raw("get", "/ecommerce/products/#{id}", options)
     end
 
+    # === Create product.
+    # Create a product with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
     def create_product(data)
       return @client.raw("post", "/ecommerce/products/", nil, data)
     end
 
+    # === Update product.
+    # Update a product info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Product id.
+    # data:: (Hash) -- Data to be submited.
+    #
     def update_product(id, data)
       return @client.raw("put", "/ecommerce/products/#{id}", nil, data)
     end
@@ -1609,22 +2764,50 @@ module Mints
     # == Locations
     #
 
+    # === Get locations.
+    # Get a collection of locations.
+    #
     def get_locations
       return @client.raw("get", "/ecommerce/locations")
     end
     
+    # === Get location.
+    # Get a location info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Location id.
+    #
     def get_location(id)
       return @client.raw("get", "/ecommerce/locations/#{id}")
     end
 
+    # === Create location.
+    # Create a location with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
     def create_location(data)
       return @client.raw("post", "/ecommerce/locations", nil, data)
     end
 
+    # === Update location.
+    # Update a location info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Location id.
+    # data:: (Hash) -- Data to be submited.
+    #
     def update_location(id, data)
       return @client.raw("put", "/ecommerce/locations/#{id}", nil, data)
     end
 
+    # === Delete location.
+    # Delete a location.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Location id.
+    #
     def delete_location(id)
       return @client.raw("delete", "/ecommerce/locations/#{id}")
     end
@@ -1633,26 +2816,63 @@ module Mints
     # == Locations Templates
     #
 
+    # === Get location template support data.
+    # Get support data used in a location template.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Location template id.
+    #
     def get_location_template_support_data(id)
       return @client.raw("get", "/ecommerce/location-templates/#{id}/support-data")
     end
     
+    # === Get location templates support data.
+    # Get support data used in location templates.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_location_templates_support_data
     def get_location_templates_support_data
       return @client.raw("get", "/ecommerce/location-templates/support-data")
     end
 
+    # === Get location templates.
+    # Get a collection of location templates.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
     def get_location_templates(options = nil)
       return @client.raw("get", "/ecommerce/location-templates", options)
     end
 
+    # === Get location template.
+    # Get a location template info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Location template id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
     def get_location_template(id, options = nil)
       return @client.raw("get", "/ecommerce/location-templates/#{id}", options)
     end
     
+    # === Create location template.
+    # Create a location template with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
     def create_location_template(data)
       return @client.raw("post", "/ecommerce/location-templates", nil, data)
     end
     
+    # === Update location template.
+    # Update a location template info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Location template id.
+    # data:: (Hash) -- Data to be submited.
+    #
     def update_location_template(id, data)
       return @client.raw("put", "/ecommerce/location-templates/#{id}", nil, data)
     end
@@ -1661,34 +2881,84 @@ module Mints
     # == Product Variation
     #
 
+    # === Generate product variation.
+    # Generate a product variation.
+    #
+    # ==== Parameters
+    # productId:: (Integer) -- Product id.
+    # data:: (Hash) -- Data to be submited.
+    #
     def generate_product_variation(productId, data) #FIXME: Error
       return @client.raw("post", "/ecommerce/product-variations/generate/#{productId}", nil, data)
     end
 
+    # === Set prices to product variations.
+    # Set prices to product variations.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
     def set_prices_to_product_variations(data)
       return @client.raw("post", "/ecommerce/product-variations/set-prices", nil, data)
     end
 
+    # === Get product from product variation.
+    # Get a product from a product variation.
+    #
+    # ==== Parameters
+    # productId:: (Integer) -- Product id.
+    #
     def get_product_from_product_variation(productId)
       return @client.raw("get", "/ecommerce/product-variations/product/#{productId}")
     end
 
+    # === Get product variations.
+    # Get a collection of product variations.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
     def get_product_variations(options = nil)
       return @client.raw("get", "/ecommerce/product-variations", options)
     end
 
+    # === Get product variation.
+    # Get a product variation info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Product variation id.
+    #
     def get_product_variation(id)
       return @client.raw("get", "/ecommerce/product-variations/#{id}")
     end
 
+    # === Create product variation.
+    # Create a product variation with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
     def create_product_variation(data) #FIXME: Cannot validate price
       return @client.raw("post", "/ecommerce/product-variations", nil, data)
     end
 
+    # === Update product variation.
+    # Update a product variation info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Product variation id.
+    # data:: (Hash) -- Data to be submited.
+    #
     def update_product_variation(id, data) #TODO: Not tested
       return @client.raw("put", "/ecommerce/product-variations/#{id}", nil, data)
     end
 
+    # === Delete product variation.
+    # Delete a product variation.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Product variation id.
+    #
     def delete_product_variation(id) #TODO: Not tested
       return @client.raw("delete", "/ecommerce/product-variations/#{id}")
     end
@@ -1697,22 +2967,54 @@ module Mints
     # == Variant Options
     #
 
+    # === Get variant options.
+    # Get a collection of variant options.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
     def get_variant_options(options = nil)
       return @client.raw("get", "/ecommerce/variant-options", options)
     end
 
+    # === Get variant option.
+    # Get a variant options info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Variant option id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
     def get_variant_option(id, options = nil)
       return @client.raw("get", "/ecommerce/variant-options/#{id}", options)
     end
     
+    # === Create variant option.
+    # Create a variant option with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
     def create_variant_option(data)
       return @client.raw("post", "/ecommerce/variant-options", nil, data)
     end
     
+    # === Update variant option.
+    # Update a variant option info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Variant option id.
+    # data:: (Hash) -- Data to be submited.
+    #
     def update_variant_option(id, data)
       return @client.raw("put", "/ecommerce/variant-options/#{id}", nil, data)
     end
     
+    # === Get can remove variant option.
+    # Get info about if a variant option can be removed.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Variant option id.
+    #
     def get_can_remove_variant_option(id) #FIXME: VariantOptionController doesnt have canRemove method
       return @client.raw("get", "/ecommerce/variant-options/can-remove/#{id}")
     end
@@ -1721,18 +3023,44 @@ module Mints
     # == Variant Values
     #
     
+    # === Get variant values.
+    # Get a collection of variant values.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
     def get_variant_values(options = nil)
       return @client.raw("get", "/ecommerce/variant-values", options)
     end
     
+    # === Get variant value.
+    # Get a variant value info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Variant value id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
     def get_variant_value(id, options = nil)
       return @client.raw("get", "/ecommerce/variant-values/#{id}", options)
     end
 
+    # === Create variant value.
+    # Create a variant value with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
     def create_variant_value(data)
       return @client.raw("post", "/ecommerce/variant-values", nil, data)
     end
 
+    # === Update variant value.
+    # Update a variant value info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Variant value id.
+    # data:: (Hash) -- Data to be submited.
+    #
     def update_variant_value(id, data)
       return @client.raw("put", "/ecommerce/variant-values/#{id}", nil, data)
     end
@@ -1741,30 +3069,73 @@ module Mints
     # == Product Templates
     #
 
+    # === Get product templates support data from product.
+    # Get product templates support data from a product.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Product id.
+    #
     def get_product_templates_support_data_from_product(id)
       return @client.raw("get", "/ecommerce/product-templates/support-data/products/#{id}")
     end
 
+    # === Get product templates support data from order items group.
+    # Get product templates support data from a order items group.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Order items group id.
+    #
     def get_product_templates_support_data_from_order_items_group(id)
       return @client.raw("get", "/ecommerce/product-templates/support-data/order-items-groups/#{id}")
     end
 
+    # === Get product templates support data.
+    # Get support data used in product templates.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_product_templates_support_data
     def get_product_templates_support_data
       return @client.raw("get", "/ecommerce/product-templates/support-data")
     end
     
+    # === Get product templates.
+    # Get a collection of product templates.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
     def get_product_templates(options = nil)
       return @client.raw("get", "/ecommerce/product-templates", options)
     end
 
+    # === Get product template.
+    # Get a product template info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Product template id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
     def get_product_template(id, options = nil)
       return @client.raw("get", "/ecommerce/product-templates/#{id}", options)
     end
     
+    # === Create product template.
+    # Create a product template with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
     def create_product_template(data)
       return @client.raw("post", "/ecommerce/product-templates/", nil, data)
     end
     
+    # === Update product template.
+    # Update a product template info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Product template id.
+    # data:: (Hash) -- Data to be submited.
+    #
     def update_product_template(id, data)
       return @client.raw("put", "/ecommerce/product-templates/#{id}", nil, data)
     end
@@ -1773,30 +3144,74 @@ module Mints
     # == Orders
     #
 
+    # === Duplicate order.
+    # Duplicate an order.
+    #
+    # ==== Parameters
+    # orderId:: (Integer) -- Order id.
+    # data:: (Hash) -- Data to be submited.
+    #
     def duplicate_order(orderId, data) #FIXME: Doesnt read options from data and sale_price_cents column doesnt have to be null
       return @client.raw("post", "/ecommerce/orders/duplicate/#{orderId}", nil, data)
     end
 
+    # === Delete orders.
+    # Delete orders.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
     def delete_orders(data) #TODO: Method should return another response like 'success'
       return @client.raw("delete", "/ecommerce/orders/delete", nil, data)
     end
     
+    # === Get orders support data.
+    # Get support data used in orders.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_orders_support_data
     def get_orders_support_data
       return @client.raw("get", "/ecommerce/orders/support-data")
     end
     
+    # === Get orders.
+    # Get a collection of orders.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
     def get_orders(options = nil)
       return @client.raw("get", "/ecommerce/orders", options)
     end
 
+    # === Get order.
+    # Get a order info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Order id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
     def get_order(id, options = nil)
       return @client.raw("get", "/ecommerce/orders/#{id}", options)
     end
 
+    # === Create order.
+    # Create a order with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
     def create_order(data)
       return @client.raw("post", "/ecommerce/orders", nil, data)
     end
 
+    # === Update order.
+    # Update a order info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Order id.
+    # data:: (Hash) -- Data to be submited.
+    #
     def update_order(id, data)
       return @client.raw("put", "/ecommerce/orders/#{id}", nil, data)
     end
@@ -1805,18 +3220,44 @@ module Mints
     # == Order Templates
     #
     
+    # === Get order template support data.
+    # Get support data from a order template.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Order template id.
+    #
     def get_order_template_support_data(id)
       return @client.raw("get", "/ecommerce/order-templates/support-data/#{id}")
     end
 
+    # === Get order templates.
+    # Get a collection of order templates.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
     def get_order_templates(options = nil)
       return @client.raw("get", "/ecommerce/order-templates", options)
     end
 
+    # === Get order template.
+    # Get a order template info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Order template id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
     def get_order_template(id, options = nil)
       return @client.raw("get", "/ecommerce/order-templates/#{id}", options)
     end
     
+    # === Update order template.
+    # Update a order template info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Order template id.
+    # data:: (Hash) -- Data to be submited.
+    #
     def update_order_templates(id, data)
       return @client.raw("put", "/ecommerce/order-templates/#{id}", nil, data)
     end
@@ -1825,26 +3266,65 @@ module Mints
     # == Order Items
     #
 
+    # === Get order items support data.
+    # Get support data used in order items.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_order_items_support_data
     def get_order_items_support_data
       return @client.raw("get", "/ecommerce/order-items/support-data")
     end
     
+    # === Detach order item from order item group.
+    # Detach an order item from an order item group.
+    #
+    # ==== Parameters
+    # orderItemId:: (Integer) -- Order item id.
+    # groupId:: (Integer) -- Order items group id.
+    #
     def detach_order_item_from_order_item_group(orderItemId, groupId) #TODO: Not tested
       return @client.raw("put", "/ecommerce/order-items/detach/#{orderItemId}/order-items-groups/#{groupId}")
     end
 
+    # === Update order item from order item group.
+    # Update an order item data from an order item group.
+    #
+    # ==== Parameters
+    # orderItemId:: (Integer) -- Order item id.
+    # groupId:: (Integer) -- Order items group id.
+    #
     def update_order_item_from_order_item_group(orderItemId, groupId) #TODO: Not tested
       return @client.raw("put", "/ecommerce/order-items/update/#{orderItemId}/order-items-groups/#{groupId}")
     end
     
+    # === Get order items.
+    # Get a collection of order items.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
     def get_order_items(options = nil)
       return @client.raw("get", "/ecommerce/order-items", options)
     end
 
+    # === Get order item.
+    # Get a order item info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Order item id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
     def get_order_item(id, options = nil)
       return @client.raw("get", "/ecommerce/order-items/#{id}", options)
     end
     
+    # === Update order item.
+    # Update a order item info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Order item id.
+    # data:: (Hash) -- Data to be submited.
+    #
     def update_order_item(id, data) #TODO: Research what can update
       return @client.raw("put", "/ecommerce/order-items/#{id}", nil, data)
     end
@@ -1853,6 +3333,13 @@ module Mints
     # == Order Items Groups
     #
 
+    # === Get pending order template from order item group.
+    # Get a pending order template from an order item group.
+    #
+    # ==== Parameters
+    # parentOrderId:: (Integer) -- Order items group id.
+    # orderTemplateId:: (Integer) -- Order template id.
+    #
     def get_pending_order_template_from_order_item_group(parentOrderId, orderTemplateId)
       return @client.raw("get", "/ecommerce/order-items-groups/#{parentOrderId}/pending-items/order-template/#{orderTemplateId}")
     end
@@ -2512,6 +3999,22 @@ module Mints
       else
         return @client.raw("get", url, options)
       end
+    end
+
+    def data_transform(data)
+      data = correct_json(data)
+      unless data[:data]
+        data = {data: data}
+      end
+      return data
+    end
+
+    def correct_json(data)
+      if data.is_a? String
+        data = JSON.parse(data)
+        data = data.symbolize_keys
+      end
+      return data
     end
     
   end  

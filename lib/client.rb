@@ -291,8 +291,8 @@ module Mints
       def user_put(url, data)
         headers = {
           "ApiKey" => @api_key,
-          "Accept" => "application/json",
-          "Content-Type" => "application/json"
+          "Accept" => "application/json"
+          #"Content-Type" => "application/json"
         }
         headers["Authorization"] = "Bearer #{@session_token}" if @session_token
         return self.http_put(url, headers, data)
