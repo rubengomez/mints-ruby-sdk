@@ -20,8 +20,8 @@ module Mints
           self.set_scope(scope)
       end
 
-      def raw(action, url, options = nil, data = nil, base_url = nil)
-        base_url = @base_url if !base_url
+      def raw(action, url, options = nil, data = nil, base_url = nil, compatibility_options = {})
+      base_url = @base_url if !base_url
         uri = ""
         if (options && options.class == Hash)
           if (options[:jfilters] && options[:jfilters].class == Hash)
@@ -52,7 +52,7 @@ module Mints
                       response = @redis_server.get(full_url)
                       result_from_cache = true
                     else 
-                      response = self.send("#{@scope}_#{action}", "#{full_url}")
+                      response = self.send("#{@scope}_#{action}", "#{full_url}", compatibility_options)
                       @redis_server.setex(full_url,time,response)
                     end
                     break
@@ -63,18 +63,18 @@ module Mints
           end
 
           if !url_need_cache
-            response = self.send("#{@scope}_#{action}", "#{full_url}")
+            response = self.send("#{@scope}_#{action}", "#{full_url}", compatibility_options)
           end
 
         elsif action === 'create' or action === 'post'
           action = 'post'
-          response = self.send("#{@scope}_#{action}", "#{full_url}", data)          
+          response = self.send("#{@scope}_#{action}", "#{full_url}", data, compatibility_options)          
         elsif action === 'put' or action === 'patch' or action ==='update'
           action = 'put'
-          response = self.send("#{@scope}_#{action}", "#{full_url}", data)
+          response = self.send("#{@scope}_#{action}", "#{full_url}", data, compatibility_options)
         elsif action === 'delete' or action === 'destroy'
           action = 'delete'
-          response = self.send("#{@scope}_#{action}", "#{full_url}", data)
+          response = self.send("#{@scope}_#{action}", "#{full_url}", data, compatibility_options)
         end
         if result_from_cache
           return parsed_response = JSON.parse(response)
@@ -124,7 +124,7 @@ module Mints
             uri.query_values = args[1]
           end
           url = self.get_url(route, object, uri, slug)
-          response = self.send("#{@scope}_#{action}", url)
+          response = self.send("#{@scope}_#{action}", url, compatibility_options)
         elsif action == "post" or action == "create"
           if args[1].class == Hash
             uri.query_values = args[1]
@@ -132,7 +132,7 @@ module Mints
           url = self.get_url(route, object, uri, slug)
           action = 'post'
           data = args[0]
-          response = self.send("#{@scope}_#{action}", url, {data: data})
+          response = self.send("#{@scope}_#{action}", url, {data: data}, compatibility_options)
         elsif action == "put" or action == "update"
            if args.first.class == String or Integer
             slug = args.first
@@ -142,7 +142,7 @@ module Mints
           action = 'put'
           id = args[0]
           data = args[1]
-          response = self.send("#{@scope}_#{action}", "#{url}", {data: data})
+          response = self.send("#{@scope}_#{action}", "#{url}", {data: data}, compatibility_options)
         end
 
         if response.response.code == "404"
@@ -239,81 +239,87 @@ module Mints
       end
 
       # Start contact context
-      def contact_get(url)
+      def contact_get(url, compatibility_options)
         headers = {
           "ApiKey" => @api_key,
           "Accept" => "application/json",
           "ContactToken" => @contact_token_id
         }
+        headers["Content-Type"] = "application/json" unless compatibility_options['no_content_type']
         headers["Authorization"] = "Bearer #{@session_token}" if @session_token
         return self.http_get(url, headers)
       end
 
-      def contact_post(url, data)
+      def contact_post(url, data, compatibility_options)
         headers = {
           "ApiKey" => @api_key,
           "Accept" => "application/json",
           "ContactToken" => @contact_token_id
         }
+        headers["Content-Type"] = "application/json" unless compatibility_options['no_content_type']
         headers["Authorization"] = "Bearer #{@session_token}" if @session_token
         return self.http_post(url, headers, data)
       end
 
-      def contact_put(url, data)
+      def contact_put(url, data, compatibility_options)
         headers = {
           "ApiKey" => @api_key,
           "Accept" => "application/json",
           "ContactToken" => @contact_token_id
         }
+        headers["Content-Type"] = "application/json" unless compatibility_options['no_content_type']
         headers["Authorization"] = "Bearer #{@session_token}" if @session_token
         return self.http_put(url, headers, data)
       end
 
       # Start User context
-      def user_get(url)
+      def user_get(url, compatibility_options)
         headers = {
-          "ApiKey" => @api_key,
-          "Accept" => "application/json"
+          "Accept" => "application/json",
+          "ApiKey" => @api_key
         }
+        headers["Content-Type"] = "application/json" unless compatibility_options['no_content_type']
         headers["Authorization"] = "Bearer #{@session_token}" if @session_token
         return self.http_get(url, headers)
       end
 
-      def user_post(url, data)
+      def user_post(url, data, compatibility_options)
         headers = {
-          "ApiKey" => @api_key,
-          "Accept" => "application/json"
+          "Accept" => "application/json",
+          "ApiKey" => @api_key
         }
+        headers["Content-Type"] = "application/json" unless compatibility_options['no_content_type']
         headers["Authorization"] = "Bearer #{@session_token}" if @session_token
         return self.http_post(url, headers, data)
       end
 
-      def user_put(url, data)
+      def user_put(url, data, compatibility_options)
         headers = {
-          "ApiKey" => @api_key,
-          "Accept" => "application/json"
-          #"Content-Type" => "application/json"
+          "Accept" => "application/json",
+          "ApiKey" => @api_key
         }
+        headers["Content-Type"] = "application/json" unless compatibility_options['no_content_type']
         headers["Authorization"] = "Bearer #{@session_token}" if @session_token
         return self.http_put(url, headers, data)
       end
 
-      def user_delete(url, data)
+      def user_delete(url, data, compatibility_options)
         headers = {
-          "ApiKey" => @api_key,
-          "Accept" => "application/json"
+          "Accept" => "application/json",
+          "ApiKey" => @api_key
         }
+        headers["Content-Type"] = "application/json" unless compatibility_options['no_content_type']
         headers["Authorization"] = "Bearer #{@session_token}" if @session_token
         return self.http_delete(url, headers, data)
       end
       # End User Context
       
-      def public_get(url, headers = nil)
+      def public_get(url, headers = nil, compatibility_options)
         h = {
           "Accept" => "application/json",
-          "Content-Type" => "application/json",
           "ApiKey" => @api_key
         }
+        h["Content-Type"] = "application/json" unless compatibility_options['no_content_type']
         h["ContactToken"] = @contact_token_id if @contact_token_id
         if headers
           headers.each do |k,v|
@@ -323,12 +329,12 @@ module Mints
         self.http_get(url, h)
       end
 
-      def public_post(url, headers = nil, data)
+      def public_post(url, headers = nil, data, compatibility_options)
         h = {
           "Accept" => "application/json",
-          "Content-Type" => "application/json",
           "ApiKey" => @api_key
         }
+        h["Content-Type"] = "application/json" unless compatibility_options['no_content_type']
         h["ContactToken"] = @session_token if @session_token
         if headers
           headers.each do |k,v|
@@ -338,12 +344,12 @@ module Mints
         self.http_post(url, h, data)
       end
 
-      def public_put(url, headers = nil, data)
+      def public_put(url, headers = nil, data, compatibility_options)
         h = {
-          "Accept" => "application/json", 
-          "Content-Type" => "application/json", 
+          "Accept" => "application/json",
           "ApiKey" => @api_key
         }
+        h["Content-Type"] = "application/json" unless compatibility_options['no_content_type']
         h["ContactToken"] = @contact_token_id if @contact_token_id
         if headers
           headers.each do |k,v|

@@ -38,7 +38,7 @@ module Mints
         email: email,
         password: password,
       }
-      response = @client.raw("post", "/users/login", nil, data, '/api/v1')
+      response = @client.raw("post", "/users/login", nil, data.to_json, '/api/v1', {'no_content_type': true})
       if response.key? "api_token"
         @client.session_token = response["api_token"]
       end
@@ -201,7 +201,7 @@ module Mints
     #     data = {
     #       "deal_id": 6
     #     }
-    #     @data = @mints_user.create_contact_deal(5, data)
+    #     @data = @mints_user.create_contact_deal(5, data.to_json)
     def create_contact_deal(contact_id, data)
       return @client.raw("post", "/crm/contacts/#{contact_id}/deals", nil, data)
     end
@@ -246,7 +246,7 @@ module Mints
     #     data = { 
     #       "user_id": 9
     #     }
-    #     @data = @mints_user.create_contact_user(66, data)
+    #     @data = @mints_user.create_contact_user(66, data.to_json)
     def create_contact_user(contact_id, data)
       return @client.raw("post", "/crm/contacts/#{contact_id}/users", nil, data)
     end
@@ -463,7 +463,7 @@ module Mints
     #         "value": 10500
     #       }
     #     }
-    #     @data = @mints_user.create_deal(data)
+    #     @data = @mints_user.create_deal(data.to_json)
     def create_deal(data)
       return @client.raw("post", "/crm/deals", nil, data)
     end
@@ -479,9 +479,9 @@ module Mints
     #     data = {
     #       "title": "New Deal Modified"
     #     }
-    #     @data = @mints_user.update_deal(102, data)
+    #     @data = @mints_user.update_deal(102, data.to_json)
     def update_deal(id, data)
-      return @client.raw("put", "/crm/deals/#{id}", nil, correct_json(data))
+      return @client.raw("put", "/crm/deals/#{id}", nil, data)
     end
 
     ##
@@ -642,7 +642,7 @@ module Mints
     #       "title": "New Workflow",
     #       "object_type": "deals"
     #     }
-    #     @data = @mints_user.create_workflow(data)
+    #     @data = @mints_user.create_workflow(data.to_json)
     def create_workflow(data)
       return @client.raw("post", "/crm/workflows/", nil, data)
     end
@@ -728,9 +728,9 @@ module Mints
     #     data = {
     #       "stepId": 10
     #     }
-    #     @data = @mints_user.update_step_object(128, data)
+    #     @data = @mints_user.update_step_object(128, data.to_json)
     def update_step_object(id, data)
-      return @client.raw("put", "/crm/step-objects/#{id}", nil, correct_json(data))
+      return @client.raw("put", "/crm/step-objects/#{id}", nil, data)
     end
 
     # === Get workflow step object by object type.
@@ -766,7 +766,7 @@ module Mints
     #       "stepTitle": "Step Title",
     #       "workflowId": 1
     #     }
-    #     @data = @mints_user.create_workflow_step(data)
+    #     @data = @mints_user.create_workflow_step(data.to_json)
     def create_workflow_step(data)
       return @client.raw("post", "/crm/steps", nil, data)
     end
@@ -779,10 +779,12 @@ module Mints
     # data:: (Hash) -- Data to be submited.
     #
     # ==== Example
-    #     data = { "stepTitle": "Step Title Modified" }
+    #     data = { 
+    #       "stepTitle": "Step Title Modified"
+    #     }
     #     @data = @mints_user.update_workflow_step(23, data)
     def update_workflow_step(id, data)
-      return @client.raw("put", "/crm/steps/#{id}", nil, correct_json(data))
+      return @client.raw("put", "/crm/steps/#{id}", nil, data)
     end
 
     # === Delete workflow step.
@@ -949,19 +951,19 @@ module Mints
     #
 
     ###
-    # === Get users.
-    # Get users info.
+    # === Get crm users.
+    # Get users info in crm.
     #
     # ==== Parameters
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
     #
     # ==== First Example
-    #     @data = @mints_user.get_users
+    #     @data = @mints_user.get_crm_users
     #
     # ==== Second Example
     #     options = { "sort": "id", "fields": "id, email" }
-    #     @data = @mints_user.get_users(options)
-    def get_users(options = nil)
+    #     @data = @mints_user.get_crm_users(options)
+    def get_crm_users(options = nil)
       return @client.raw("get", "/crm/users", options)
     end
 
@@ -1032,9 +1034,9 @@ module Mints
     #     data = { 
     #       "title": "New Page Modified"
     #     }
-    #     @data = @mints_user.update_page(5, data)
+    #     @data = @mints_user.update_page(5, data.to_json)
     def update_page(id, data)
-      return @client.raw("put", "/content/pages/#{id}", nil, correct_json(data))
+      return @client.raw("put", "/content/pages/#{id}", nil, data)
     end
 
     # === Delete page.
@@ -1100,7 +1102,7 @@ module Mints
     #       }
     #     }
     #     @data = @mints_user.publish_form(1, data.to_json)
-    def publish_form(id, data) #FIXME: Doesnt work, pending to review
+    def publish_form(id, data) #FIXME: Output cannot be processed. response cannot be converted to json.
       return @client.raw("put", "/content/forms/#{id}/publish", nil, data)
     end
 
@@ -1118,7 +1120,7 @@ module Mints
     #       }
     #     }
     #     @data = @mints_user.schedule_form(1, data.to_json)
-    def schedule_form(id, data) #FIXME: Doesnt work, pending to review
+    def schedule_form(id, data) #FIXME: Output cannot be processed. response cannot be converted to json.
       return @client.raw("put", "/content/forms/#{id}/schedule", nil, data)
     end
 
@@ -1130,7 +1132,7 @@ module Mints
     #
     # ==== Example
     #     @data = @mints_user.revert_published_form(1)
-    def revert_published_form(id) #TODO: Not tested
+    def revert_published_form(id)
       return @client.raw("get", "/content/forms/#{id}/revert-published-data")
     end
 
@@ -1552,7 +1554,7 @@ module Mints
     #         "description": "New Content Template Description"
     #       }
     #     }
-    #     @data = @mints_user.create_content_template(data)
+    #     @data = @mints_user.create_content_template(data.to_json)
     def create_content_template(data)
       #TODO: Inform ContentTemplateController.store method has been modified
       return @client.raw("post", "/content/templates", nil, data)
@@ -1573,10 +1575,10 @@ module Mints
     #         "description": "New Content Template Description"
     #       }
     #     }
-    #     @data = @mints_user.update_content_template(7, data)
+    #     @data = @mints_user.update_content_template(7, data.to_json)
     def update_content_template(id, data)
        #TODO: Inform ContentTemplateController.update method has been modified
-      return @client.raw("put", "/content/templates/#{id}", nil, correct_json(data))
+      return @client.raw("put", "/content/templates/#{id}", nil, data)
     end
 
     # === Delete content template.
@@ -1623,7 +1625,7 @@ module Mints
     #     data = { 
     #       "options": [] 
     #     }
-    #     @data = @mints_user.duplicate_content_instance(1, data)
+    #     @data = @mints_user.duplicate_content_instance(1, data.to_json)
     def duplicate_content_instance(id, data)
       return @client.raw("post", "/content/instances/#{id}/duplicate", nil, data)
     end
@@ -1835,7 +1837,7 @@ module Mints
     #       "description": "Ea cupiditate",
     #       "slug": "accusantium"
     #     }
-    #     @data = @mints_user.rename_dam(data)
+    #     @data = @mints_user.rename_dam(data.to_json)
     def rename_dam(data)
       return @client.raw("post", "/content/dam/rename", nil, data)
     end
@@ -1850,7 +1852,7 @@ module Mints
     #     data = {
     #       "searchFor": "accusantium"
     #     }
-    #     @data = @mints_user.search_dam(data)
+    #     @data = @mints_user.search_dam(data.to_json)
     def search_dam(data)
       return @client.raw("post", "/content/dam/search", nil, data)
     end
@@ -1871,10 +1873,10 @@ module Mints
     #
     # ==== Example
     #     data = {
-    #       "folder_name": "new folder",
-    #       "slug": "newfolder"
+    #       "folder_name": "New Dam Folder",
+    #       "slug": "new-dam-folder"
     #     }
-    #     @data = @mints_user.create_dam_folder(data)
+    #     @data = @mints_user.create_dam_folder(data.to_json)
     def create_dam_folder(data)
       return @client.raw("post", "/content/folders/create", nil, data)
     end
@@ -1894,8 +1896,10 @@ module Mints
     # data:: (Hash) -- Data to be submited.
     #
     # ==== Example
-    #     data = { "link": "https://www.example.com/img/img.jpg" }
-    #     @data = @mints_user.get_asset_link_info(data)
+    #     data = { 
+    #       "link": "https://www.example.com/img/img.jpg"
+    #     }
+    #     @data = @mints_user.get_asset_link_info(data.to_json)
     def get_asset_link_info(data)
       return @client.raw("post", "/content/assets/getLinkInfo", nil, data)
     end
@@ -2136,7 +2140,7 @@ module Mints
     #     data = {
     #       "options": [] 
     #     }
-    #     @data = @mints_user.duplicate_story(1, data)
+    #     @data = @mints_user.duplicate_story(1, data.to_json)
     def duplicate_story(id, data)
       return @client.raw("post", "/content/stories/#{id}/duplicate", nil, data)
     end
@@ -2312,7 +2316,7 @@ module Mints
     # data:: (Hash) -- Data to be submited.
     #
     def duplicate_message_template(id, data) #FIXME: Error in duplicating
-      return @client.raw("post", "/content/message-templates/#{id}/duplicate", nil, data)
+      return @client.raw("post", "/content/message-templates/#{id}/duplicate", nil, data_transform(data))
     end
 
     # === Get message templates.
@@ -2357,7 +2361,7 @@ module Mints
     # ==== Example
     #     data = {
     #       "title": "New Message Template",
-    #       "slug": "new-email-template"
+    #       "slug": "new-message-template"
     #     }
     #     @data = @mints_user.create_message_template(data)
     def create_message_template(data)
@@ -2373,12 +2377,10 @@ module Mints
     #
     # ==== Example
     #     data = {
-    #       "data": {
-    #         "title": "New Message Template Modified"
-    #       }
+    #       "title": "New Message Template Modified"
     #     }
-    #     @data = @mints_user.update_message_template(4, data)
-    def update_message_template(id, data) #FIXME: Method need 'data' with data_transform method, research why
+    #     @data = @mints_user.update_message_template(5, data)
+    def update_message_template(id, data)
       return @client.raw("put", "/content/message-templates/#{id}", nil, data_transform(data))
     end
 
@@ -2414,6 +2416,11 @@ module Mints
     # ==== Parameters
     # data:: (Hash) -- Data to be submited.
     #
+    # ==== Example
+    #     data = {
+    #       "title": "New Keyword"
+    #     }
+    #     @data = @mints_user.create_keyword(data.to_json)
     def create_keyword(data)
       return @client.raw("post", "/content/keywords", nil, data)
     end
@@ -2425,7 +2432,15 @@ module Mints
     # id:: (Integer) -- Keyword id.
     # data:: (Hash) -- Data to be submited.
     #
-    def update_keyword(id, data) #FIXME: Method doesn't work, controller cannot get keyword info from request variable.
+    # ==== Example
+    #     data = {
+    #       "keyword": {
+    #         "title": "New Keyword Modified"
+    #       }
+    #     }
+    #     @data = @mints_user.update_keyword(2, data.to_json)
+    def update_keyword(id, data)
+      #TODO: Inform KeywordController.update method has been modified
       return @client.raw("put", "/content/keywords/#{id}", nil, data)
     end
 
@@ -2439,6 +2454,8 @@ module Mints
     # ==== Parameters
     # id:: (Integer) -- Author id.
     #
+    # ==== Example
+    #     @data = @mints_user.get_author(1)
     def get_author(id)
       return @client.raw("get", "/content/authors/#{id}")
     end
@@ -2449,6 +2466,12 @@ module Mints
     # ==== Parameters
     # data:: (Hash) -- Data to be submited.
     #
+    # ==== Example
+    #     data = {
+    #       "title": "Howard Phillips Lovecraft",
+    #       "slug": "howard-phillips-lovecraft"
+    #     }
+    #     @data = @mints_user.create_author(data.to_json)
     def create_author(data)
       return @client.raw("post", "/content/authors", nil, data)
     end
@@ -2460,7 +2483,16 @@ module Mints
     # id:: (Integer) -- Author id.
     # data:: (Hash) -- Data to be submited.
     #
-    def update_author(id, data) #FIXME: Method doesn't work, controller cannot get author data from request variable.
+    # ==== Example
+    #     data = {
+    #       "author": {
+    #         "title": "Howard Phillips Lovecraft Modified",
+    #         "slug": "howard-phillips-lovecraft"
+    #       }
+    #     }
+    #     @data = @mints_user.update_author(2, data.to_json)
+    def update_author(id, data)
+      #TODO: Inform AuthorController.update method has been modified
       return @client.raw("put", "/content/authors/#{id}", nil, data)
     end
 
@@ -2474,6 +2506,8 @@ module Mints
     # ==== Parameters
     # id:: (Integer) -- Stage id.
     #
+    # ==== Example
+    #     @data = @mints_user.get_stage(1)
     def get_stage(id)
       return @client.raw("get", "/content/stages/#{id}")
     end
@@ -2484,7 +2518,22 @@ module Mints
     # ==== Parameters
     # data:: (Hash) -- Data to be submited.
     #
-    def create_stage(data) #FIXME: Cannot insert data into database successfully.
+    # ==== Example
+    #     config_json = {
+    #       "count": 1
+    #     }
+    #     event_json = {
+    #       "rset": "DTSTART:20190214T000000Z",
+    #       "duration": 1
+    #     }
+    #     data = {
+    #       "title": "New Stage",
+    #       "description": "New Stage Description",
+    #       "config_json": config_json.to_json,
+    #       "event_json": event_json.to_json
+    #     }
+    #     @data = @mints_user.create_stage(data.to_json)
+    def create_stage(data)
       return @client.raw("post", "/content/stages", nil, data)
     end
 
@@ -2495,7 +2544,25 @@ module Mints
     # id:: (Integer) -- Stage id.
     # data:: (Hash) -- Data to be submited.
     #
-    def update_stage(id, data) #FIXME: Method doesn't work, controller cannot get stage data from request variable.
+    # ==== Example
+    #     config_json = {
+    #       "count": 2
+    #     }
+    #     event_json = {
+    #       "rset": "DTSTART:20190214T000000Z",
+    #       "duration": 2
+    #     }
+    #     data = {
+    #       "stageProps": { 
+    #         "title": "New Stage Modified",
+    #         "description": "New Stage Description Modified"
+    #       },
+    #       "config_json": config_json.to_json,
+    #       "event_json": event_json.to_json
+    #     }
+    #     @data = @mints_user.update_stage(3, data.to_json)
+    def update_stage(id, data)
+      #TODO: Inform StageController.update method has been modified
       return @client.raw("put", "/content/stages/#{id}", nil, data)
     end
 
@@ -2513,6 +2580,14 @@ module Mints
     # ==== Parameters
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
     #
+    # ==== First Example
+    #     @data = @mints_user.get_automations
+    #
+    # ==== Second Example
+    #       options = {
+    #         "fields": "title"
+    #       }
+    #       @data = @mints_user.get_automations(options)
     def get_automations(options = nil)
       return @client.raw("get", "/marketing/automation", options)
     end
@@ -2524,6 +2599,14 @@ module Mints
     # id:: (Integer) -- Automation id.
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
     #
+    # ==== First Example
+    #     @datos = @mints_user.get_automation(1)
+    #
+    # ==== Second Example
+    #     options = {
+    #       "fields": "title, id"
+    #     }
+    #     @data = @mints_user.get_automation(1, options)
     def get_automation(id, options = nil)
       return @client.raw("get", "/marketing/automation/#{id}", options)
     end
@@ -2534,8 +2617,13 @@ module Mints
     # ==== Parameters
     # data:: (Hash) -- Data to be submited.
     #
+    # ==== Example
+    #     data = {
+    #       "title": "New Automation"
+    #     }
+    #     @data = @mints_user.create_automation(data)
     def create_automation(data)
-      return @client.raw("post", "/marketing/automation/", nil, data)
+      return @client.raw("post", "/marketing/automation/", nil, data_transform(data))
     end
 
     # === Update automation.
@@ -2545,8 +2633,8 @@ module Mints
     # id:: (Integer) -- Automation id.
     # data:: (Hash) -- Data to be submited.
     #
-    def update_automation(id, data) #FIXME: Method doesn't work, controller cannot get automation data from request variable.
-      return @client.raw("put", "/marketing/automation/#{id}", nil, data)
+    def update_automation(id, data) #FIXME: Method doesn't work.
+      return @client.raw("put", "/marketing/automation/#{id}", nil, data_transform(data))
     end
 
     # === Delete automation.
@@ -2555,6 +2643,8 @@ module Mints
     # ==== Parameters
     # id:: (Integer) -- Automation id.
     #
+    # ==== Example
+    #     @data = @mints_user.delete_automation(5)
     def delete_automation(id)
       return @client.raw("delete", "/marketing/automation/#{id}")
     end
@@ -2565,6 +2655,8 @@ module Mints
     # ==== Parameters
     # id:: (Integer) -- Automation id.
     #
+    # ==== Example
+    #     @data = @mints_user.get_automation_executions(1)
     def get_automation_executions(id)
       return @client.raw("get", "/marketing/automation/#{id}/executions")
     end
@@ -2575,6 +2667,8 @@ module Mints
     # ==== Parameters
     # id:: (Integer) -- Automation id.
     #
+    # ==== Example
+    #     @data = @mints_user.reset_automation(1)
     def reset_automation(id)
       return @client.raw("post", "/marketing/automation/#{id}/reset")
     end
@@ -2586,6 +2680,11 @@ module Mints
     # id:: (Integer) -- Automation id.
     # data:: (Hash) -- Data to be submited.
     #
+    # ==== Example
+    #     data = {
+    #       "options": [] 
+    #     }
+    #     @data = @mints_user.duplicate_automation(1, data.to_json)
     def duplicate_automation(id, data)
       return @client.raw("post", "/marketing/automation/#{id}/duplicate", nil, data)
     end
@@ -2604,8 +2703,16 @@ module Mints
     # ==== Parameters
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
     #
+    # ==== First Example
+    #     @data = @mints_user.get_price_lists
+    #
+    # ==== Second Example
+    #     options = {
+    #       "fields": "title"
+    #     }
+    #     @data = @mints_user.get_price_lists(options)
     def get_price_lists(options = nil)
-      return @client.raw("get", "/ecommerce/price-list", options)
+      return get_query_results("/ecommerce/price-list", options)
     end
 
     # === Get price list.
@@ -2615,6 +2722,14 @@ module Mints
     # id:: (Integer) -- Price list id.
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
     #
+    # ==== First Example
+    #     @data = @mints_user.get_price_list(1)
+    #
+    # ==== Second Example
+    #     options = {
+    #       "fields": "title"
+    #     }
+    #     @data = @mints_user.get_price_list(1, options)
     def get_price_list(id, options = nil)
       return @client.raw("get", "/ecommerce/price-list/#{id}", options)
     end
@@ -2625,8 +2740,13 @@ module Mints
     # ==== Parameters
     # data:: (Hash) -- Data to be submited.
     #
+    # ==== Example
+    #     data = {
+    #       "title": "New Price List"
+    #     }
+    #     @data = @mints_user.create_price_list(data)
     def create_price_list(data)
-      return @client.raw("post", "/ecommerce/price-list", nil, data)
+      return @client.raw("post", "/ecommerce/price-list", nil, data_transform(data))
     end
 
     # === Update price list.
@@ -2636,8 +2756,13 @@ module Mints
     # id:: (Integer) -- Price list id.
     # data:: (Hash) -- Data to be submited.
     #
+    # ==== Example
+    #     data = {
+    #       "title": "New Price List Modified"
+    #     }
+    #     @data = @mints_user.update_price_list(8, data)
     def update_price_list(id, data)
-      return @client.raw("put", "/ecommerce/price-list/#{id}", nil, data)
+      return @client.raw("put", "/ecommerce/price-list/#{id}", nil, data_transform(data))
     end
 
     ##
@@ -2651,8 +2776,8 @@ module Mints
     # productId:: (Integer) -- Product id.
     # data:: (Hash) -- Data to be submited.
     #
-    def update_product_variations_config(productId, data) #TODO: Research use
-      return @client.raw("post", "/ecommerce/products/update-variations-config/#{productId}", nil, data)
+    def update_product_variations_config(productId, data) #TODO: Method doesnt work, research use
+      return @client.raw("post", "/ecommerce/products/update-variations-config/#{productId}", nil, data_transform(data))
     end
 
     # === Get product support data.
@@ -2681,8 +2806,13 @@ module Mints
     # id:: (Integer) -- Product id.
     # data:: (Hash) -- Data to be submited.
     #
-    def publish_product(id, data) #TODO: Research data in publish
-      return @client.raw("put", "/ecommerce/products/#{id}/publish", nil, data)
+    # ==== Example
+    #     data = {
+    #       "title": "New Publish"
+    #     }
+    #     @data = @mints_user.publish_product(2, data)
+    def publish_product(id, data)
+      return @client.raw("put", "/ecommerce/products/#{id}/publish", nil, data_transform(data))
     end
 
     # === Schedule product.
@@ -2692,8 +2822,13 @@ module Mints
     # id:: (Integer) -- Product id.
     # data:: (Hash) -- Data to be submited.
     #
+    # ==== Example
+    #     data = {
+    #       "scheduled_at": "1970-01-01 00:00:00"
+    #     }
+    #     @data = @mints_user.schedule_product(2, data)
     def schedule_product(id, data)
-      return @client.raw("put", "/ecommerce/products/#{id}/schedule", nil, data)
+      return @client.raw("put", "/ecommerce/products/#{id}/schedule", nil, data_transform(data))
     end
 
     # === Get product variant options config.
@@ -2702,6 +2837,8 @@ module Mints
     # ==== Parameters
     # id:: (Integer) -- Product id.
     #
+    # ==== Example
+    #     @data = @mints_user.get_product_variant_options_config(1)
     def get_product_variant_options_config(id)
       return @client.raw("get", "/ecommerce/products/#{id}/variant-options-config")
     end
@@ -2723,9 +2860,24 @@ module Mints
     #
     # ==== Parameters
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    # use_post:: (Boolean) -- Variable to determine if the request is by 'post' or 'get' functions.
     #
-    def get_products(options = nil)
-      return @client.raw("get", "/ecommerce/products", options)
+    # ==== First Example
+    #     @data = @mints_user.get_products
+    #
+    # ==== Second Example
+    #     options = {
+    #       "fields": "id"
+    #     }
+    #     @data = @mints_user.get_products(options)
+    #
+    # ==== Third Example
+    #     options = {
+    #       "fields": "id"
+    #     }
+    #     @data = @mints_user.get_products(options, false)
+    def get_products(options = nil, use_post = true)
+      return get_query_results("/ecommerce/products", options, use_post)
     end
 
     # === Get product.
@@ -2735,6 +2887,14 @@ module Mints
     # id:: (Integer) -- Product id.
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
     #
+    # ==== First Example
+    #     @data = @mints_user.get_product(3)
+    #
+    # ==== Second Example
+    #     options = {
+    #       "fields": "slug"
+    #     }
+    #     @data = @mints_user.get_product(3, options)
     def get_product(id, options = nil)
       return @client.raw("get", "/ecommerce/products/#{id}", options)
     end
@@ -2745,8 +2905,15 @@ module Mints
     # ==== Parameters
     # data:: (Hash) -- Data to be submited.
     #
+    # ==== Example
+    #     data = {
+    #       "title": "New Product",
+    #       "slug": "new-product",
+    #       "sku_prefix": "sku_prefix"
+    #     }
+    #     @data = @mints_user.create_product(data)
     def create_product(data)
-      return @client.raw("post", "/ecommerce/products/", nil, data)
+      return @client.raw("post", "/ecommerce/products/", nil, data_transform(data))
     end
 
     # === Update product.
@@ -2756,8 +2923,14 @@ module Mints
     # id:: (Integer) -- Product id.
     # data:: (Hash) -- Data to be submited.
     #
+    # ==== Example
+    #     data = {
+    #       "title": "New Product Modified",
+    #       "slug": "new-product"
+    #     }
+    #     @data = @mints_user.update_product(9, data)
     def update_product(id, data)
-      return @client.raw("put", "/ecommerce/products/#{id}", nil, data)
+      return @client.raw("put", "/ecommerce/products/#{id}", nil, data_transform(data))
     end
     
     ##
@@ -2767,8 +2940,16 @@ module Mints
     # === Get locations.
     # Get a collection of locations.
     #
-    def get_locations
-      return @client.raw("get", "/ecommerce/locations")
+    # ==== Parameters
+    # use_post:: (Boolean) -- Variable to determine if the request is by 'post' or 'get' functions.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_locations
+    #
+    # ==== Second Example
+    #     @data = @mints_user.get_locations(false)
+    def get_locations(use_post = true)
+      return get_query_results("/ecommerce/locations", nil, use_post)
     end
     
     # === Get location.
@@ -2777,6 +2958,8 @@ module Mints
     # ==== Parameters
     # id:: (Integer) -- Location id.
     #
+    # ==== Example
+    #     @data = @mints_user.get_location(2)
     def get_location(id)
       return @client.raw("get", "/ecommerce/locations/#{id}")
     end
@@ -2787,8 +2970,14 @@ module Mints
     # ==== Parameters
     # data:: (Hash) -- Data to be submited.
     #
+    # ==== Example
+    #     data = {
+    #       "title": "New Location",
+    #       "location_template_id": 1
+    #     }
+    #     @data = @mints_user.create_location(data)
     def create_location(data)
-      return @client.raw("post", "/ecommerce/locations", nil, data)
+      return @client.raw("post", "/ecommerce/locations", nil, data_transform(data))
     end
 
     # === Update location.
@@ -2798,6 +2987,11 @@ module Mints
     # id:: (Integer) -- Location id.
     # data:: (Hash) -- Data to be submited.
     #
+    # ==== Example
+    #     data = {
+    #       "title": "New Location Modified"
+    #     }
+    #     @data = @mints_user.update_location(5, data.to_json)
     def update_location(id, data)
       return @client.raw("put", "/ecommerce/locations/#{id}", nil, data)
     end
@@ -2808,6 +3002,8 @@ module Mints
     # ==== Parameters
     # id:: (Integer) -- Location id.
     #
+    # ==== Example
+    #     @data = @mints_user.delete_location(5)
     def delete_location(id)
       return @client.raw("delete", "/ecommerce/locations/#{id}")
     end
@@ -2822,6 +3018,8 @@ module Mints
     # ==== Parameters
     # id:: (Integer) -- Location template id.
     #
+    # ==== Example
+    #     @data = @mints_user.get_location_template_support_data(1)
     def get_location_template_support_data(id)
       return @client.raw("get", "/ecommerce/location-templates/#{id}/support-data")
     end
@@ -2841,6 +3039,12 @@ module Mints
     # ==== Parameters
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
     #
+    # ==== First Example
+    #     @data = @mints_user.get_location_templates
+    #
+    # ==== Second Example
+    #     options = { "fields": "title" }
+    #     @data = @mints_user.get_location_templates(options)
     def get_location_templates(options = nil)
       return @client.raw("get", "/ecommerce/location-templates", options)
     end
@@ -2852,6 +3056,12 @@ module Mints
     # id:: (Integer) -- Location template id.
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
     #
+    # ==== First Example
+    #     @data = @mints_user.get_location_template(1)
+    #
+    # ==== Second Example
+    #     options = { "fields": "title" }
+    #     @data = @mints_user.get_location_template(1, options)
     def get_location_template(id, options = nil)
       return @client.raw("get", "/ecommerce/location-templates/#{id}", options)
     end
@@ -2862,8 +3072,14 @@ module Mints
     # ==== Parameters
     # data:: (Hash) -- Data to be submited.
     #
+    # ==== Example
+    #     data = {
+    #       "title": "New Location Template",
+    #       "slug": "new-location-template"
+    #     }
+    #     @data = @mints_user.create_location_template(data)
     def create_location_template(data)
-      return @client.raw("post", "/ecommerce/location-templates", nil, data)
+      return @client.raw("post", "/ecommerce/location-templates", nil, data_transform(data))
     end
     
     # === Update location template.
@@ -2873,8 +3089,13 @@ module Mints
     # id:: (Integer) -- Location template id.
     # data:: (Hash) -- Data to be submited.
     #
+    # ==== Example
+    #     data = {
+    #       "title": "New Location Template Modified"
+    #     }
+    #     @data = @mints_user.update_location_template(3, data)
     def update_location_template(id, data)
-      return @client.raw("put", "/ecommerce/location-templates/#{id}", nil, data)
+      return @client.raw("put", "/ecommerce/location-templates/#{id}", nil, data_transform(data))
     end
     
     ##
@@ -2888,8 +3109,9 @@ module Mints
     # productId:: (Integer) -- Product id.
     # data:: (Hash) -- Data to be submited.
     #
-    def generate_product_variation(productId, data) #FIXME: Error
-      return @client.raw("post", "/ecommerce/product-variations/generate/#{productId}", nil, data)
+    def generate_product_variation(productId, data) #TODO: Research use
+      #TODO: Notify line 247 had a '/' before Exception
+      return @client.raw("post", "/ecommerce/product-variations/generate/#{productId}", nil, data_transform(data))
     end
 
     # === Set prices to product variations.
@@ -2898,8 +3120,21 @@ module Mints
     # ==== Parameters
     # data:: (Hash) -- Data to be submited.
     #
+    # ==== Example
+    #     skus = [
+    #       { "id": 100 }
+    #     ]
+    #     prices = [
+    #       { "id": 1, "value": 1259 },
+    #       { "id": 2, "value": 1260 }
+    #     ]
+    #     data = {
+    #       "skus": skus.to_json,
+    #       "prices": prices.to_json
+    #     }
+    #     @data = @mints_user.set_prices_to_product_variations(data)
     def set_prices_to_product_variations(data)
-      return @client.raw("post", "/ecommerce/product-variations/set-prices", nil, data)
+      return @client.raw("post", "/ecommerce/product-variations/set-prices", nil, data_transform(data))
     end
 
     # === Get product from product variation.
@@ -2908,6 +3143,8 @@ module Mints
     # ==== Parameters
     # productId:: (Integer) -- Product id.
     #
+    # ==== Example
+    #     @data = @mints_user.get_product_from_product_variation(1)
     def get_product_from_product_variation(productId)
       return @client.raw("get", "/ecommerce/product-variations/product/#{productId}")
     end
@@ -2918,8 +3155,10 @@ module Mints
     # ==== Parameters
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
     #
-    def get_product_variations(options = nil)
-      return @client.raw("get", "/ecommerce/product-variations", options)
+    # ==== Example
+    #     @data = @mints_user.get_product_variations
+    def get_product_variations
+      return @client.raw("get", "/ecommerce/product-variations")
     end
 
     # === Get product variation.
@@ -2928,6 +3167,8 @@ module Mints
     # ==== Parameters
     # id:: (Integer) -- Product variation id.
     #
+    # ==== Example
+    #     @data = @mints_user.get_product_variation(100)
     def get_product_variation(id)
       return @client.raw("get", "/ecommerce/product-variations/#{id}")
     end
@@ -2938,8 +3179,19 @@ module Mints
     # ==== Parameters
     # data:: (Hash) -- Data to be submited.
     #
-    def create_product_variation(data) #FIXME: Cannot validate price
-      return @client.raw("post", "/ecommerce/product-variations", nil, data)
+    # ==== Example
+    #     data = {
+    #       "title": "New Product Variation",
+    #       "sku": "NEW-PRODUCT-VARIATION-SKU",
+    #       "product_id": 5,
+    #       "supplier": 36,
+    #       "prices": [
+    #         { "id": 1, "value": 300 }
+    #       ]
+    #     }
+    #     @data = @mints_user.create_product_variation(data)
+    def create_product_variation(data)
+      return @client.raw("post", "/ecommerce/product-variations", nil, data_transform(data))
     end
 
     # === Update product variation.
@@ -2949,8 +3201,17 @@ module Mints
     # id:: (Integer) -- Product variation id.
     # data:: (Hash) -- Data to be submited.
     #
-    def update_product_variation(id, data) #TODO: Not tested
-      return @client.raw("put", "/ecommerce/product-variations/#{id}", nil, data)
+    # ==== Example
+    #     data = {
+    #       "title": "New Product Variation Modified",
+    #       "cost": 123,
+    #       "prices": [
+    #         { "id": 1, "value": 400 }
+    #       ]
+    #     }
+    #     @data = @mints_user.update_product_variation(528, data)
+    def update_product_variation(id, data)
+      return @client.raw("put", "/ecommerce/product-variations/#{id}", nil, data_transform(data))
     end
 
     # === Delete product variation.
@@ -2959,7 +3220,9 @@ module Mints
     # ==== Parameters
     # id:: (Integer) -- Product variation id.
     #
-    def delete_product_variation(id) #TODO: Not tested
+    # ==== Example
+    #     @data = @mints_user.delete_product_variation(528)
+    def delete_product_variation(id)
       return @client.raw("delete", "/ecommerce/product-variations/#{id}")
     end
     
@@ -2973,6 +3236,12 @@ module Mints
     # ==== Parameters
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
     #
+    # ==== First Example
+    #     @data = @mints_user.get_variant_options
+    #
+    # ==== Second Example
+    #     options = { "fields": "id, title" }
+    #     @data = @mints_user.get_variant_options(options)
     def get_variant_options(options = nil)
       return @client.raw("get", "/ecommerce/variant-options", options)
     end
@@ -2984,6 +3253,12 @@ module Mints
     # id:: (Integer) -- Variant option id.
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
     #
+    # ==== First Example
+    #     @data = @mints_user.get_variant_option(1)
+    #
+    # ==== Second Example
+    #     options = { "fields": "id, title" }
+    #     @data = @mints_user.get_variant_option(1, options)
     def get_variant_option(id, options = nil)
       return @client.raw("get", "/ecommerce/variant-options/#{id}", options)
     end
@@ -2994,8 +3269,13 @@ module Mints
     # ==== Parameters
     # data:: (Hash) -- Data to be submited.
     #
+    # ==== Example
+    #     data = {
+    #       "title": "New Variant Option"
+    #     }
+    #     @data = @mints_user.create_variant_option(data)
     def create_variant_option(data)
-      return @client.raw("post", "/ecommerce/variant-options", nil, data)
+      return @client.raw("post", "/ecommerce/variant-options", nil, data_transform(data))
     end
     
     # === Update variant option.
@@ -3005,18 +3285,13 @@ module Mints
     # id:: (Integer) -- Variant option id.
     # data:: (Hash) -- Data to be submited.
     #
+    # ==== Example
+    #     data = {
+    #       "title": "New Variant Option Modified"
+    #     }
+    #     @data = @mints_user.update_variant_option(6, data)
     def update_variant_option(id, data)
-      return @client.raw("put", "/ecommerce/variant-options/#{id}", nil, data)
-    end
-    
-    # === Get can remove variant option.
-    # Get info about if a variant option can be removed.
-    #
-    # ==== Parameters
-    # id:: (Integer) -- Variant option id.
-    #
-    def get_can_remove_variant_option(id) #FIXME: VariantOptionController doesnt have canRemove method
-      return @client.raw("get", "/ecommerce/variant-options/can-remove/#{id}")
+      return @client.raw("put", "/ecommerce/variant-options/#{id}", nil, data_transform(data))
     end
 
     ##
@@ -3029,6 +3304,12 @@ module Mints
     # ==== Parameters
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
     #
+    # ==== First Example
+    #     @data = @mints_user.get_variant_values
+    #
+    # ==== Second Example
+    #     options = { "sort": "-id"}
+    #     @data = @mints_user.get_variant_values(options)
     def get_variant_values(options = nil)
       return @client.raw("get", "/ecommerce/variant-values", options)
     end
@@ -3040,6 +3321,12 @@ module Mints
     # id:: (Integer) -- Variant value id.
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
     #
+    # ==== First Example
+    #     @data = @mints_user.get_variant_value(5)
+    #
+    # ==== Second Example
+    #     options = { "fields": "id"}
+    #     @data = @mints_user.get_variant_value(5, options)
     def get_variant_value(id, options = nil)
       return @client.raw("get", "/ecommerce/variant-values/#{id}", options)
     end
@@ -3050,8 +3337,16 @@ module Mints
     # ==== Parameters
     # data:: (Hash) -- Data to be submited.
     #
+    # ==== Example
+    #     data = {
+    #       "value": "New Variant Value",
+    #       "variant_option_id": 1,
+    #       "display_order": 1,
+    #       "sku_code": "new-variant-value-sku"
+    #     }
+    #     @data = @mints_user.create_variant_value(data)
     def create_variant_value(data)
-      return @client.raw("post", "/ecommerce/variant-values", nil, data)
+      return @client.raw("post", "/ecommerce/variant-values", nil, data_transform(data))
     end
 
     # === Update variant value.
@@ -3061,8 +3356,13 @@ module Mints
     # id:: (Integer) -- Variant value id.
     # data:: (Hash) -- Data to be submited.
     #
+    # ==== Example
+    #     data = {
+    #       "value": "New Variant Value Modified"
+    #     }
+    #     @data = @mints_user.update_variant_value(22, data)
     def update_variant_value(id, data)
-      return @client.raw("put", "/ecommerce/variant-values/#{id}", nil, data)
+      return @client.raw("put", "/ecommerce/variant-values/#{id}", nil, data_transform(data))
     end
     
     ##
@@ -3075,6 +3375,8 @@ module Mints
     # ==== Parameters
     # id:: (Integer) -- Product id.
     #
+    # ==== Example
+    #     @data = @mints_user.get_product_templates_support_data_from_product(1)
     def get_product_templates_support_data_from_product(id)
       return @client.raw("get", "/ecommerce/product-templates/support-data/products/#{id}")
     end
@@ -3085,6 +3387,8 @@ module Mints
     # ==== Parameters
     # id:: (Integer) -- Order items group id.
     #
+    # ==== Example
+    #     @data = @mints_user.get_product_templates_support_data_from_order_items_group(1)
     def get_product_templates_support_data_from_order_items_group(id)
       return @client.raw("get", "/ecommerce/product-templates/support-data/order-items-groups/#{id}")
     end
@@ -3104,6 +3408,12 @@ module Mints
     # ==== Parameters
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
     #
+    # ==== First Example
+    #     @data = @mints_user.get_product_templates
+    #
+    # ==== Second Example
+    #     options = { "fields": "title" }
+    #     @data = @mints_user.get_product_templates(options)
     def get_product_templates(options = nil)
       return @client.raw("get", "/ecommerce/product-templates", options)
     end
@@ -3115,6 +3425,12 @@ module Mints
     # id:: (Integer) -- Product template id.
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
     #
+    # ==== First Example
+    #     @data = @mints_user.get_product_template(1)
+    #
+    # ==== Second Example
+    #     options = { "fields": "title" }
+    #     @data = @mints_user.get_product_template(1, options)
     def get_product_template(id, options = nil)
       return @client.raw("get", "/ecommerce/product-templates/#{id}", options)
     end
@@ -3125,8 +3441,14 @@ module Mints
     # ==== Parameters
     # data:: (Hash) -- Data to be submited.
     #
+    # ==== Example
+    #     data = { 
+    #       "title": "New Product Template",
+    #       "slug": "new-product-template"
+    #     }
+    #     @data = @mints_user.create_product_template(data)
     def create_product_template(data)
-      return @client.raw("post", "/ecommerce/product-templates/", nil, data)
+      return @client.raw("post", "/ecommerce/product-templates/", nil, data_transform(data))
     end
     
     # === Update product template.
@@ -3136,8 +3458,14 @@ module Mints
     # id:: (Integer) -- Product template id.
     # data:: (Hash) -- Data to be submited.
     #
+    # ==== Example
+    #     data = {
+    #       "title": "New Product Template Modified",
+    #       "slug": "new-product-template"
+    #     }
+    #     @data = @mints_user.update_product_template(3, data)
     def update_product_template(id, data)
-      return @client.raw("put", "/ecommerce/product-templates/#{id}", nil, data)
+      return @client.raw("put", "/ecommerce/product-templates/#{id}", nil, data_transform(data))
     end
 
     ##
@@ -3161,8 +3489,13 @@ module Mints
     # ==== Parameters
     # data:: (Hash) -- Data to be submited.
     #
-    def delete_orders(data) #TODO: Method should return another response like 'success'
-      return @client.raw("delete", "/ecommerce/orders/delete", nil, data)
+    # ==== Example
+    #     data = {
+    #       "ids": [ 18 ]
+    #     }
+    #     @data = @mints_user.delete_orders(data)
+    def delete_orders(data) #TODO: Inform method should return another response like 'success'
+      return @client.raw("delete", "/ecommerce/orders/delete", nil, data_transform(data))
     end
     
     # === Get orders support data.
@@ -3179,9 +3512,20 @@ module Mints
     #
     # ==== Parameters
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    # use_post:: (Boolean) -- Variable to determine if the request is by 'post' or 'get' functions.
     #
-    def get_orders(options = nil)
-      return @client.raw("get", "/ecommerce/orders", options)
+    # ==== First Example
+    #     @data = @mints_user.get_orders
+    #
+    # ==== Second Example
+    #     options = { "fields": "id, title" }
+    #     @data = @mints_user.get_orders(options)
+    #
+    # ==== Third Example
+    #     options = { "fields": "id, title" }
+    #     @data = @mints_user.get_orders(options, false)
+    def get_orders(options = nil, use_post = true)
+      return get_query_results("/ecommerce/orders", options, use_post)
     end
 
     # === Get order.
@@ -3191,6 +3535,12 @@ module Mints
     # id:: (Integer) -- Order id.
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
     #
+    # ==== First Example
+    #     @data = @mints_user.get_order(1)
+    #
+    # ==== Second Example
+    #     options = { "fields": "title" }
+    #     @data = @mints_user.get_order(1, options)
     def get_order(id, options = nil)
       return @client.raw("get", "/ecommerce/orders/#{id}", options)
     end
@@ -3201,8 +3551,14 @@ module Mints
     # ==== Parameters
     # data:: (Hash) -- Data to be submited.
     #
+    # ==== Example
+    #     data = {
+    #       "title": "New Order",
+    #       "order_template_id": 2
+    #     }
+    #     @data = @mints_user.create_order(data)
     def create_order(data)
-      return @client.raw("post", "/ecommerce/orders", nil, data)
+      return @client.raw("post", "/ecommerce/orders", nil, data_transform(data))
     end
 
     # === Update order.
@@ -3212,8 +3568,13 @@ module Mints
     # id:: (Integer) -- Order id.
     # data:: (Hash) -- Data to be submited.
     #
+    # ==== Example
+    #     data = {
+    #       "title": "New Order Modified"
+    #     }
+    #     @data = @mints_user.update_order(26, data)
     def update_order(id, data)
-      return @client.raw("put", "/ecommerce/orders/#{id}", nil, data)
+      return @client.raw("put", "/ecommerce/orders/#{id}", nil, data_transform(data))
     end
     
     ##
@@ -3226,6 +3587,8 @@ module Mints
     # ==== Parameters
     # id:: (Integer) -- Order template id.
     #
+    # ==== Example
+    #     @data = @mints_user.get_order_template_support_data(1)
     def get_order_template_support_data(id)
       return @client.raw("get", "/ecommerce/order-templates/support-data/#{id}")
     end
@@ -3236,6 +3599,12 @@ module Mints
     # ==== Parameters
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
     #
+    # ==== First Example
+    #     @data = @mints_user.get_order_templates
+    #
+    # ==== Second Example
+    #     options = { "fields": "title" }
+    #     @data = @mints_user.get_order_templates(options)
     def get_order_templates(options = nil)
       return @client.raw("get", "/ecommerce/order-templates", options)
     end
@@ -3247,6 +3616,12 @@ module Mints
     # id:: (Integer) -- Order template id.
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
     #
+    # ==== First Example
+    #     @data = @mints_user.get_order_template(1)
+    #
+    # ==== Second Example
+    #     options = { "fields": "title" }
+    #     @data = @mints_user.get_order_template(1, options)
     def get_order_template(id, options = nil)
       return @client.raw("get", "/ecommerce/order-templates/#{id}", options)
     end
@@ -3258,8 +3633,13 @@ module Mints
     # id:: (Integer) -- Order template id.
     # data:: (Hash) -- Data to be submited.
     #
-    def update_order_templates(id, data)
-      return @client.raw("put", "/ecommerce/order-templates/#{id}", nil, data)
+    # ==== Example
+    #     data = {
+    #       "title": "Inventory Increase"
+    #     }
+    #     @data = @mints_user.update_order_template(12, data)
+    def update_order_template(id, data)
+      return @client.raw("put", "/ecommerce/order-templates/#{id}", nil, data_transform(data))
     end
 
     ##
@@ -3275,6 +3655,7 @@ module Mints
       return @client.raw("get", "/ecommerce/order-items/support-data")
     end
     
+    #TODO: The following two methods receive objects instead integer variable. Research use and test it.
     # === Detach order item from order item group.
     # Detach an order item from an order item group.
     #
@@ -3282,7 +3663,7 @@ module Mints
     # orderItemId:: (Integer) -- Order item id.
     # groupId:: (Integer) -- Order items group id.
     #
-    def detach_order_item_from_order_item_group(orderItemId, groupId) #TODO: Not tested
+    def detach_order_item_from_order_item_group(orderItemId, groupId) #TODO: Research use
       return @client.raw("put", "/ecommerce/order-items/detach/#{orderItemId}/order-items-groups/#{groupId}")
     end
 
@@ -3293,8 +3674,8 @@ module Mints
     # orderItemId:: (Integer) -- Order item id.
     # groupId:: (Integer) -- Order items group id.
     #
-    def update_order_item_from_order_item_group(orderItemId, groupId) #TODO: Not tested
-      return @client.raw("put", "/ecommerce/order-items/update/#{orderItemId}/order-items-groups/#{groupId}")
+    def update_order_item_from_order_item_group(orderItemId, groupId, data) #TODO: Research use
+      return @client.raw("put", "/ecommerce/order-items/update/#{orderItemId}/order-items-groups/#{groupId}", nil, data_transform(data))
     end
     
     # === Get order items.
@@ -3303,7 +3684,13 @@ module Mints
     # ==== Parameters
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
     #
-    def get_order_items(options = nil)
+    # ==== First Example
+    #     @data = @mints_user.get_order_items
+    #
+    # ==== Second Example
+    #     options = { "fields": "id" }
+    #     @data = @mints_user.get_order_items(options)
+    def get_order_items(options = nil) #FIXME: CaliRouter POST method not supported.
       return @client.raw("get", "/ecommerce/order-items", options)
     end
 
@@ -3314,6 +3701,12 @@ module Mints
     # id:: (Integer) -- Order item id.
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
     #
+    # ==== First Example
+    #     @data = @mints_user.get_order_item(1)
+    #
+    # ==== Second Example
+    #     options = { "fields": "id" }
+    #     @data = @mints_user.get_order_item(1, options)
     def get_order_item(id, options = nil)
       return @client.raw("get", "/ecommerce/order-items/#{id}", options)
     end
@@ -3325,8 +3718,11 @@ module Mints
     # id:: (Integer) -- Order item id.
     # data:: (Hash) -- Data to be submited.
     #
+    # ==== Example
+    #     data = { "title": "No title in order items" }
+    #     @data = @mints_user.update_order_item(1, data)
     def update_order_item(id, data) #TODO: Research what can update
-      return @client.raw("put", "/ecommerce/order-items/#{id}", nil, data)
+      return @client.raw("put", "/ecommerce/order-items/#{id}", nil, data_transform(data))
     end
 
     ##
@@ -3340,30 +3736,99 @@ module Mints
     # parentOrderId:: (Integer) -- Order items group id.
     # orderTemplateId:: (Integer) -- Order template id.
     #
+    # ==== Example
+    #     @data = @mints_user.get_pending_order_template_from_order_item_group(1, 1)
     def get_pending_order_template_from_order_item_group(parentOrderId, orderTemplateId)
       return @client.raw("get", "/ecommerce/order-items-groups/#{parentOrderId}/pending-items/order-template/#{orderTemplateId}")
     end
     
-    def get_order_item_group_support_data_by_order_id(orderId)
+    # === Get order item group support data by order id.
+    # Get support data of an order item group by an order id.
+    #
+    # ==== Parameters
+    # orderId:: (Integer) -- Order id.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_order_item_group_support_data_by_order_id(1)
+    def get_order_item_group_support_data_by_order_id(orderId) #FIXME: Return in OrderItemsGroupController.getTemplateSupportDataByOrderId method doesnt create data variable.
       return @client.raw("get", "/ecommerce/order-items-groups/support-data/#{orderId}")
     end
 
+    # === Get order item groups.
+    # Get a collection of order item groups.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_order_item_groups
+    #
+    # ==== Second Example
+    #     options = { "fields": "name" }
+    #     @data = @mints_user.get_order_item_groups(options)
     def get_order_item_groups(options = nil)
       return @client.raw("get", "/ecommerce/order-items-groups", options)
     end
 
+    # === Get order item group.
+    # Get a order item group info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Order item group id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_order_item_group(1)
+    #
+    # ==== Second Example
+    #     options = { "fields": "name" }
+    #     @data = @mints_user.get_order_item_group(1, options)
     def get_order_item_group(id, options = nil)
       return @client.raw("get", "/ecommerce/order-items-groups/#{id}", options)
     end
     
+    # === Create order item group.
+    # Create a order item group with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "name": "New Order Item Group",
+    #       "order_id": 1,
+    #       "quantity": 1,
+    #       "sale_price": 200
+    #     }
+    #     @data = @mints_user.create_order_item_group(data)
     def create_order_item_group(data)
-      return @client.raw("post", "/ecommerce/order-items-groups", nil, data)
+      return @client.raw("post", "/ecommerce/order-items-groups", nil, data_transform(data))
     end
     
+    # === Update order item group.
+    # Update a order item group info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Order item group id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "name": "New Order Item Group Modified"
+    #     }
+    #     @data = @mints_user.update_order_item_group(147, data)
     def update_order_item_group(id, data)
-      return @client.raw("put", "/ecommerce/order-items-groups/#{id}", nil, data)
+      return @client.raw("put", "/ecommerce/order-items-groups/#{id}", nil, data_transform(data))
     end
     
+    # === Delete order item group.
+    # Delete a order item group.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Order item group id.
+    #
+    # ==== Example
+    #     @data = @mints_user.delete_order_item_group(147)
     def delete_order_item_group(id)
       return @client.raw("delete", "/ecommerce/order-items-groups/#{id}")
     end
@@ -3372,10 +3837,23 @@ module Mints
     # == Order Statuses
     #
 
+    # === Get order statuses.
+    # Get order statuses.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_order_statuses
     def get_order_statuses
       return @client.raw("get", "/ecommerce/order-statuses")
     end
     
+    # === Get order status.
+    # Get status of an order.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Order id.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_order_status(1)
     def get_order_status(id)
       return @client.raw("get", "/ecommerce/order-statuses/#{id}")
     end
@@ -3384,22 +3862,83 @@ module Mints
     # == Item Prices
     #
 
+    # === Get item prices.
+    # Get a collection of item prices.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_item_prices
+    #
+    # ==== Second Example
+    #     options = { "fields": "price_cents" }
+    #     @data = @mints_user.get_item_prices(options)
     def get_item_prices(options = nil)
       return @client.raw("get", "/ecommerce/item-prices", options)
     end
 
+    # === Get item price.
+    # Get a item price info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Item price id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_item_price(1)
+    #
+    # ==== Second Example
+    #     options = { "fields": "price_cents" }
+    #     @data = @mints_user.get_item_price(1, options)
     def get_item_price(id, options = nil)
       return @client.raw("get", "/ecommerce/item-prices/#{id}", options)
     end
 
-    def create_item_price(data) #FIXME: DB Error: sku_id cannot be null
-      return @client.raw("post", "/ecommerce/item-prices", nil, data)
+    # === Create item price.
+    # Create a item price with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "price_list": [
+    #         { "id": 1 },
+    #         { "id": 2 }
+    #       ],
+    #       "price_list_id": 1,
+    #       "title": "New Item Price"
+    #     }
+    #     @data = @mints_user.create_item_price(data)
+    def create_item_price(data) #FIXME: Api send sku_id as null and DB doesnt allow that.
+      return @client.raw("post", "/ecommerce/item-prices", nil, data_transform(data))
     end
 
+    # === Update item price.
+    # Update a item price info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Order item price id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "price": 12345
+    #     }
+    #     @data = @mints_user.update_item_price(1, data)
     def update_item_price(id, data)
-      return @client.raw("put", "/ecommerce/item-prices/#{id}", nil, data)
+      return @client.raw("put", "/ecommerce/item-prices/#{id}", nil, data_transform(data))
     end
     
+    # === Delete item price.
+    # Delete a item price.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Item price id.
+    #
+    # ==== Example
+    #     @data = @mints_user.delete_item_price(803)
     def delete_item_price(id)
       return @client.raw("delete", "/ecommerce/item-prices/#{id}")
     end
@@ -3408,22 +3947,85 @@ module Mints
     # == Sku
     #
 
+    # === Get skus.
+    # Get a collection of skus.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_skus
+    #
+    # ==== Second Example
+    #     options = {
+    #       "fields": "sku"
+    #     }
+    #     @data = @mints_user.get_skus(options)
     def get_skus(options = nil)
       return @client.raw("get", "/ecommerce/skus", options)
     end
     
+    # === Get sku.
+    # Get a sku info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Sku id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_sku(1)
+    #
+    # ==== Second Example
+    #     options = {
+    #       "fields": "title, sku"
+    #     }
+    #     @data = @mints_user.get_sku(1, options)
     def get_sku(id, options = nil)
       return @client.raw("get", "/ecommerce/skus/#{id}", options)
     end
 
+    # === Create sku.
+    # Create a sku with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "sku": "NEW-SKU-XXXXXX",
+    #       "title": "New Sku",
+    #       "slug": "new-sku",
+    #       "product_id": 1
+    #     }
+    #     @data = @mints_user.create_sku(data)
     def create_sku(data)
-      return @client.raw("post", "/ecommerce/skus", nil, data)
+      return @client.raw("post", "/ecommerce/skus", nil, data_transform(data))
     end
     
+    # === Update sku.
+    # Update a sku info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Sku id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "sku": "NEW-SKU-XXXXXY"
+    #     }
+    #     @data = @mints_user.update_sku(531, data)
     def update_sku(id, data)
-      return @client.raw("put", "/ecommerce/skus/#{id}", nil, data)
+      return @client.raw("put", "/ecommerce/skus/#{id}", nil, data_transform(data))
     end
     
+    # === Delete sku.
+    # Delete a sku.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Sku id.
+    #
+    # ==== Example
+    #     @data = @mints_user.delete_sku(531)
     def delete_sku(id)
       return @client.raw("delete", "/ecommerce/skus/#{id}")
     end
@@ -3432,22 +4034,79 @@ module Mints
     # == Taxes
     #
 
+    # === Get taxes.
+    # Get a collection of taxes.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_taxes
+    #
+    # ==== Second Example
+    #     options = { "fields": "title" }
+    #     @data = @mints_user.get_taxes(options)
     def get_taxes(options = nil)
       return @client.raw("get", "/ecommerce/taxes", options)
     end
 
+    # === Get tax.
+    # Get a tax info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Tax id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_tax(1)
+    #
+    # ==== Second Example
+    #     options = { "fields": "title" }
+    #     @data = @mints_user.get_tax(1, options)
     def get_tax(id, options = nil)
       return @client.raw("get", "/ecommerce/taxes/#{id}", options)
     end
     
+    # === Create tax.
+    # Create a tax with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "title": "New Tax",
+    #       "tax_percentage": 100
+    #     }
+    #     @data = @mints_user.create_tax(data)
     def create_tax(data)
-      return @client.raw("post", "/ecommerce/taxes", nil, data)
+      return @client.raw("post", "/ecommerce/taxes", nil, data_transform(data))
     end
     
+    # === Update tax.
+    # Update a tax info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Tax id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "tax_percentage": 10
+    #     }
+    #     @data = @mints_user.update_tax(11, data)
     def update_tax(id, data)
-      return @client.raw("put", "/ecommerce/taxes/#{id}", nil, data)
+      return @client.raw("put", "/ecommerce/taxes/#{id}", nil, data_transform(data))
     end
     
+    # === Delete tax.
+    # Delete a tax.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Tax id.
+    #
+    # ==== Example
+    #     @data = @mints_user.delete_tax(11)
     def delete_tax(id)
       return @client.raw("delete", "/ecommerce/taxes/#{id}")
     end
@@ -3460,54 +4119,181 @@ module Mints
     # == Importers
     #
 
-    def get_importers_results(options = nil)
+    # === Get importers results.
+    # Get a results of importers.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== Example
+    #     options = { "ip_id": 1 }
+    #     @data = @mints_user.get_importers_results(options)
+    def get_importers_results(options) #FIXME: Query doesnt get results. Maybe no data in db.
       return @client.raw("get", "/config/importers/results", options)
     end
     
+    # === Get importers configuration.
+    # Get configurations of importers.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_importers_configuration
     def get_importers_configuration
       return @client.raw("get", "/config/importers/configuration")
     end
 
+    # === Get importing process status.
+    # Get importing process status by importer ids.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== Example
+    #     options = {
+    #       "ids": "1,2,3"
+    #     }
+    #     @data = @mints_user.get_importing_process_status(options)
     def get_importing_process_status(options = nil)
       return @client.raw("get", "/config/importers/importing_process_status", options)
     end
 
+    # === Get importers attributes.
+    # Get import attributes of modules in a table.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== Example
+    #     options = {
+    #       "table": "contacts",
+    #       "module": "crm"
+    #     }
+    #     @data = @mints_user.get_importers_attributes(options)
     def get_importers_attributes(options = nil)
       return @client.raw("get", "/config/importers/attributes", options)
     end
 
+    # === Upload importer.
+    # Upload to an importer.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Importer id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "csv": "archive.csv"
+    #     }
+    #     @data = @mints_user.upload_importer(1, data.to_json)
     def upload_importer(id, data) #TODO: Search for csv archives
       return @client.raw("post", "/config/importers/#{id}/upload", nil, data)
     end
 
+    # === Import row.
+    # Import a row.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     
     def import_row(data) #TODO: Research use
       return @client.raw("post", "/config/importers/import_row", nil, data)
     end
     
-    def remove_importers_active_process(data)
-      return @client.raw("post", "/config/importers/removeActiveProcess", nil, data)
+    # === Remove importers active process.
+    # Remove an active process in an importer.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     
+    def remove_importers_active_process(data) #FIXME: Cannot get property 'active_importing_process' of non-object. 
+      return @client.raw("post", "/config/importers/removeActiveProcess", nil, data_transform(data))
     end
     
+    # === Get importers.
+    # Get a collection of importers.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_importers
+    #
+    # ==== Second Example
+    #     options = { "fields": "name" }
+    #     @data = @mints_user.get_importers(options)
     def get_importers(options = nil)
       return @client.raw("get", "/config/importers", options)
     end
 
+    # === Get importer.
+    # Get an importer info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Importer id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_importer(1)
+    #
+    # ==== Second Example
+    #     options = { "fields": "name" }
+    #     @data = @mints_user.get_importer(1, options)
     def get_importer(id, options = nil)
       return @client.raw("get", "/config/importers/#{id}", options)
     end
 
+    # === Create importer.
+    # Create an importer with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "name": "New Importer",
+    #       "module": "crm"
+    #     }
+    #     @data = @mints_user.create_importer(data)
     def create_importer(data)
-      return @client.raw("post", "/config/importers", nil, data)
+      return @client.raw("post", "/config/importers", nil, data_transform(data))
     end
 
+    # === Update importer.
+    # Update an importer info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Importer id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "name": "New Importer Modified"
+    #     }
+    #     @data = @mints_user.update_importer(4, data)
     def update_importer(id, data)
-      return @client.raw("put", "/config/importers/#{id}", nil, data)
+      return @client.raw("put", "/config/importers/#{id}", nil, data_transform(data))
     end
 
+    # === Delete importer.
+    # Delete a importer.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Importer id.
+    #
+    # ==== Example
+    #     @data = @mints_user.delete_importer(4)
     def delete_importer(id)
       return @client.raw("delete", "/config/importers/#{id}")
     end
     
+    # === Get importers pusher key.
+    # Get the pusher key of importers.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_importers_pusher_key
     def get_importers_pusher_key
       return @client.raw("get", "/config/pusher_key")
     end
@@ -3516,154 +4302,547 @@ module Mints
     # == Attributes
     #
 
+    # === Get attributes data types.
+    # Get data types in attributes.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_attributes_data_types
     def get_attributes_data_types
       return @client.raw("get", "/config/attributes/data-types")
     end
     
+    # === Get attributes.
+    # Get a collection of attributes.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_attributes
     def get_attributes
       return @client.raw("get", "/config/attributes")
     end
     
+    # === Get attribute.
+    # Get an attribute info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Attribute id.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_attribute(1)
     def get_attribute(id)
       return @client.raw("get", "/config/attributes/#{id}")
     end
 
+    # === Create attribute.
+    # Create an attribute with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "title": "New Attribute",
+    #       "object_type": "orders",
+    #       "slug": "new_attribute",
+    #       "attribute_group_id": 1,
+    #       "data_type_enum": 10
+    #     }
+    #     @data = @mints_user.create_attribute(data)
     def create_attribute(data)
-      return @client.raw("post", "/config/attributes", nil, data)
+      return @client.raw("post", "/config/attributes", nil, data_transform(data))
     end
 
+    # === Update attribute.
+    # Update an attribute info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Attribute id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "title": "New Attribute Modified",
+    #       "object_type": "orders",
+    #       "slug": "new_attribute",
+    #       "attribute_group_id": 1,
+    #       "data_type_enum": 10
+    #     }
+    #     @data = @mints_user.update_attribute(292, data)
     def update_attribute(id, data)
-      return @client.raw("put", "/config/attributes/#{id}", nil, data)
+      return @client.raw("put", "/config/attributes/#{id}", nil, data_transform(data))
     end
 
     ##
     # == Attribute Groups
     #
 
+    # === Get attribute groups data types.
+    # Get data types used in attribute groups.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_attribute_groups_data_types
     def get_attribute_groups_data_types
       return @client.raw("get", "/config/attribute-groups/object-types")
     end
 
+    # === Get attribute groups.
+    # Get a collection of attribute groups.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_attribute_groups
+    #
+    # ==== Second Example
+    #     options = { "sort": "id" }
+    #     @data = @mints_user.get_attribute_groups(options)
     def get_attribute_groups(options = nil)
       return @client.raw("get", "/config/attribute-groups", options)
     end
     
+    # === Get attribute group.
+    # Get an attribute group info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Attribute group id.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_attribute_group(10)
     def get_attribute_group(id)
       return @client.raw("get", "/config/attribute-groups/#{id}")
     end
 
+    # === Create attribute group.
+    # Create an attribute group with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "title": "New Attribute Group",
+    #       "object_type": "contacts"
+    #     }
+    #     @datos = @mints_user.create_attribute_group(data)
     def create_attribute_group(data)
-      return @client.raw("post", "/config/attribute-groups", nil, data)
+      return @client.raw("post", "/config/attribute-groups", nil, data_transform(data))
     end
 
+    # === Update attribute group.
+    # Update an attribute group info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Attribute group id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "title": "New Attribute Group Modified",
+    #       "object_type": "contacts",
+    #       "slug": "new-attribute-group",
+    #       "description": "New description"
+    #     }
+    #     @data = @mints_user.update_attribute_group(36, data)
     def update_attribute_group(id, data)
-      return @client.raw("put", "/config/attribute-groups/#{id}", nil, data)
+      return @client.raw("put", "/config/attribute-groups/#{id}", nil, data_transform(data))
     end
 
     ##
     # == Categories
     #
 
-    def sync_categories_for_object(data)
-      return @client.raw("put", "/config/categories/sync_categories_for_object", nil, data)
-    end
+    #def sync_categories_for_object(data)
+    #  return @client.raw("put", "/config/categories/sync_categories_for_object", nil, data)
+    #end
 
-    def get_categories_for_object(options)
-      return @client.raw("get", "/config/categories/get_categories_for_object", options)
+    #def get_categories_for_object(options)
+    #  return @client.raw("get", "/config/categories/get_categories_for_object", options)
+    #end
+    
+    #def get_categories
+    #  return @client.raw("get", "/config/categories")
+    #end
+
+    #def create_category(data) #TODO: Research if 'visible' is a boolean or int. It accepts smallint
+    #  return @client.raw("post", "/config/categories", nil, data)
+    #end
+
+    #def update_category(id, data)
+    #  return @client.raw("put", "/config/categories/#{id}", nil, data)
+    #end
+
+    #def get_category_support_data(id)
+    #  return @client.raw("get", "/config/categories/support-data/#{id}")
+    #end
+    
+    #def get_category(id)
+    #  return @client.raw("get", "/config/categories/#{id}")
+    #end
+
+    ##
+    # == Public Folders
+    #
+
+    # === Sync public folders for object.
+    # Sync public folders for object.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "object_type": "contacts",
+    #       "object_id": 1
+    #     }
+    #     @data = @mints_user.sync_public_folders_for_object(data.to_json)
+    def sync_public_folders_for_object(data)
+      return @client.raw("put", "/config/public-folders/sync_public-folders_for_object", nil, data)
     end
     
-    def get_categories
-      return @client.raw("get", "/config/categories")
+    # === Get public folders for object.
+    # Get public folders for object.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== Example
+    #     options = {
+    #       "object_type": "contacts",
+    #       "object_id": 1
+    #     }
+    #     @data = @mints_user.get_public_folders_for_object(options)
+    def get_public_folders_for_object(options)
+      return @client.raw("get", "/config/public-folders/get_public-folders_for_object", options)
     end
 
-    def create_category(data) #TODO: Research if 'visible' is a boolean or int. It accepts smallint
-      return @client.raw("post", "/config/categories", nil, data)
-    end
-
-    def update_category(id, data)
-      return @client.raw("put", "/config/categories/#{id}", nil, data)
-    end
-
-    def get_category_support_data(id)
-      return @client.raw("get", "/config/categories/support-data/#{id}")
+    # === Get public folders.
+    # Get a collection of public folders.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_public_folders
+    def get_public_folders
+      return @client.raw("get", "/config/public-folders")
     end
     
-    def get_category(id)
-      return @client.raw("get", "/config/categories/#{id}")
+    # === Create public folder.
+    # Create a public folder with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "title": "New Public Folder",
+    #       "slug": "new-public-folder",
+    #       "object_type": "contacts",
+    #       "visible": true
+    #     }
+    #     @data = @mints_user.create_public_folder(data.to_json)
+    def create_public_folder(data)
+      return @client.raw("post", "/config/public-folders", nil, data)
     end
+
+    # === Update public folder.
+    # Update a public folder info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Public folder id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "title": "New Public Folder Modified",
+    #       "slug": "new-public-folder",
+    #       "object_type": "contacts",
+    #       "visible": true
+    #     }
+    #     @data = @mints_user.update_public_folder(20, data.to_json)
+    def update_public_folder(id, data)
+      return @client.raw("put", "/config/public-folders/#{id}", nil, data)
+    end
+    
+    # === Get public folder support data.
+    # Get support data used in a public folder.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Public folder id.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_public_folder_support_data(1)
+    def get_public_folder_support_data(id)
+      return @client.raw("get", "/config/public-folders/support-data/#{id}")
+    end
+    
+    # === Get public folder.
+    # Get a public folder info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Public folder id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== Example
+    #      @data = @mints_user.get_public_folder(3)
+    def get_public_folder(id)
+      return @client.raw("get", "/config/public-folders/#{id}")
+    end
+    
 
     ##
     # == Taxonomies
     #
 
+    # === Sync taxonomies for object.
+    # Sync taxonomies for object.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "object_type": "contacts",
+    #       "object_id": 1
+    #     }
+    #     @data = @mints_user.sync_taxonomies_for_object(data)
     def sync_taxonomies_for_object(data)
-      return @client.raw("put", "/config/taxonomies/sync_taxonomies_for_object", nil, data)
+      return @client.raw("put", "/config/taxonomies/sync_taxonomies_for_object", nil, data_transform(data))
     end
 
+    # === Get taxonomies for object.
+    # Get taxonomies for object.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== Example
+    #     options = {
+    #       "object_type": "contacts",
+    #       "object_id": 1
+    #     }
+    #     @data = @mints_user.get_taxonomies_for_object(options)
     def get_taxonomies_for_object(options)
       return @client.raw("get", "/config/taxonomies/get_taxonomies_for_object", options)
     end
     
+    # === Get taxonomies support data.
+    # Get support data used in taxonomies.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_taxonomies_support_data
     def get_taxonomies_support_data
       return @client.raw("get", "/config/taxonomies/support-data")
     end
     
-    def get_ui_taxonomy(id)
-      return @client.raw("get", "/config/taxonomies/ui-taxonomies/#{id}")
-    end
+    #FIXME: Method doesnt exist in TaxonomyController.getUISupportData
+    #def get_ui_taxonomy(id)
+    #  return @client.raw("get", "/config/taxonomies/ui-taxonomies/#{id}")
+    #end
     
-    def get_taxonomies(options = nil)
-      return @client.raw("get", "/config/taxonomies", options)
+    # === Get taxonomies.
+    # Get a collection of taxonomies.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    # use_post:: (Boolean) -- Variable to determine if the request is by 'post' or 'get' functions.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_taxonomies
+    #
+    # ==== Second Example
+    #     options = { "fields": "title" }
+    #     @data = @mints_user.get_taxonomies(options)
+    #
+    # ==== Third Example
+    #     options = { "fields": "title" }
+    #     @data = @mints_user.get_taxonomies(options, false)
+    def get_taxonomies(options = nil, use_post = true)
+      return get_query_results("/config/taxonomies", options, use_post)
     end
 
+    # === Get taxonomy.
+    # Get a taxonomy info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Taxonomy id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_taxonomy(1)
+    #
+    # ==== Second Example
+    #     options = { "fields": "title" }
+    #     @data = @mints_user.get_taxonomy(1, options)
     def get_taxonomy(id, options = nil)
       return @client.raw("get", "/config/taxonomies/#{id}", options)
     end
 
+    # === Create taxonomy.
+    # Create a taxonomy with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "title": "New Taxonomy",
+    #       "slug": "new-taxonomy",
+    #       "object_type": "contacts"
+    #     }
+    #     @data = @mints_user.create_taxonomy(data)
     def create_taxonomy(data)
-      return @client.raw("post", "/config/taxonomies", nil, data)
+      return @client.raw("post", "/config/taxonomies", nil, data_transform(data))
     end
     
+    # === Update taxonomy.
+    # Update a taxonomy info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Taxonomy id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "title": "New Taxomony Modified",
+    #       "slug": "new-taxonomy",
+    #       "object_type": "contacts"
+    #     }
+    #     @data = @mints_user.update_taxonomy(104, data)
     def update_taxonomy(id, data)
-      return @client.raw("put", "/config/taxonomies/#{id}", nil, data)
+      return @client.raw("put", "/config/taxonomies/#{id}", nil, data_transform(data))
     end
     
     ##
     # == Relationships
     #
     
+    # === Get relationships available for.
+    # Get relationships availables.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== Example
+    #     options = {
+    #       "objectType": "contacts"
+    #     }
+    #     @data = @mints_user.get_relationships_available_for(options)
     def get_relationships_available_for(options)
       return @client.raw("get", "/config/relationships/available-for", options)
     end
     
-    def attach_relationship(data) #FIXME: Method doesn't work, controller cannot get data from request variable.
+    # === Attach relationship.
+    # Attach a relationship.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     
+    def attach_relationship(data) #FIXME: Method doesn't work, RelationshipManager cannot access to id attribute.
       return @client.raw("post", "/config/relationships/attach", nil, data)
     end
 
-    def detach_relationship(data) #FIXME: Undefined index. Can correct
+    # === Detach relationship.
+    # Detach a relationship.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     
+    def detach_relationship(data) #FIXME: Method doesn't work, RelationshipManager cannot access to id attribute.
       return @client.raw("post", "/config/relationships/detach", nil, data)
     end
     
+    # === Relationship has objects.
+    # Get relationships that has objects.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Relationship id.
+    #
+    # ==== Example
+    #     @data = @mints_user.relationship_has_objects(1)
     def relationship_has_objects(id)
       return @client.raw("get", "/config/relationships/#{id}/hasObjects")
     end
     
+    # === Get relationships.
+    # Get a collection of relationships.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_relationships
+    #
+    # ==== Second Example
+    #     options = { "fields": "id" }
+    #     @data = @mints_user.get_relationships(options)
     def get_relationships(options = nil)
       return @client.raw("get", "/config/relationships", options)
     end
 
+    # === Get relationship.
+    # Get a relationship info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Relationship id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_relationship(1)
+    #
+    # ==== Second Example
+    #     options = { "fields": "id" }
+    #     @data = @mints_user.get_relationship(1, options)
     def get_relationship(id, options = nil)
       return @client.raw("get", "/config/relationships/#{id}", options)
     end
 
+    # === Create relationship.
+    # Create a relationship with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "alias_1": "eventsCopy",
+    #       "alias_2": "ticketsCopy",
+    #       "object_model_1": "Story",
+    #       "object_model_2": "Product"
+    #     }
+    #     @data = @mints_user.create_relationship(data)
     def create_relationship(data)
-      return @client.raw("post", "/config/relationships", nil, data)
+      return @client.raw("post", "/config/relationships", nil, data_transform(data))
     end
 
+    # === Update relationship.
+    # Update a relationship info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Relationship id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "alias_1": "eventsCopyModified",
+    #       "alias_2": "ticketsCopyModified",
+    #       "object_model_1": "Story",
+    #       "object_model_2": "Product"
+    #     }
+    #     @data = @mints_user.update_relationship(5, data)
     def update_relationship(id, data)
-      return @client.raw("put", "/config/relationships/#{id}", nil, data)
+      return @client.raw("put", "/config/relationships/#{id}", nil, data_transform(data))
     end
 
+    # === Delete relationship.
+    # Delete a relationship.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Relationship id.
+    #
+    # ==== Example
+    #     @data = @mints_user.delete_relationship(5)
     def delete_relationship(id)
       return @client.raw("delete", "/config/relationships/#{id}")
     end
@@ -3672,19 +4851,61 @@ module Mints
     # == Tags
     #
 
+    # === Get tags.
+    # Get a collection of tags.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_tags
     def get_tags
       return @client.raw("get", "/config/tags")
     end
 
+    # === Get tag.
+    # Get a tag info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Tag id.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_tag(1)
     def get_tag(id)
       return @client.raw("get", "/config/tags/#{id}")
     end
 
+    # === Create tag.
+    # Create a tag with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "tag": "new-tag",
+    #       "is_visible": true
+    #     }
+    #     @data = @mints_user.create_tag(data.to_json)
     def create_tag(data)
       return @client.raw("post", "/config/tags", nil, data)
     end
 
-    def update_tag(id, data) #FIXME: Method doesn't work, controller cannot get data from request variable.
+    # === Update tag.
+    # Update a tag info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Tag id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "tag": {
+    #         "tag": "new-tag",
+    #         "slug": "new-tag",
+    #         "is_visible": false
+    #       }
+    #     }
+    #     @data = @mints_user.update_tag(54, data.to_json)
+    def update_tag(id, data)
+      #TODO: Inform TagController.update method has been modified
       return @client.raw("put", "/config/tags/#{id}", nil, data)
     end
 
@@ -3692,28 +4913,83 @@ module Mints
     # == Roles
     #
 
-    def get_roles_permissions #FIXME: RoleController doesnt have getPermissions method
-      return @client.raw("get", "/config/roles/get-permissions")
-    end
+    #def get_roles_permissions #FIXME: RoleController doesnt have getPermissions method
+    #  return @client.raw("get", "/config/roles/get-permissions")
+    #end
 
+    # === Duplicate role.
+    # Duplicate a role.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Role id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = { 
+    #       "options": [] 
+    #     }
+    #     @data = @mints_user.duplicate_role(1, data.to_json)
     def duplicate_role(id, data)
       return @client.raw("post", "/config/roles/#{id}/duplicate", nil, data)
     end
     
+    # === Get roles.
+    # Get a collection of roles.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_roles
     def get_roles
       return @client.raw("get", "/config/roles")
     end
 
+    # === Get role.
+    # Get a role info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Role id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_role(1)
     def get_role(id)
       return @client.raw("get", "/config/roles/#{id}")
     end
 
+    # === Create role.
+    # Create a role with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "name": "new-role",
+    #       "display_name": "New Role",
+    #       "description": "Role description"
+    #     }
+    #     @data = @mints_user.create_role(data)
     def create_role(data)
-      return @client.raw("post", "/config/roles", nil, data)
+      return @client.raw("post", "/config/roles", nil, data_transform(data))
     end
     
-    def update_role(id, data)
-      return @client.raw("put", "/config/roles/#{id}", nil, data)
+    # === Update role.
+    # Update a role info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Role id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "name": "new-role",
+    #       "display_name": "New Role Display Name Modified",
+    #       "description": "Role description",
+    #       "permissions": 1
+    #     }
+    #     @data = @mints_user.update_role(8, data)
+    def update_role(id, data) #FIXME: This action is unauthorized
+      #TODO: Research permissions variable type. This would be the error's solution.
+      return @client.raw("put", "/config/roles/#{id}", nil, data_transform(data))
     end
 
     ##
@@ -3730,10 +5006,23 @@ module Mints
       return @client.raw("get", "/config/users/can_coach")
     end
 
+    # === Get users.
+    # Get a collection of users.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_users
     def get_users
       return @client.raw("get", "/config/users")
     end
 
+    # === Get user.
+    # Get an user info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- User id.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_user(8)
     def get_user(id)
       return @client.raw("get", "/config/users/#{id}")
     end
@@ -4006,7 +5295,7 @@ module Mints
       unless data[:data]
         data = {data: data}
       end
-      return data
+      return data.to_json
     end
 
     def correct_json(data)
