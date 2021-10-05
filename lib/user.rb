@@ -2600,7 +2600,7 @@ module Mints
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
     #
     # ==== First Example
-    #     @datos = @mints_user.get_automation(1)
+    #     @data = @mints_user.get_automation(1)
     #
     # ==== Second Example
     #     options = {
@@ -4303,7 +4303,7 @@ module Mints
     #
 
     # === Get attributes data types.
-    # Get data types in attributes.
+    # Get data types used in attributes.
     #
     # ==== Example
     #     @data = @mints_user.get_attributes_data_types
@@ -4423,7 +4423,7 @@ module Mints
     #       "title": "New Attribute Group",
     #       "object_type": "contacts"
     #     }
-    #     @datos = @mints_user.create_attribute_group(data)
+    #     @data = @mints_user.create_attribute_group(data)
     def create_attribute_group(data)
       return @client.raw("post", "/config/attribute-groups", nil, data_transform(data))
     end
@@ -5027,54 +5027,175 @@ module Mints
       return @client.raw("get", "/config/users/#{id}")
     end
     
+    # === Create user.
+    # Create an user with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "name": "New User Name",
+    #       "email": "new_user_email@example.com",
+    #       "is_confirmed": false,
+    #       "set_password": true, 
+    #       "password": "123456",
+    #       "is_coach": false
+    #     }
+    #     @data = @mints_user.create_user(data)
     def create_user(data)
-      return @client.raw("post", "/config/users", nil, data)
+      return @client.raw("post", "/config/users", nil, data_transform(data))
     end
 
+    # === Update user.
+    # Update an user info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- User id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "name": "New User Name Modified",
+    #       "email": "new_user_name@example.com",
+    #       "is_active": true,
+    #       "is_confirmed": false,
+    #       "roles": ""
+    #     }
+    #     @data = @mints_user.update_user(14, data)
     def update_user(id, data)
-      return @client.raw("put", "/config/users/#{id}", nil, data)
+      return @client.raw("put", "/config/users/#{id}", nil, data_transform(data))
     end
 
     ##
     # == Teams
     #
     
+    # === Get team types.
+    # Get a collection of team types.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_team_types
     def get_team_types
       return @client.raw("get", "/config/teams/team-types")
     end
     
+    # === Get teams.
+    # Get a collection of teams.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_teams
     def get_teams
       return @client.raw("get", "/config/teams")
     end
     
+    # === Get team.
+    # Get a team info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Team id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_team(1)
     def get_team(id)
       return @client.raw("get", "/config/teams/#{id}")
     end
 
+    # === Create team.
+    # Create a team with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "title": "New Team",
+    #       "team_type_enum": 1
+    #     }
+    #     @data = @mints_user.create_team(data)
     def create_team(data)
-      return @client.raw("post", "/config/teams", nil, data)
+      return @client.raw("post", "/config/teams", nil, data_transform(data))
     end
     
+    # === Update team.
+    # Update a team info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Team id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "title": "New Team Modified",
+    #       "team_type_enum": 1,
+    #       "members": []
+    #     }
+    #     @data = @mints_user.update_team(5, data)
     def update_team(id, data)
-      return @client.raw("put", "/config/teams/#{id}", nil, data)
+      return @client.raw("put", "/config/teams/#{id}", nil, data_transform(data))
     end
 
     ##
     # == Api keys
     #
     
+    # === Get api keys.
+    # Get a collection of api keys.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_api_keys
+    #
+    # ==== Second Example
+    #     options = { "fields": "id" }
+    #     @data = @mints_user.get_api_keys(options)
     def get_api_keys(options = nil)
       return @client.raw("get", "/config/api-keys", options)
     end
 
+    # === Get api key.
+    # Get an api key info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Api key id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_api_key(2)
+    #
+    # ==== Second Example
+    #     options = { "fields": "id" }
+    #     @data = @mints_user.get_api_key(2, options)
     def get_api_key(id, options = nil)
       return @client.raw("get", "/config/api-keys/#{id}", options)
     end
 
+    # === Create api key.
+    # Create an api key with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "description": "New Api Key Description"
+    #     }
+    #     @data = @mints_user.create_api_key(data)
     def create_api_key(data)
-      return @client.raw("post", "/config/api-keys", nil, data)
+      return @client.raw("post", "/config/api-keys", nil, data_transform(data))
     end
 
+    # === Delete api key.
+    # Delete an api key.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Api key id.
+    #
+    # ==== Example
+    #     @data = @mints_user.delete_api_key(2)
     def delete_api_key(id)
       return @client.raw("delete", "/config/api-keys/#{id}")
     end
@@ -5083,35 +5204,372 @@ module Mints
     # == System Settings
     #
 
+    # === Get settings by keys.
+    # Get a collection of settings using keys.
+    #
+    # ==== Example
+    #     options = {
+    #       "setting_keys": "email_transport_provider,email_template_provider,email_template_default_from_address"
+    #     }
+    #     @data = @mints_user.get_settings_by_keys(options)
     def get_settings_by_keys(options)
       return @client.raw("get", "/config/settings/by-keys", options)
     end
     
+    # === Get settings.
+    # Get a collection of settings.
+    #
+    # ====  Example
+    #     @data = @mints_user.get_settings
     def get_settings
       return @client.raw("get", "/config/settings")
     end      
 
+    # === Create setting.
+    # Create a setting title with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "title": "new_settings"
+    #     }
+    #     @data = @mints_user.create_setting(data)
     def create_setting(data)
-      return @client.raw("post", "/config/settings", nil, data)
+      return @client.raw("post", "/config/settings", nil, data_transform(data))
     end
 
     ##
     # == Seeds
     #
 
+    # === Apply seeds.
+    # Apply seeds.
+    #
+    # ==== Example
+    #
     def apply_seeds(data) #TODO: Research use
       return @client.raw("post", "/config/seeds", nil, data)
     end
 
+    ##
+    # == Calendars
+    #
 
+    # === Get calendars.
+    # Get a collection of calendars.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_calendars
+    #
+    # ==== Second Example
+    #     options = {
+    #       "fields": "title"
+    #     }
+    #     @data = @mints_user.get_calendars(options)
+    def get_calendars(options = nil)
+      return @client.raw("get", "/config/calendars", options)
+    end
+    
+    # === Get calendar.
+    # Get a calendar info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Calendar id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_calendar(1)
+    #
+    # ==== Second Example
+    #     options = {
+    #       "fields": "title"
+    #     }
+    #     @data = @mints_user.get_calendar(1, options)
+    def get_calendar(id, options = nil)
+      return @client.raw("get", "/config/calendars/#{id}", options)
+    end
+    
+    # === Create calendar.
+    # Create a calendar with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = { 
+    #       "title": "New Calendar",
+    #       "object_type": "contacts",
+    #       "object_id": 1
+    #     }
+    #     @data = @mints_user.create_calendar(data)
+    def create_calendar(data)
+      return @client.raw("post", "/config/calendars", nil, data_transform(data))
+    end
+
+    # === Update calendar.
+    # Update a calendar info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Calendar id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = { 
+    #       "title": "New Calendar Modified",
+    #       "object_type": "contacts",
+    #       "object_id": 1
+    #     }
+    #     @data = @mints_user.update_calendar(4, data)
+    def update_calendar(id, data)
+      return @client.raw("put", "/config/calendars/#{id}", nil, data_transform(data))
+    end
+    
+    # === Delete calendar.
+    # Delete a calendar.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Calendar id.
+    #
+    # ==== Example
+    #     @data = @mints_user.delete_calendar(4)
+    def delete_calendar(id)
+      return @client.raw("delete", "/config/calendars/#{id}")
+    end
+
+    ##
+    # == Appointments
+    #
+
+    # === Get appointments.
+    # Get a collection of appointments.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_appointments
+    #
+    # ==== Second Example
+    #     options = {
+    #       "fields": "id"
+    #     }
+    #     @data = @mints_user.get_appointments(options)
+    def get_appointments(options = nil)
+      return @client.raw("get", "/config/appointments", options)
+    end
+    
+    # === Get appointment.
+    # Get an appointment info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Appointment id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_appointment(1)
+    #
+    # ==== Second Example
+    #     options = {
+    #       "fields": "id"
+    #     }
+    #     @data = @mints_user.get_appointment(1, options)
+    def get_appointment(id, options = nil)
+      return @client.raw("get", "/config/appointments/#{id}", options)
+    end
+    
+    # === Create appointment.
+    # Create an appointment with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "object_type": "contacts",
+    #       "object_id": 1,
+    #       "title": "New Appointment",
+    #       "start": "2021-09-06T20:29:16+00:00",
+    #       "end": "2022-09-06T20:29:16+00:00",
+    #       "attendee_id": 1
+    #     }
+    #     @data = @mints_user.create_appointment(data)
+    def create_appointment(data)
+      return @client.raw("post", "/config/appointments", nil, data_transform(data))
+    end
+
+    # === Update appointment.
+    # Update an appointment info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Appointment id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "object_id": 2
+    #     }
+    #     @data = @mints_user.update_appointment(1, data)
+    def update_appointment(id, data)
+      return @client.raw("put", "/config/appointments/#{id}", nil, data_transform(data))
+    end
+    
+    # === Delete appointment.
+    # Delete an appointment.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Appointment id.
+    #
+    # ==== Example
+    #     @data = @mints_user.delete_appointment(1)
+    def delete_appointment(id)
+      return @client.raw("delete", "/config/appointments/#{id}")
+    end
+
+    # === Scheduled appointments.
+    # Schedule an appointment.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "object_type": "contacts",
+    #       "object_id": 1,
+    #       "start": "2021-09-06T20:29:16+00:00",
+    #       "end": "2022-09-06T20:29:16+00:00"
+    #     }
+    #     @data = @mints_user.scheduled_appointments(data)
+    def scheduled_appointments(data)
+      return @client.raw("post", "/config/appointments/scheduled-appointments", nil, data_transform(data))
+    end
+    
+    # === Reschedule appointment.
+    # Reschedule an appointment.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "appointment_id": 2,
+    #       "start": "2021-09-06T20:29:16+00:00",
+    #       "end": "2022-09-06T20:29:16+00:00"
+    #     }
+    #     @data = @mints_user.reschedule_appointment(data)
+    def reschedule_appointment(data)
+      return @client.raw("post", "/config/appointments/reschedule-appointment", nil, data_transform(data))
+    end
+    
+    # === Attach invitee.
+    # Attach invitee.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "appointment_id": 2,
+    #       "invitee_ids": [ 2 ]
+    #     }
+    #     @data = @mints_user.attach_invitee(data)
+    def attach_invitee(data)
+      return @client.raw("post", "/config/appointments/attach-invitee", nil, data_transform(data))
+    end
+
+    # === Attach follower.
+    # Attach follower.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "appointment_id": 2,
+    #       "follower_ids": [ 2 ]
+    #     }
+    #     @data = @mints_user.attach_follower(data)
+    def attach_follower(data)
+      return @client.raw("post", "/config/appointments/attach-follower", nil, data_transform(data))
+    end
+    
+    # === Detach invitee.
+    # Detach invitee.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "appointment_id": 2,
+    #       "invitee_ids": [ 2 ]
+    #     }
+    #     @data = @mints_user.detach_invitee(data)
+    def detach_invitee(data)
+      return @client.raw("post", "/config/appointments/detach-invitee", nil, data_transform(data))
+    end
+
+    # === Detach follower.
+    # Detach follower.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "appointment_id": 2,
+    #       "follower_ids": [ 2 ]
+    #     }
+    #     @data = @mints_user.detach_follower(data)
+    def detach_follower(data)
+      return @client.raw("post", "/config/appointments/detach-follower", nil, data_transform(data))
+    end
+    
+    # === Sync invitee.
+    # Sync invitee.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "appointment_id": 2,
+    #       "invitee_ids": [ 2 ]
+    #     }
+    #     @data = @mints_user.sync_invitee(data)
+    def sync_invitee(data)
+      return @client.raw("post", "/config/appointments/sync-invitee", nil, data_transform(data))
+    end
+    
+    # === Sync follower.
+    # Sync follower.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "appointment_id": 2,
+    #       "follower_ids": [ 2 ]
+    #     }
+    #     @data = @mints_user.sync_follower(data)
+    def sync_follower(data)
+      return @client.raw("post", "/config/appointments/sync-follower", nil, data_transform(data))
+    end
+    
     ######################################### Profile #########################################
 
 
     ##
     # === Me.
-    # Get contact logged info
+    # Get contact logged info.
     #
-
+    # ==== Example
+    #     @data = @mints_user.me
     def me
       return @client.raw("get", "/profile/me")
     end
@@ -5120,14 +5578,41 @@ module Mints
     # == User Preferences
     #
 
+    ##
+    # === Get preferences.
+    # Get preferences of current user logged.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_preferences
     def get_preferences
       return @client.raw("get", "/profile/preferences")
     end
     
+    ##
+    # === Create preferences.
+    # Create preferences of current user logged with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "time_zone": "GMT-5"
+    #     }
+    #     @data = @mints_user.create_preferences(data)
     def create_preferences(data)
-      return @client.raw("post", "/profile/preferences", nil, data)
+      return @client.raw("post", "/profile/preferences", nil, data_transform(data))
     end
 
+    ##
+    # === Get preferences by setting key.
+    # Get preferences using a setting key.
+    #
+    # ==== Parameters
+    # setting_key:: (String) -- Setting key.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_preferences_by_setting_key("time_zone")
     def get_preferences_by_setting_key(setting_key)
       return @client.raw("get", "/profile/preferences/#{setting_key}")
     end
@@ -5136,20 +5621,57 @@ module Mints
     # == Notifications
     #
 
+    # === Get notifications.
+    # Get a collection of notifications.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_notifications
     def get_notifications
       return @client.raw("get", "/profile/notifications")
     end
 
+    # === Get paginated notifications.
+    # Get a collection of paginated notifications.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_paginated_notifications
     def get_paginated_notifications
       return @client.raw("get", "/profile/notificationsp")
     end
 
+    # === Read notifications.
+    # Read notifications by data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "ids": ["406e9b74-4a9d-42f2-afc6-1587bad6147c", "a2d9f582-1bdb-4e55-8af0-cd1962eaa88c"],
+    #       "read": true
+    #     }
+    #     @data = @mints_user.read_notifications(data)
     def read_notifications(data)
-      return @client.raw("post", "/profile/notifications/read", nil, data)
+      #TODO: Inform NotificationController.read method has been modified
+      #TODO: Method in controller didnt return data
+      return @client.raw("post", "/profile/notifications/read", nil, data_transform(data))
     end
     
+    # === Delete notifications.
+    # Delete notifications by data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "ids": ["179083e3-3678-4cf6-b75e-5a8b9761245e"]
+    #     }
+    #     @data = @mints_user.delete_notifications(data)
     def delete_notifications(data)
-      return @client.raw("post", "/profile/notifications/delete", nil, data)
+      #TODO: Inform NotificationController.delete method has been modified
+      #TODO: Method in controller didnt return data
+      return @client.raw("post", "/profile/notifications/delete", nil, data_transform(data))
     end
 
 
@@ -5160,14 +5682,38 @@ module Mints
     # == Helpers
     #
     
+    # === Slugify.
+    # Slugify a text using an object type.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== Example
+    #     options = {
+    #       "string": "lego set",
+    #       "objectType": "products",
+    #       "id": 1
+    #     }
+    #     @data = @mints_user.slugify(options)
     def slugify(options)
       return @client.raw("get", "/helpers/slugify", options)
     end
     
+    # === Get available types from usage.
+    # Get available types by usage.
+    #
+    # ==== Parameters
+    # usage:: () -- ...
+    #
     def get_available_types_from_usage(usage) #TODO: Research use
       return @client.raw("get", "/helpers/available-types/#{usage}")
     end
 
+    # === Get magic link config.
+    # Get config used in magic links.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_magic_link_config
     def get_magic_link_config
       return @client.raw("get", "/helpers/magic-link-config")
     end
@@ -5176,22 +5722,80 @@ module Mints
     # == User Folders
     #
 
+    # === Get user folders.
+    # Get a collection of user folders.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_user_folders
+    #
+    # ==== Second Example
+    #     options = { "fields": "folder" }
+    #     @data = @mints_user.get_user_folders(options)
     def get_user_folders(options = nil)
       return @client.raw("get", "/helpers/folders", options)
     end
 
+    # === Get user folder.
+    # Get an user folder info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- User folder id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_user_folder(1)
+    #
+    # ==== Second Example
+    #     options = { "fields": "user_id, folder" }
+    #     @data = @mints_user.get_user_folder(1, options)
     def get_user_folder(id, options = nil)
       return @client.raw("get", "/helpers/folders/#{id}", options)
     end
 
+    # === Create user folder.
+    # Create an user folder with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "folder": "new-user-folder",
+    #       "object_type": "contacts"
+    #     }
+    #     @data = @mints_user.create_user_folder(data)
     def create_user_folder(data)
-      return @client.raw("post", "/helpers/folders", nil, data)
+      return @client.raw("post", "/helpers/folders", nil, data_transform(data))
     end
 
+    # === Update user folder.
+    # Update an user folder info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- User folder id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "folder": "new-user-folder-modified",
+    #       "object_type": "contacts"
+    #     }
+    #     @data = @mints_user.update_user_folder(289, data)
     def update_user_folder(id, data)
-      return @client.raw("put", "/helpers/folders/#{id}", nil, data)
+      return @client.raw("put", "/helpers/folders/#{id}", nil, data_transform(data))
     end
 
+    # === Delete user folder.
+    # Delete an user folder.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- User folder id.
+    #
+    # ==== Example
+    #     @data = @mints_user.delete_user_folder(289)
     def delete_user_folder(id)
       return @client.raw("delete", "/helpers/folders/#{id}")
     end
@@ -5200,22 +5804,79 @@ module Mints
     # == Object Folders
     #
 
+    # === Get object folders.
+    # Get a collection of object folders.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_object_folders
+    #
+    # ==== Second Example
+    #     options = { "fields": "id" }
+    #     @data = @mints_user.get_object_folders(options)
     def get_object_folders(options = nil)
       return @client.raw("get", "/helpers/object-folders", options)
     end
 
+    # === Get object folder.
+    # Get an object folder info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Object folders id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_object_folder(1)
+    #
+    # ==== Second Example
+    #     options = { "fields": "id" }
+    #     @data = @mints_user.get_object_folder(1, options)
     def get_object_folder(id, options = nil)
       return @client.raw("get", "/helpers/object-folders/#{id}", options)
     end
 
+    # === Create object folder.
+    # Create an object folder with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "folder_id": 1,
+    #       "object_id": 1
+    #     }
+    #     @data = @mints_user.create_object_folder(data)
     def create_object_folder(data)
-      return @client.raw("post", "/helpers/object-folders", nil, data)
+      return @client.raw("post", "/helpers/object-folders", nil, data_transform(data))
     end
 
+    # === Update object folder.
+    # Update an object folder info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Object folder id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "folder_id": 2
+    #     }
+    #     @data = @mints_user.update_object_folder(1, data)
     def update_object_folder(id, data)
-      return @client.raw("put", "/helpers/object-folders/#{id}", nil, data)
+      return @client.raw("put", "/helpers/object-folders/#{id}", nil, data_transform(data))
     end
 
+    # === Delete object folder.
+    # Delete an object folder.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Object folder id.
+    #
+    # ==== Example
+    #     @data = @mints_user.delete_object_folder(2)
     def delete_object_folder(id)
       return @client.raw("delete", "/helpers/object-folders/#{id}")
     end
@@ -5224,22 +5885,80 @@ module Mints
     # == Object Activities
     #
 
+    # === Get object activities.
+    # Get a collection of object activities.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_object_activities
+    #
+    # ==== Second Example
+    #     options = { "fields": "object_type" }
+    #     @data = @mints_user.get_object_activities(options)
     def get_object_activities(options = nil)
       return @client.raw("get", "/helpers/object-activities", options)
     end
 
+    # === Get object activity.
+    # Get an object activity.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Object activity id.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_object_activity(1)
+    #
+    # ==== Second Example
+    #     options = { "fields": "activity_type" }
+    #     @data = @mints_user.get_object_activity(1, options)
     def get_object_activity(id, options = nil)
       return @client.raw("get", "/helpers/object-activities/#{id}", options)
     end
 
+    # === Create object activity.
+    # Create an object activity with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "activity_type": "note",
+    #       "object_type": "contacts",
+    #       "object_id": 1
+    #     }
+    #     @data = @mints_user.create_object_activity(data)
     def create_object_activity(data)
-      return @client.raw("post", "/helpers/object-activities", nil, data)
+      return @client.raw("post", "/helpers/object-activities", nil, data_transform(data))
     end
     
+    # === Update object activity.
+    # Update an object activity info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Object activity id.
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "activity_type": "ticket"
+    #     }
+    #     @data = @mints_user.update_object_activity(573, data)
     def update_object_activity(id, data)
-      return @client.raw("put", "/helpers/object-activities/#{id}", nil, data)
+      return @client.raw("put", "/helpers/object-activities/#{id}", nil, data_transform(data))
     end
 
+    # === Delete object activity.
+    # Delete an object activity.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Object activity id.
+    #
+    # ==== Example
+    #     @data = @mints_user.delete_object_activity(573)
     def delete_object_activity(id)
       return @client.raw("delete", "/helpers/object-activities/#{id}")
     end
@@ -5248,6 +5967,15 @@ module Mints
     # == Activities
     #
 
+    # === Get activities by object type and id.
+    # Get activities using an object type and object type id.
+    #
+    # ==== Parameters
+    # object_type:: (String) -- Object type.
+    # id:: (Integer) -- Object type id.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_activities_by_object_type_and_id("contacts", 1)
     def get_activities_by_object_type_and_id(object_type, id)
       return @client.raw("get", "/helpers/activities/#{object_type}/#{id}")
     end
@@ -5256,6 +5984,19 @@ module Mints
     # == Dice Coefficient
     #
     
+    # === Get dice coefficient.
+    # Get dice coefficient.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    #
+    # ==== Example
+    #     options = {
+    #       "table": "contacts",
+    #       "field": "id",
+    #       "word": "1"
+    #     }
+    #     @data = @mints_user.get_dice_coefficient(options)
     def get_dice_coefficient(options)
       return @client.raw("get", "/helpers/dice-coefficient", options)
     end
@@ -5264,8 +6005,30 @@ module Mints
     # == Permission
     #
 
+    # === Get permission menu.
+    # Get permission menu.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_permission_menu
     def get_permission_menu
       return @client.raw("get", "/helpers/menu")
+    end
+
+    ##
+    # == Seed
+    #
+
+    # === Generate seed.
+    # Generate seed using object type and object type id.
+    #
+    # ==== Parameters
+    # objectType:: (String) -- Object type.
+    # id:: (Integer) -- Object type id.
+    #
+    # ==== Example
+    #     @data = @mints_user.generate_seed("contacts", 1)
+    def generate_seed(objectType, id)
+      return @client.raw("get", "/helpers/seeds/#{objectType}/#{id}")
     end
     
 
@@ -5276,12 +6039,36 @@ module Mints
     # == Contact Auth
     #
     
+    # === Change password no auth.
+    # Change password to an email without auth.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "password": "12345678",
+    #       "email": "email@example.com"
+    #     }
+    #     @data = @mints_user.change_password_no_auth(data)
     def change_password_no_auth(data)
-      return @client.raw("post", "/contacts/change-password-no-auth", nil, data)
+      return @client.raw("post", "/contacts/change-password-no-auth", nil, data_transform(data))
     end
+
+
+    ######################################### Private #########################################
+
 
     private
 
+    # === Get query results.
+    # Method used to give the options to make a 'post' or 'get' request.
+    #
+    # ==== Parameters
+    # url:: (String) -- Url to make the request.
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::User-label-Resource+collections+options+] shown above can be used as parameter.
+    # use_post:: (Boolean) -- Variable to determine if the request is by 'post' or 'get' functions.
+    #
     def get_query_results(url, options = nil, use_post = true)
       if use_post
         return @client.raw("post", "#{url}/query", options)
@@ -5290,6 +6077,12 @@ module Mints
       end
     end
 
+    # === Data transform.
+    # Transform a 'data' variable to a standardized 'data' variable.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
     def data_transform(data)
       data = correct_json(data)
       unless data[:data]
@@ -5298,11 +6091,17 @@ module Mints
       return data.to_json
     end
 
+    # === Correct json.
+    # Receives a json data and convert it to a symbolized object.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
     def correct_json(data)
       if data.is_a? String
         data = JSON.parse(data)
-        data = data.symbolize_keys
       end
+      data = data.symbolize_keys
       return data
     end
     
