@@ -1,0 +1,29 @@
+require_relative './item_prices.rb'
+require_relative './locations.rb'
+require_relative './order_items_groups.rb'
+require_relative './order_statuses.rb'
+require_relative './orders.rb'
+require_relative './price_lists.rb'
+require_relative './product_templates.rb'
+require_relative './product_variations.rb'
+require_relative './products.rb'
+require_relative './skus.rb'
+require_relative './taxes.rb'
+require_relative './variant_options.rb'
+require_relative './variant_values.rb'
+
+module Ecommerce
+    include ItemPrices
+    include Locations
+    include OrderItemsGroups
+    include OrderStatuses
+    include Orders
+    include PriceList
+    include ProductTemplates
+    include ProductVariations
+    include Products
+    include Skus
+    include Taxes
+    include VariantOptions
+    include VariantValues
+end

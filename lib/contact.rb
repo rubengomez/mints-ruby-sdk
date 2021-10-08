@@ -1,4 +1,5 @@
 require_relative "./client.rb"
+require_relative "./mints_helper.rb"
 include ActionController::Cookies
 module Mints
   class Contact
@@ -6,7 +7,6 @@ module Mints
     ##
     # === Initialize.
     # Class constructor
-    #
     def initialize(host, api_key, session_token = nil, contact_token_id = nil, debug = false)
       @client = Mints::Client.new(host, api_key, "contact", session_token, contact_token_id, debug)
     end
@@ -21,13 +21,12 @@ module Mints
     #
     # ==== Example
     #     @mints_contact.login("brown.abigail@dubuque.com", "helloword")
-    #
     def login(email, password)
       data = {
         email: email,
         password: password
       }
-      response = @client.raw("post", "/contacts/login", nil, {data: data})
+      response = @client.raw("post", "/contacts/login", nil, {data: data.to_json})
       if response.key? "session_token"
         @client.session_token = response["session_token"]
       end
@@ -45,7 +44,6 @@ module Mints
     #     @mints_contact.magic_link_login(
     #       "d8618c6d-a165-41cb-b3ec-d053cbf30059:zm54HtRdfHED8dpILZpjyqjPIceiaXNLfOklqM92fveBS0nDtyPYBlI4CPlPe3zq"
     #     )
-    #
     def magic_link_login(token)
       response = @client.raw("get", "/contacts/magic-link-login/#{token}", nil, '/api/v1')
       if response.key? "session_token"
@@ -70,7 +68,6 @@ module Mints
     #
     # ==== Second Example
     #     @mints_contact.send_magic_link("brown.abigail@dubuque.com", "", "", 1440, 3)
-    #
     def send_magic_link(email, template_slug, redirectUrl = '', lifeTime = 1440, maxVisits = nil)
       data = {
         email: email,
@@ -90,7 +87,6 @@ module Mints
     # ==== Example
     #     @mints_contact.login('brown.abigail@dubuque.com', 'helloword')
     #     @mints_contact.logout
-    #
     def logout
       response = @client.raw("post", "/contacts/logout") if session_token?
       if response["success"]
@@ -110,7 +106,6 @@ module Mints
     #     @mints_contact.login('brown.abigail@dubuque.com', 'helloword')
     #     data = { "data": { "password": "123456" } }
     #     @mints_contact.change_password(data)
-    #
     def change_password(data)
       return @client.raw("post", "/contacts/change-password", nil, data)
     end
@@ -125,7 +120,6 @@ module Mints
     # ==== Example
     #     data = { "data": { "email": "brown.abigail@dubuque.com" } }
     #     @mints_contact.recover_password(data)
-    #
     def recover_password(data)
       return @client.raw("post", "/contacts/recover-password", nil, data)
     end
@@ -145,7 +139,6 @@ module Mints
     #       "token": "644aa3aa0831d782cc42e42b11aedea9a2234389af4f429a8d96651295ecfa09" 
     #     } }
     #     @mints_contact.reset_password(data)
-    #
     def reset_password(data)
       return @client.raw("post", "/contacts/reset-password", nil, data)
     end
@@ -153,7 +146,6 @@ module Mints
     ##
     # === OAuth Login.
     # Login a contact using oauth
-    #
     def oauth_login(data)
       return @client.raw("post", "/contacts/oauth-login", nil, data)
     end
@@ -164,9 +156,8 @@ module Mints
     #
     # ==== Example
     #     @mints_contact.me
-    #
-    def me
-      return @client.raw("get", "/contacts/me")
+    def me(options = nil)
+      return @client.raw("get", "/contacts/me", options)
     end
 
     ##
@@ -175,7 +166,6 @@ module Mints
     #
     # ==== Example
     #     @mints_contact.status
-    #
     def status
       return @client.raw("get", "/contacts/status")
     end
@@ -194,7 +184,6 @@ module Mints
     #       "last_name": "Garcia"
     #     } }
     #     @mints_contact.update(data)
-    #
     def update(data)
       return @client.raw("put", "/contacts/update", nil, data)
     end
@@ -214,12 +203,13 @@ module Mints
     #       "password": "123456"
     #     } }
     #     @mints_contact.register(data);
-    #
     def register(data)
       return @client.raw("post", "/contacts/register", nil, data)
     end
 
     private
+
+    include MintsHelper
 
     def session_token?
       if @client.session_token

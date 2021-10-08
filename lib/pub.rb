@@ -1,5 +1,7 @@
 require 'yaml'
 require_relative './client.rb'
+require_relative './mints_helper.rb'
+
 module Mints
   ##
   # == Public context API
@@ -102,7 +104,6 @@ module Mints
     #       "fullpath" => "https://mints.cloud/blog"
     #     }
     #     @mints_pub.register_visit(request, request["remote_ip"], request["user_agent"], request["fullpath"])
-    #
     def register_visit(request, ip = nil, user_agent = nil, url = nil)
       data = {
         ip_address: ip || request.remote_ip,
@@ -123,7 +124,6 @@ module Mints
     #
     # ==== Example
     #     @mints_pub.register_visit_timer("60da2325d29acc7e55684472", 4)
-    #
     def register_visit_timer(visit, time)
       return @client.raw("get", "/register-visit-timer?visit=#{visit}&time=#{time}")
     end
@@ -136,8 +136,7 @@ module Mints
     # * +slug+ - [String] It's the string identifier of the asset.
     #
     # ==== Example
-    #     @mints_pub.get_asset_info("quaerat")
-    #
+    #     @mints_pub.get_asset_info("asset_slug")
     def get_asset_info(slug)
       return @client.raw("get", "/content/asset-info/#{slug}")
     end
@@ -151,7 +150,6 @@ module Mints
     #
     # ==== Example
     #     @mints_pub.get_stories
-    #
     def get_stories(options = nil)
       return @client.raw("get", "/content/stories", options)
     end
@@ -165,8 +163,7 @@ module Mints
     # * +options+ - [Hash] List of {Single Resource Options}[#class-Mints::Pub-label-Single+resource+options] shown above can be used as parameter
     #
     # ==== Example
-    #     @mints_pub.get_story("getting-ready-for-e3")
-    #
+    #     @mints_pub.get_story("story_slug")
     def get_story(slug, options = nil)
       return @client.raw("get", "/content/stories/#{slug}", options)
     end
@@ -180,7 +177,6 @@ module Mints
     #
     # ==== Example
     #     @mints_pub.get_forms
-    #
     def get_forms(options = nil)
       return @client.raw("get", "/content/forms", options)
     end
@@ -194,31 +190,30 @@ module Mints
     # * +options+ - [Hash] List of {Single Resource Options}[#class-Mints::Pub-label-Single+resource+options] shown above can be used as parameter
     #
     # ==== Example
-    #     @mints_pub.get_form("survey")
-    #
+    #     @mints_pub.get_form("form_slug")
     def get_form(slug, options = nil)
       return @client.raw("get", "/content/forms/#{slug}", options)
     end
 
     ##
     # === Submit Form.
-    # Submit a form.
+    # Submit a form with data.
     #
     # ==== Parameters
     # * +data+ - [Hash] Data to be submited
     #
     # ==== Example
-    #     data_form = {
-    #       "data": {
-    #         'form_slug': 'formulario',
-    #         'email': 'oscar@mints.cloud',
-    #         'ingrese-un-texto': 'hola'
-    #       }
+    #     data = {
+    #       'form_slug': 'form_slug',
+    #       'email': 'email@example.com',
+    #       'given_name': 'given_name',
+    #       'f1': 'Field 1 answer',
+    #       'f2': 'Field 2 answer',
+    #       'f3': 'Field 3 answer'
     #     }
-    #     @mints_pub.submit_form(data_form.to_json)
-    #
+    #     @data = @mints_pub.submit_form(data)
     def submit_form(data)
-      return @client.raw("post", "/content/forms/submit", nil, data)
+      return @client.raw("post", "/content/forms/submit", nil, data_transform(data))
     end    
 
     ##
@@ -240,8 +235,7 @@ module Mints
     # * +options+ - [Hash] List of {Single Resource Options}[#class-Mints::Pub-label-Single+resource+options] shown above can be used as parameter
     #
     # ==== Example
-    #     @mints_pub.get_content_instance("bill-gates")
-    #
+    #     @mints_pub.get_content_instance("content_instance_slug")
     def get_content_instance(slug, options = nil)
       return @client.raw("get", "/content/content-instances/#{slug}", options)
     end
@@ -266,7 +260,6 @@ module Mints
     #
     # ==== Example
     #     @mints_pub.get_content_page("test-page")
-    #
     def get_content_page(slug, options = nil)
       return @client.raw("get", "/content/content-pages/#{slug}", options)
     end
@@ -280,7 +273,6 @@ module Mints
     #
     # ==== Example
     #     @mints_pub.get_locations
-    #
     def get_locations(options = nil)
       return @client.raw("get", "/ecommerce/locations", options)
     end
@@ -294,7 +286,6 @@ module Mints
     #
     # ==== Example
     #     @mints_pub.get_products
-    #
     def get_products(options = nil)
       return @client.raw("get", "/ecommerce/products", options)
     end
@@ -308,8 +299,7 @@ module Mints
     # * +options+ - [Hash] List of {Single Resource Options}[#class-Mints::Pub-label-Single+resource+options] shown above can be used as parameter
     #
     # ==== Example
-    #     @mints_pub.get_product("batman-shirt")
-    #
+    #     @mints_pub.get_product("product_slug")
     def get_product(slug, options = nil)
       return @client.raw("get", "/ecommerce/products/#{slug}", options)
     end
@@ -342,8 +332,7 @@ module Mints
     #     options = {
     #       "object_type": "locations"
     #     }
-    #     @mints_pub.get_category("atm", options)
-    #
+    #     @mints_pub.get_category("asset_slug", options)
     def get_category(slug, options = nil)
       return @client.raw("get", "/config/categories/#{slug}", options)
     end
@@ -357,7 +346,6 @@ module Mints
     #
     # ==== Example
     #     @mints_pub.get_tags
-    #
     def get_tags(options = nil)
       return @client.raw("get", "/config/tags", options)
     end
@@ -371,8 +359,7 @@ module Mints
     # * +options+ - [Hash] List of {Single Resource Options}[#class-Mints::Pub-label-Single+resource+options] shown above can be used as parameter
     #
     # ==== Example
-    #     @mints_pub.get_tag("ad-0")
-    #
+    #     @mints_pub.get_tag("tag_slug")
     def get_tag(slug, options = nil)
       return @client.raw("get", "/config/tags/#{slug}", options)
     end
@@ -386,7 +373,6 @@ module Mints
     #
     # ==== Example
     #     @mints_pub.get_taxonomies
-    #
     def get_taxonomies(options = nil)
       return @client.raw("get", "/config/taxonomies", options)
     end
@@ -400,8 +386,7 @@ module Mints
     # * +options+ - [Hash] List of {Single Resource Options}[#class-Mints::Pub-label-Single+resource+options] shown above can be used as parameter
     #
     # ==== Example
-    #     @mints_pub.get_taxonomy("unit_pricing_measure")
-    #
+    #     @mints_pub.get_taxonomy("taxonomy_slug")
     def get_taxonomy(slug, options = nil)
       return @client.raw("get", "/config/taxonomies/#{slug}", options)
     end
@@ -415,9 +400,12 @@ module Mints
     #
     # ==== Example
     #     @mints_pub.get_attributes
-    #
     def get_attributes(options = nil)
       return @client.raw("get", "/config/attributes", options)
     end
+
+    private
+
+    include MintsHelper
   end
 end
