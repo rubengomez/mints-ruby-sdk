@@ -1,4 +1,5 @@
 require_relative "./client.rb"
+require_relative "./mints_helper.rb"
 include ActionController::Cookies
 module Mints
   class Contact
@@ -7,27 +8,33 @@ module Mints
     # === Initialize.
     # Class constructor
     #
+    # ==== Parameters
+    # host:: (String) -- It's the visitor IP.
+    # api_key:: (String) -- Mints instance api key.
+    # contact_token_id:: (Integer) --  Cookie 'mints_contact_id' value (mints_contact_token).
+    #
+    # ==== Return
+    # Returns a Contact object
     def initialize(host, api_key, session_token = nil, contact_token_id = nil, debug = false)
       @client = Mints::Client.new(host, api_key, "contact", session_token, contact_token_id, debug)
     end
 
     ##
     # === Login.
-    # Starts a contact session
+    # Starts a contact session.
     #
     # ==== Parameters:
-    # * +email+ - [_String_] The email that will be logged.
-    # * +password+ - [_String_] The password of the email.
+    # email:: (String) -- The email that will be logged.
+    # password:: (String) -- The password of the email.
     #
     # ==== Example
-    #     @mints_contact.login("brown.abigail@dubuque.com", "helloword")
-    #
+    #     @mints_contact.login("email@example.com", "password")
     def login(email, password)
       data = {
         email: email,
         password: password
       }
-      response = @client.raw("post", "/contacts/login", nil, {data: data})
+      response = @client.raw("post", "/contacts/login", nil, {data: data}.to_json)
       if response.key? "session_token"
         @client.session_token = response["session_token"]
       end
@@ -39,13 +46,12 @@ module Mints
     # Starts a contact session with a token received in the contact email. The token will be received by send_magic_link method.
     #
     # ==== Parameters:
-    # * +token+ - [_String_] The email that will be logged.
+    # token:: (String) -- The email token that will be used to log in.
     #
     # ==== Example
     #     @mints_contact.magic_link_login(
     #       "d8618c6d-a165-41cb-b3ec-d053cbf30059:zm54HtRdfHED8dpILZpjyqjPIceiaXNLfOklqM92fveBS0nDtyPYBlI4CPlPe3zq"
     #     )
-    #
     def magic_link_login(token)
       response = @client.raw("get", "/contacts/magic-link-login/#{token}", nil, '/api/v1')
       if response.key? "session_token"
@@ -59,18 +65,17 @@ module Mints
     # Send magic link to contact by email. That magic link will be used in magic_link_login method.
     #
     # ==== Parameters:
-    # * +email+ - [_String_] Contact's email.
-    # * +template_slug+ - [_String_] Email template's slug to be used in the email.
-    # * +redirectUrl+ - [_String_] Url to be redirected in the implemented page.
-    # * +lifeTime+ - [_Integer_] Maximum time of use in minutes.
-    # * +maxVisits+ - [_Integer_] The maximum number of uses of a token. 
+    # email:: (String) -- Contact's email.
+    # template_slug:: (String) -- Email template's slug to be used in the email.
+    # redirectUrl:: (String) -- Url to be redirected in the implemented page.
+    # lifeTime:: (Integer) -- Maximum time of use in minutes.
+    # maxVisits:: (Integer) -- The maximum number of uses of a token.
     #
     # ==== First Example
-    #     @mints_contact.send_magic_link("brown.abigail@dubuque.com", "")
+    #     @mints_contact.send_magic_link("email@example.com", "template_slug")
     #
     # ==== Second Example
-    #     @mints_contact.send_magic_link("brown.abigail@dubuque.com", "", "", 1440, 3)
-    #
+    #     @mints_contact.send_magic_link("email@example.com", "template_slug", "", 1440, 3)
     def send_magic_link(email, template_slug, redirectUrl = '', lifeTime = 1440, maxVisits = nil)
       data = {
         email: email,
@@ -79,7 +84,7 @@ module Mints
         redirectUrl: redirectUrl,
         templateId: template_slug
       }
-      response = @client.raw("post", "/contacts/magic-link", nil, { data: data }, '/api/v1')
+      response = @client.raw("post", "/contacts/magic-link", nil, { data: data }.to_json, '/api/v1')
       return response
     end
 
@@ -88,9 +93,8 @@ module Mints
     # Ends a contact session previously logged.
     #
     # ==== Example
-    #     @mints_contact.login('brown.abigail@dubuque.com', 'helloword')
+    #     @mints_contact.login("email@example.com", "password")
     #     @mints_contact.logout
-    #
     def logout
       response = @client.raw("post", "/contacts/logout") if session_token?
       if response["success"]
@@ -104,15 +108,14 @@ module Mints
     # Change password without email. To change the password a contact must be logged.
     #
     # ==== Parameters:
-    # * +data+ - [] A new password allocated in a data key.
+    # data:: (Hash) -- A new password allocated in a data key.
     #
     # ==== Example
-    #     @mints_contact.login('brown.abigail@dubuque.com', 'helloword')
-    #     data = { "data": { "password": "123456" } }
-    #     @mints_contact.change_password(data)
-    #
+    #     @mints_contact.login("email@example.com", "password")
+    #     data = { "password": "123456" }
+    #     @data = @mints_contact.change_password(data)
     def change_password(data)
-      return @client.raw("post", "/contacts/change-password", nil, data)
+      return @client.raw("post", "/contacts/change-password", nil, data_transform(data))
     end
 
     ##
@@ -120,14 +123,13 @@ module Mints
     # Send a email that contains a token to a contact. That token will be used in reset_password to establish a new password. 
     #
     # ==== Parameters:
-    # * +data+ - [] It's a data key where will be hosted the destination email. 
+    # data:: (Hash) -- It's a data key where will be hosted the destination email.
     #
     # ==== Example
-    #     data = { "data": { "email": "brown.abigail@dubuque.com" } }
+    #     data = { "email": "email@example.com" }
     #     @mints_contact.recover_password(data)
-    #
     def recover_password(data)
-      return @client.raw("post", "/contacts/recover-password", nil, data)
+      return @client.raw("post", "/contacts/recover-password", nil, data_transform(data))
     end
 
     ##
@@ -135,25 +137,23 @@ module Mints
     # Reset password using a token. The token is obtained by recover_password method.
     #
     # ==== Parameters:
-    # * +data+ - [] It's a set of data which contains all the information to reset a contact password.
+    # data:: (Hash) -- It's a set of data which contains all the information to reset a contact password.
     #
     # ==== Example
-    #     data = { "data": { 
-    #       "email": "brown.abigail@dubuque.com", 
-    #       "password": "helloword", 
-    #       "password_confirmation": "helloword", 
+    #     data = { 
+    #       "email": "email@example.com", 
+    #       "password": "password", 
+    #       "password_confirmation": "password", 
     #       "token": "644aa3aa0831d782cc42e42b11aedea9a2234389af4f429a8d96651295ecfa09" 
-    #     } }
+    #     }
     #     @mints_contact.reset_password(data)
-    #
     def reset_password(data)
-      return @client.raw("post", "/contacts/reset-password", nil, data)
+      return @client.raw("post", "/contacts/reset-password", nil, data_transform(data))
     end
 
     ##
     # === OAuth Login.
-    # Login a contact using oauth
-    #
+    # Login a contact using oauth.
     def oauth_login(data)
       return @client.raw("post", "/contacts/oauth-login", nil, data)
     end
@@ -162,11 +162,17 @@ module Mints
     # === Me.
     # Get contact logged info.
     #
-    # ==== Example
+    # ==== First Example
     #     @mints_contact.me
     #
-    def me
-      return @client.raw("get", "/contacts/me")
+    # ==== Second Example
+    #     options = { 
+    #       "attributes": true,
+    #       "taxonomies": true
+    #     } 
+    #     @data = @mints_contact.me(options)
+    def me(options = nil)
+      return @client.raw("get", "/contacts/me", options)
     end
 
     ##
@@ -175,7 +181,6 @@ module Mints
     #
     # ==== Example
     #     @mints_contact.status
-    #
     def status
       return @client.raw("get", "/contacts/status")
     end
@@ -185,18 +190,17 @@ module Mints
     # Update logged contact attributes.
     #
     # ==== Parameters:
-    # * +data+ - [] It's the data to update with a session active.
+    # data:: (Hash) -- It's the data to update with a session active.
     #
     # ==== Example
-    #     @mints_contact.login("brown.abigail@dubuque.com", "helloword")
-    #     data = { "data": { 
-    #       "given_name": "Alonso", 
-    #       "last_name": "Garcia"
-    #     } }
+    #     @mints_contact.login("email@example.com", "password")
+    #     data = {
+    #       "given_name": "Given Name", 
+    #       "last_name": "Last Name"
+    #     }
     #     @mints_contact.update(data)
-    #
     def update(data)
-      return @client.raw("put", "/contacts/update", nil, data)
+      return @client.raw("put", "/contacts/update", nil, data_transform(data))
     end
 
     ##
@@ -204,22 +208,23 @@ module Mints
     # Register a contact.
     #
     # ==== Parameters:
-    # * +data+ - [] It's the register data.
+    # data:: (Hash) -- It's the register data.
     #
     # ==== Example
-    #     data = { "data": {
-    #       "email": "carlos@mints.cloud",
-    #       "given_name": "Carlos",
-    #       "last_name": "Fernandez",
-    #       "password": "123456"
-    #     } }
+    #     data = {
+    #       "email": "email@example.com",
+    #       "given_name": "Given Name",
+    #       "last_name": "Last Name",
+    #       "password": "password"
+    #     }
     #     @mints_contact.register(data);
-    #
     def register(data)
-      return @client.raw("post", "/contacts/register", nil, data)
+      return @client.raw("post", "/contacts/register", nil, data_transform(data))
     end
 
     private
+
+    include MintsHelper
 
     def session_token?
       if @client.session_token

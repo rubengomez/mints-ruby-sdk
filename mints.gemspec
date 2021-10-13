@@ -8,6 +8,7 @@ Gem::Specification.new do |s|
   s.files = [
     "Gemfile",
     "README.md",
+    "lib/mints_helper.rb",
     "lib/client.rb",
     "lib/user.rb",
     "lib/contact.rb",
@@ -26,6 +27,7 @@ Gem::Specification.new do |s|
     'lib/mints/controllers/contact_api_controller.rb',
     'lib/mints/controllers/user_api_controller.rb'
   ]
+  s.files += Dir["lib/user/**/*.rb"]
   s.require_paths = ["app", "lib"]
   s.add_runtime_dependency 'json', '~> 1.8.3', '>= 1.8.3'
   s.add_runtime_dependency 'httparty', '~> 0.18.0', '>= 0.18.0'

@@ -1,0 +1,21 @@
+module Contacts
+    ##
+    # == Contact Auth
+    #
+    
+    # === Change password no auth.
+    # Change password to an email without auth.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited.
+    #
+    # ==== Example
+    #     data = {
+    #       "password": "12345678",
+    #       "email": "email@example.com"
+    #     }
+    #     @data = @mints_user.change_password_no_auth(data)
+    def change_password_no_auth(data)
+        return @client.raw("post", "/contacts/change-password-no-auth", nil, data_transform(data))
+    end
+end

@@ -115,6 +115,15 @@ module Mints
     # === Set mints contact client.
     # Initialize the public client and set the contact token
     def set_mints_contact_client
+      if File.exists?("#{Rails.root}/mints_config.yml.erb")
+        template = ERB.new File.new("#{Rails.root}/mints_config.yml.erb").read
+        config = YAML.load template.result(binding)
+        @host = config["mints"]["host"]
+        @api_key = config["mints"]["api_key"]
+        @debug = config["sdk"]["debug"] ? config["sdk"]["debug"] : false
+      else
+        raise 'MintsBadCredentialsError'
+      end
       # Initialize mints clontact client
       session_token = cookies[:mints_contact_session_token] ? cookies[:mints_contact_session_token] : nil
       contact_token_id = cookies[:mints_contact_id] ? cookies[:mints_contact_id] : nil
