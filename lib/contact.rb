@@ -162,8 +162,15 @@ module Mints
     # === Me.
     # Get contact logged info.
     #
-    # ==== Example
+    # ==== First Example
     #     @mints_contact.me
+    #
+    # ==== Second Example
+    #     options = { 
+    #       "attributes": true,
+    #       "taxonomies": true
+    #     } 
+    #     @data = @mints_contact.me(options)
     def me(options = nil)
       return @client.raw("get", "/contacts/me", options)
     end
