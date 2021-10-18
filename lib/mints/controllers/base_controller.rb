@@ -73,7 +73,7 @@ module Mints
         puts "FULLPATH REQUEST: #{request.fullpath}"
         puts "HEADERS REQUEST: #{request.headers}"
         puts "IP REQUEST: #{request.ip}"
-        puts "REQUEST IP ADRESS: #{request['ip_address']}"
+        puts "REQUEST IP ADDRESS: #{request['ip_address']}"
         puts "REQUEST REMOTE IP: #{request['remote_ip']}"
       end
       response = @mints_pub.register_visit(request)
@@ -82,7 +82,11 @@ module Mints
       end
       @contact_token = response['contact_token'] ? response['contact_token'] : response['user_token']
       @visit_id = response['visit_id']
+      if @debug
+        puts "VISIT ID: #{@visit_id}"
+      end
       cookies.permanent[:mints_contact_id] = { value: @contact_token, secure: true, httponly: true }
+      cookies.permanent[:mints_visit_id] = { value: @visit_id, secure: true, httponly: true }
     end
 
     ##
@@ -99,7 +103,8 @@ module Mints
         raise 'MintsBadCredentialsError'
       end
       # Initialize mints pub client, credentials taken from mints_config.yml.erb file
-      @mints_pub = Mints::Pub.new(@host, @api_key, @contact_token, @debug)
+      @visit_id = cookies[:mints_visit_id] ? cookies[:mints_visit_id] : nil
+      @mints_pub = Mints::Pub.new(@host, @api_key, @contact_token, @visit_id, @debug)
       # Set contact token from cookie
       @mints_pub.client.session_token = @contact_token
     end

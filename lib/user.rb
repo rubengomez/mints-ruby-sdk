@@ -48,7 +48,7 @@ module Mints
 
     attr_reader :client
     def initialize(host, api_key, session_token = nil, debug = false)
-      @client = Mints::Client.new(host, api_key, 'user', session_token, nil, debug)
+      @client = Mints::Client.new(host, api_key, 'user', session_token, nil, nil, debug)
     end
 
     def login(email, password)

@@ -11,17 +11,21 @@ module Mints
       attr_accessor :session_token
       attr_accessor :contact_token_id
 
-      def initialize(host, api_key, scope = nil, session_token = nil, contact_token_id = nil, debug = false)
+      def initialize(host, api_key, scope = nil, session_token = nil, contact_token_id = nil, visit_id = nil, debug = false)
           @host = host
           @api_key = api_key
           @session_token = session_token
           @contact_token_id = contact_token_id
+          @visit_id = visit_id
           @debug = debug
           self.set_scope(scope)
       end
 
-      def raw(action, url, options = nil, data = nil, base_url = nil, compatibility_options = {})
-      base_url = @base_url if !base_url
+      def raw(action, url, options = nil, data = nil, base_url = nil, compatibility_options = {}, only_tracking = false)
+        if compatibility_options === nil
+          compatibility_options = {}
+        end
+        base_url = @base_url if !base_url
         uri = ""
         if (options && options.class == Hash)
           if (options[:jfilters] && options[:jfilters].class == Hash)
@@ -51,8 +55,18 @@ module Mints
                     if @redis_server.get(full_url)
                       response = @redis_server.get(full_url)
                       result_from_cache = true
-                    else 
-                      response = self.send("#{@scope}_#{action}", "#{full_url}", compatibility_options)
+
+                      headers = nil
+                      if only_tracking
+                        headers = {"Only-Tracking" => "true"}
+                      end
+                      #when is already in redis notify to California to register the object usage
+                      cali_response = self.send("#{@scope}_#{action}", "#{full_url}", headers, compatibility_options)
+                      if @debug
+                        puts "CALI RESPONSE: #{cali_response}"
+                      end
+                    else
+                      response = self.send("#{@scope}_#{action}", "#{full_url}", nil, compatibility_options)
                       @redis_server.setex(full_url,time,response)
                     end
                     break
@@ -63,7 +77,7 @@ module Mints
           end
 
           if !url_need_cache
-            response = self.send("#{@scope}_#{action}", "#{full_url}", compatibility_options)
+            response = self.send("#{@scope}_#{action}", "#{full_url}", nil, compatibility_options)
           end
 
         elsif action === 'create' or action === 'post'
@@ -88,7 +102,6 @@ module Mints
       end
   
       def method_missing(name, *args, &block)
-        puts name
         name.to_s.include?("__") ? separator = "__" : separator = "_"        
         # split the name to identify their elements
         name_spplited = name.to_s.split(separator)
@@ -124,7 +137,7 @@ module Mints
             uri.query_values = args[1]
           end
           url = self.get_url(route, object, uri, slug)
-          response = self.send("#{@scope}_#{action}", url, compatibility_options)
+          response = self.send("#{@scope}_#{action}", url, nil, compatibility_options)
         elsif action == "post" or action == "create"
           if args[1].class == Hash
             uri.query_values = args[1]
@@ -239,15 +252,20 @@ module Mints
       end
 
       # Start contact context
-      def contact_get(url, compatibility_options)
-        headers = {
+      def contact_get(url, headers = nil, compatibility_options)
+        h = {
           "ApiKey" => @api_key,
           "Accept" => "application/json",
           "ContactToken" => @contact_token_id
         }
-        headers["Content-Type"] = "application/json" unless compatibility_options['no_content_type']
-        headers["Authorization"] = "Bearer #{@session_token}" if @session_token
-        return self.http_get(url, headers)
+        h["Content-Type"] = "application/json" unless compatibility_options['no_content_type']
+        h["Authorization"] = "Bearer #{@session_token}" if @session_token
+        if headers
+          headers.each do |k,v|
+            h[k] = v
+          end
+        end
+        return self.http_get(url, h)
       end
 
       def contact_post(url, data, compatibility_options)
@@ -273,14 +291,19 @@ module Mints
       end
 
       # Start User context
-      def user_get(url, compatibility_options)
-        headers = {
+      def user_get(url, headers = nil, compatibility_options)
+        h = {
           "Accept" => "application/json",
           "ApiKey" => @api_key
         }
-        headers["Content-Type"] = "application/json" unless compatibility_options['no_content_type']
-        headers["Authorization"] = "Bearer #{@session_token}" if @session_token
-        return self.http_get(url, headers)
+        h["Content-Type"] = "application/json" unless compatibility_options['no_content_type']
+        h["Authorization"] = "Bearer #{@session_token}" if @session_token
+        if headers
+          headers.each do |k,v|
+            h[k] = v
+          end
+        end
+        return self.http_get(url, h)
       end
 
       def user_post(url, data, compatibility_options)
@@ -321,6 +344,7 @@ module Mints
         }
         h["Content-Type"] = "application/json" unless compatibility_options['no_content_type']
         h["ContactToken"] = @contact_token_id if @contact_token_id
+        h["Visit-Id"] = @visit_id if @visit_id
         if headers
           headers.each do |k,v|
             h[k] = v
