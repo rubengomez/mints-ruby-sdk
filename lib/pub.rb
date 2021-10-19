@@ -246,9 +246,9 @@ module Mints
     #
     # ==== Parameters
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::Pub-label-Resource+collections+options+] shown above can be used as parameter.
-    def get_content_pages(options = nil)
-      return @client.raw("get", "/content/content-pages", options)
-    end
+    # def get_content_pages(options = nil)
+      #return @client.raw("get", "/content/content-pages", options)
+    #end
 
     ##
     # === Get Content Page.
