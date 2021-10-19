@@ -240,6 +240,7 @@ module Mints
       return @client.raw("get", "/content/content-instances/#{slug}", options)
     end
 
+    #TODO: This method is commented for future use
     ##
     # === Get Content Pages.
     # Get all content pages.
