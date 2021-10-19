@@ -16,7 +16,7 @@ module Mints
     # ==== Return
     # Returns a Contact object
     def initialize(host, api_key, session_token = nil, contact_token_id = nil, debug = false)
-      @client = Mints::Client.new(host, api_key, "contact", session_token, contact_token_id, debug)
+      @client = Mints::Client.new(host, api_key, "contact", session_token, contact_token_id, nil, debug)
     end
 
     ##

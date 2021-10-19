@@ -116,7 +116,8 @@ module Mints
     def set_mints_pub_client
       
       # Initialize mints pub client, credentials taken from mints_config.yml.erb file
-      @mints_pub = Mints::Pub.new(@host, @api_key, nil, @debug)
+      @visit_id = cookies[:mints_visit_id] ? cookies[:mints_visit_id] : nil
+      @mints_pub = Mints::Pub.new(@host, @api_key, nil, @visit_id, @debug)
       # Set contact token from cookie
       @mints_pub.client.session_token = @contact_token
     end

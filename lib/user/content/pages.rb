@@ -1,11 +1,11 @@
 module Pages
     ##
-    # == Pages
+    # == Content Pages
     #
 
     ###
     # === Get page groups.
-    # Get page groups.
+    # Get content page groups.
     #
     # ==== Example
     #     @data = @mints_user.get_page_groups
@@ -14,7 +14,7 @@ module Pages
     end
 
     # === Get pages.
-    # Get a collection of pages.
+    # Get a collection of content pages.
     #
     # ==== Example
     #     @data = @mints_user.get_pages
@@ -23,7 +23,7 @@ module Pages
     end
 
     # === Get page.
-    # Get a page.
+    # Get a content page.
     #
     # ==== Parameters
     # id:: (Integer) -- Page id.
@@ -35,7 +35,7 @@ module Pages
     end
 
     # === Create page.
-    # Create a page with data.
+    # Create a content page with data.
     #
     # ==== Parameters
     # data:: (Hash) -- Data to be submited.
@@ -52,7 +52,7 @@ module Pages
     end
 
     # === Update page.
-    # Update a page info.
+    # Update a content page info.
     #
     # ==== Parameters
     # id:: (Integer) -- Page id.
@@ -68,7 +68,7 @@ module Pages
     end
 
     # === Delete page.
-    # Delete a page.
+    # Delete a content page.
     #
     # ==== Parameters
     # id:: (Integer) -- Page id.

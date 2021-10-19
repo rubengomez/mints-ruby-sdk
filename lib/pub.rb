@@ -83,8 +83,8 @@ module Mints
     #
     # ==== Return
     # Returns a Client object.
-    def initialize(host, api_key, contact_token_id = nil,  debug = false)
-      @client = Mints::Client.new(host, api_key, 'public', nil, contact_token_id, debug)
+    def initialize(host, api_key, contact_token_id = nil, visit_id = nil, debug = false)
+      @client = Mints::Client.new(host, api_key, 'public', nil, contact_token_id, visit_id, debug)
     end
     
     ##
@@ -165,7 +165,7 @@ module Mints
     # ==== Example
     #     @mints_pub.get_story("story_slug")
     def get_story(slug, options = nil)
-      return @client.raw("get", "/content/stories/#{slug}", options)
+      return @client.raw("get", "/content/stories/#{slug}", options, nil, nil, nil, true)
     end
 
     ##
@@ -192,7 +192,7 @@ module Mints
     # ==== Example
     #     @mints_pub.get_form("form_slug")
     def get_form(slug, options = nil)
-      return @client.raw("get", "/content/forms/#{slug}", options)
+      return @client.raw("get", "/content/forms/#{slug}", options, nil, nil, nil, true)
     end
 
     ##
@@ -240,15 +240,16 @@ module Mints
       return @client.raw("get", "/content/content-instances/#{slug}", options)
     end
 
+    #TODO: This method is commented for future use
     ##
     # === Get Content Pages.
     # Get all content pages.
     #
     # ==== Parameters
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::Pub-label-Resource+collections+options+] shown above can be used as parameter.
-    def get_content_pages(options = nil)
-      return @client.raw("get", "/content/content-pages", options)
-    end
+    # def get_content_pages(options = nil)
+      #return @client.raw("get", "/content/content-pages", options)
+    #end
 
     ##
     # === Get Content Page.
@@ -261,7 +262,7 @@ module Mints
     # ==== Example
     #     @mints_pub.get_content_page("test-page")
     def get_content_page(slug, options = nil)
-      return @client.raw("get", "/content/content-pages/#{slug}", options)
+      return @client.raw("get", "/content/content-pages/#{slug}", options, nil, nil, nil, true)
     end
 
     ##
@@ -301,7 +302,7 @@ module Mints
     # ==== Example
     #     @mints_pub.get_product("product_slug")
     def get_product(slug, options = nil)
-      return @client.raw("get", "/ecommerce/products/#{slug}", options)
+      return @client.raw("get", "/ecommerce/products/#{slug}", options, nil, nil, nil, true)
     end
 
     ##
