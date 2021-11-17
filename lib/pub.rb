@@ -103,7 +103,7 @@ module Mints
     #       "user_agent" => "User Agent",
     #       "fullpath" => "https://fullpath/example"
     #     }
-    #     @mints_pub.register_visit(request, request["remote_ip"], request["user_agent"], request["fullpath"])
+    #     @data = @mints_pub.register_visit(request, request["remote_ip"], request["user_agent"], request["fullpath"])
     def register_visit(request, ip = nil, user_agent = nil, url = nil)
       data = {
         ip_address: ip || request.remote_ip,
@@ -123,7 +123,7 @@ module Mints
     # time:: (Integer) -- The visitor's browser user agent.
     #
     # ==== Example
-    #     @mints_pub.register_visit_timer("60da2325d29acc7e55684472", 4)
+    #     @data = @mints_pub.register_visit_timer("60da2325d29acc7e55684472", 4)
     def register_visit_timer(visit, time)
       return @client.raw("get", "/register-visit-timer?visit=#{visit}&time=#{time}")
     end
@@ -136,11 +136,42 @@ module Mints
     # slug:: (String) -- It's the string identifier of the asset.
     #
     # ==== Example
-    #     @mints_pub.get_asset_info("asset_slug")
+    #     @data = @mints_pub.get_asset_info("asset_slug")
     def get_asset_info(slug)
       return @client.raw("get", "/content/asset-info/#{slug}")
     end
     
+    ##
+    # === Query Stories.
+    # Get stories using queries.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited. Its behaviour is similar to {Resource collection Options}[#class-Mints::Pub-label-Resource+collections+options+]. Some keys to use in this method are *search*, *filters*, *include*, *fields*, *sort*, *segment*, *pageSize*, *page*, *pubfolder*, *tfilters*, *jfilters*, *attributes*, *taxonomies*, *tags* and *public_folders*.
+    #
+    # ==== First Example
+    #     data = {
+    #       "search": "E3"
+    #     }
+    #     @data = @mints_pub.query_stories(data.to_json)
+    #
+    # ==== Second Example
+    #     data = {
+    #       "tags": true
+    #     }
+    #     @data = @mints_pub.query_stories(data.to_json)
+    #
+    # ==== Third Example
+    #     data = {
+    #       "search": "E3",
+    #       "fields": "id,title",
+    #       "tags": true,
+    #       "sort": "id"
+    #     }
+    #     @data = @mints_pub.query_stories(data.to_json)
+    def query_stories(data = nil)
+      return @client.raw("post", "/content/stories/query", nil, data)
+    end
+
     ##
     # === Get Stories.
     # Get a collection of stories.
@@ -149,9 +180,10 @@ module Mints
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::Pub-label-Resource+collections+options+] shown above can be used as parameter.
     #
     # ==== Example
-    #     @mints_pub.get_stories
-    def get_stories(options = nil)
-      return @client.raw("get", "/content/stories", options)
+    #     @data = @mints_pub.get_stories
+    #FIXME: use_post in false throw 'Operation now in progress' error.
+    def get_stories(options = nil, use_post = true)
+      return get_query_results("/content/stories", options, use_post)
     end
 
     ##
@@ -163,7 +195,7 @@ module Mints
     # options:: (Hash) -- List of {Single Resource Options}[#class-Mints::Pub-label-Single+resource+options] shown above can be used as parameter.
     #
     # ==== Example
-    #     @mints_pub.get_story("story_slug")
+    #     @data = @mints_pub.get_story("story_slug")
     def get_story(slug, options = nil)
       return @client.raw("get", "/content/stories/#{slug}", options, nil, nil, nil, true)
     end
@@ -176,7 +208,7 @@ module Mints
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::Pub-label-Resource+collections+options+] shown above can be used as parameter.
     #
     # ==== Example
-    #     @mints_pub.get_forms
+    #     @data = @mints_pub.get_forms
     def get_forms(options = nil)
       return @client.raw("get", "/content/forms", options)
     end
@@ -190,7 +222,7 @@ module Mints
     # options:: (Hash) -- List of {Single Resource Options}[#class-Mints::Pub-label-Single+resource+options] shown above can be used as parameter.
     #
     # ==== Example
-    #     @mints_pub.get_form("form_slug")
+    #     @data = @mints_pub.get_form("form_slug")
     def get_form(slug, options = nil)
       return @client.raw("get", "/content/forms/#{slug}", options, nil, nil, nil, true)
     end
@@ -235,7 +267,7 @@ module Mints
     # options:: (Hash) -- List of {Single Resource Options}[#class-Mints::Pub-label-Single+resource+options] shown above can be used as parameter.
     #
     # ==== Example
-    #     @mints_pub.get_content_instance("content_instance_slug")
+    #     @data = @mints_pub.get_content_instance("content_instance_slug")
     def get_content_instance(slug, options = nil)
       return @client.raw("get", "/content/content-instances/#{slug}", options)
     end
@@ -260,7 +292,7 @@ module Mints
     # options:: (Hash) -- List of {Single Resource Options}[#class-Mints::Pub-label-Single+resource+options] shown above can be used as parameter.
     #
     # ==== Example
-    #     @mints_pub.get_content_page("test-page")
+    #     @data = @mints_pub.get_content_page("test-page")
     def get_content_page(slug, options = nil)
       return @client.raw("get", "/content/content-pages/#{slug}", options, nil, nil, nil, true)
     end
@@ -271,24 +303,101 @@ module Mints
     #
     # ==== Parameters
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::Pub-label-Resource+collections+options+] shown above can be used as parameter.
+    # use_post:: (Boolean) -- Variable to determine if the request is by 'post' or 'get' functions.
     #
-    # ==== Example
-    #     @mints_pub.get_locations
-    def get_locations(options = nil)
-      return @client.raw("get", "/ecommerce/locations", options)
+    # ==== First Example
+    #     @data = @mints_pub.get_locations
+    #
+    # ==== Second Example
+    #     options = { "fields": "title" }
+    #     @data = @mints_pub.get_locations(options)
+    #
+    # ==== Third Example
+    #     options = { "fields": "title" }
+    #     @data = @mints_pub.get_locations(options, false)
+    def get_locations(options = nil, use_post = true)
+      return get_query_results("/ecommerce/locations", options, use_post)
     end
 
+    ##
+    # === Query Locations.
+    # Get locations using queries.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited. Its behaviour is similar to {Resource collection Options}[#class-Mints::Pub-label-Resource+collections+options+]. Some keys to use in this method are *search*, *filters*, *include*, *fields*, *sort*, *segment*, *pageSize*, *page*, *pubfolder*, *tfilters*, *jfilters*, *attributes*, *taxonomies*, *tags* and *public_folders*.
+    #
+    # ==== First Example
+    #     data = {
+    #       "search": "an"
+    #     }
+    #     @data = @mints_pub.query_locations(data.to_json)
+    #
+    # ==== Second Example
+    #     data = {
+    #       "tags": true
+    #     }
+    #     @data = @mints_pub.query_locations(data.to_json)
+    #
+    # ==== Third Example
+    #     data = {
+    #       "search": "an",
+    #       "fields": "title",
+    #       "tags": true
+    #     }
+    #     @data = @mints_pub.query_locations(data.to_json)
+    def query_locations(data = nil)
+      return @client.raw("post", "/ecommerce/locations/query", nil, data)
+    end
+    
     ##
     # === Get Products.
     # Get a collection of products.
     #
     # ==== Parameters
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::Pub-label-Resource+collections+options+] shown above can be used as parameter.
+    # use_post:: (Boolean) -- Variable to determine if the request is by 'post' or 'get' functions.
     #
-    # ==== Example
-    #     @mints_pub.get_products
-    def get_products(options = nil)
-      return @client.raw("get", "/ecommerce/products", options)
+    # ==== First Example
+    #     @data = @mints_pub.get_products
+    #
+    # ==== Second Example
+    #     options = { "fields": "title" }
+    #     @data = @mints_pub.get_products(options)
+    #
+    # ==== Third Example
+    #     options = { "fields": "title" }
+    #     @data = @mints_pub.get_products(options, false)
+    def get_products(options = nil, use_post = true)
+      return get_query_results("/ecommerce/products", options, use_post)
+    end
+
+    ##
+    # === Query Products.
+    # Get products using queries.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submited. Its behaviour is similar to {Resource collection Options}[#class-Mints::Pub-label-Resource+collections+options+]. Some keys to use in this method are *search*, *filters*, *include*, *fields*, *sort*, *segment*, *pageSize*, *page*, *pubfolder*, *tfilters*, *jfilters*, *attributes*, *taxonomies*, *tags* and *public_folders*.
+    #
+    # ==== First Example
+    #     data = {
+    #       "fields": "title"
+    #     }
+    #     @data = @mints_pub.query_products(data.to_json)
+    #
+    # ==== Second Example
+    #     data = {
+    #       "tags": true
+    #     }
+    #     @data = @mints_pub.query_products(data.to_json)
+    #
+    # ==== Third Example
+    #     data = {
+    #       "fields": "title",
+    #       "tags": true
+    #     }
+    #     @data = @mints_pub.query_products(data.to_json)
+    def query_products(data = nil) #FIXME: Search filter doesn't work
+      return @client.raw("post", "/ecommerce/products/query", nil, data)
     end
 
     ##
@@ -300,11 +409,84 @@ module Mints
     # options:: (Hash) -- List of {Single Resource Options}[#class-Mints::Pub-label-Single+resource+options] shown above can be used as parameter.
     #
     # ==== Example
-    #     @mints_pub.get_product("product_slug")
+    #     @data = @mints_pub.get_product("product_slug")
     def get_product(slug, options = nil)
       return @client.raw("get", "/ecommerce/products/#{slug}", options, nil, nil, nil, true)
     end
 
+    ##
+    # === Get Orders.
+    # Get a collection of orders.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::Pub-label-Resource+collections+options+] shown above can be used as parameter.
+    # use_post:: (Boolean) -- Variable to determine if the request is by 'post' or 'get' functions.
+    #
+    # ==== First Example
+    #     @data = @mints_pub.get_orders
+    #
+    # ==== Second Example
+    #     options = { "fields": "title" }
+    #     @data = @mints_pub.get_orders(options)
+    #
+    # ==== Third Example
+    #     options = { "fields": "title" }
+    #     @data = @mints_pub.get_orders(options, false)
+    def get_orders(options = nil, use_post = true)
+      return get_query_results("/ecommerce/orders", options, use_post)
+    end
+
+    ##
+    # === Get Order.
+    # Get a single order.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Order id.
+    # options:: (Hash) -- List of {Single Resource Options}[#class-Mints::Pub-label-Single+resource+options] shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_pub.get_product(25)
+    #
+    # ==== Second Example
+    #     options = {
+    #       "fields": "title"
+    #     }
+    #     @data = @mints_pub.get_product(25, options)
+    def get_order(id, options = nil)
+      return @client.raw("get", "/ecommerce/orders/#{id}", options)
+    end
+
+    ##
+    # === Create Order.
+    #
+    # ==== Parameters
+    # data
+    #
+    # ==== Example
+    #     data = {
+    #       "order_template_id": 1,
+    #       "order_status_id": 1,
+    #       "sales_channel_id": 1
+    #     }
+    #     data = @mints_pub.create_order(data)
+    def create_order(data)
+      return @client.raw("post", "/ecommerce/orders", nil, data_transform(data))
+    end
+
+    ##
+    # === Update Order.
+    #
+    # ==== Parameters
+    # id
+    # data
+    #
+    # ==== Example
+    #     
+    def update_order(id, data) #FIXME: Method doesn't work and doesn't throw a response.
+      return @client.raw("put", "/ecommerce/orders/#{id}", nil, data)
+    end
+    
+    
     ##
     # === Get categories.
     # Get a collection of categories.
@@ -316,7 +498,7 @@ module Mints
     #     options = {
     #       "object_type": "stories"
     #     }
-    #     @mints_pub.get_categories(options)
+    #     @data = @mints_pub.get_categories(options)
     def get_categories(options = nil)
       return @client.raw("get", "/config/categories", options)
     end
@@ -333,7 +515,7 @@ module Mints
     #     options = {
     #       "object_type": "locations"
     #     }
-    #     @mints_pub.get_category("asset_slug", options)
+    #     @data = @mints_pub.get_category("asset_slug", options)
     def get_category(slug, options = nil)
       return @client.raw("get", "/config/categories/#{slug}", options)
     end
@@ -346,7 +528,7 @@ module Mints
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::Pub-label-Resource+collections+options+] shown above can be used as parameter.
     #
     # ==== Example
-    #     @mints_pub.get_tags
+    #     @data = @mints_pub.get_tags
     def get_tags(options = nil)
       return @client.raw("get", "/config/tags", options)
     end
@@ -360,7 +542,7 @@ module Mints
     # options:: (Hash) -- List of {Single Resource Options}[#class-Mints::Pub-label-Single+resource+options] shown above can be used as parameter.
     #
     # ==== Example
-    #     @mints_pub.get_tag("tag_slug")
+    #     @data = @mints_pub.get_tag("tag_slug")
     def get_tag(slug, options = nil)
       return @client.raw("get", "/config/tags/#{slug}", options)
     end
@@ -373,7 +555,7 @@ module Mints
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::Pub-label-Resource+collections+options+] shown above can be used as parameter.
     #
     # ==== Example
-    #     @mints_pub.get_taxonomies
+    #     @data = @mints_pub.get_taxonomies
     def get_taxonomies(options = nil)
       return @client.raw("get", "/config/taxonomies", options)
     end
@@ -387,7 +569,7 @@ module Mints
     # options:: (Hash) -- List of {Single Resource Options}[#class-Mints::Pub-label-Single+resource+options] shown above can be used as parameter.
     #
     # ==== Example
-    #     @mints_pub.get_taxonomy("taxonomy_slug")
+    #     @data = @mints_pub.get_taxonomy("taxonomy_slug")
     def get_taxonomy(slug, options = nil)
       return @client.raw("get", "/config/taxonomies/#{slug}", options)
     end
@@ -400,7 +582,7 @@ module Mints
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::Pub-label-Resource+collections+options+] shown above can be used as parameter.
     #
     # ==== Example
-    #     @mints_pub.get_attributes
+    #     @data = @mints_pub.get_attributes
     def get_attributes(options = nil)
       return @client.raw("get", "/config/attributes", options)
     end
