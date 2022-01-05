@@ -7,6 +7,8 @@ class MintsFilesGenerator < Rails::Generators::Base
       copy_file 'mints_contact_controller.rb', './app/controllers/api/v1/mints_contact_controller.rb'
       copy_file 'mints_public_controller.rb', './app/controllers/api/v1/mints_public_controller.rb'
       copy_file 'mints_assets_controller.rb', './app/controllers/mints_assets_controller.rb'
+      copy_file 'short_link_controller.rb', './app/controllers/short_link_controller.rb'
+      copy_file 'mints_link.rb', './config/initializers/mints_link.rb'
       route <<-eos
         # Mints auto-generated routes (proxy to send request to mints.cloud)
         match '/public-assets/*path' => 'mints_assets#index', via: [:get, :post, :put, :patch, :delete]
@@ -18,6 +20,10 @@ class MintsFilesGenerator < Rails::Generators::Base
             match '/*path' => 'mints_public#index', via: [:get, :post, :put, :patch, :delete]
           end
         end
+        # Mints short link
+        get '/sl/visits', to: 'short_link#visits'
+        post '/sl/generate', to: 'short_link#generate'
+        get '/sl/:code', to: 'short_link#redirect'
       eos
     end
 end
