@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name = %q{mints}
-  s.version = "0.0.21"
-  s.date = %q{2021-09-02}
+  s.version = "0.0.24"
+  s.date = %q{2022-09-15}
   s.summary = %q{MINTS gem allows to connect your Rails App to MINTS.CLOUD}
   s.authors = %q{Ruben Gomez Garcia, Omar Mora, Luis Payan, Oscar Castillo}
   s.homepage  = "https://github.com/rubengomez/mints-ruby-sdk"
@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
   ]
   s.files += Dir["lib/user/**/*.rb"]
   s.require_paths = ["app", "lib"]
-  s.add_runtime_dependency 'json', '~> 1.8.3', '>= 1.8.3'
+  s.add_runtime_dependency 'json', '>= 1.8.3'
   s.add_runtime_dependency 'httparty', '~> 0.18.0', '>= 0.18.0'
   s.add_runtime_dependency 'redis', '~> 4.2.2', '>= 4.2.2'
   s.add_runtime_dependency 'addressable', '~> 2.7.0', '>= 2.7.0'

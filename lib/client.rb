@@ -34,7 +34,7 @@ module Mints
           uri = Addressable::URI.new
           uri.query_values = options
         end
-        
+
         full_url = "#{@host}#{base_url}#{url}#{uri}"
         response = nil
         if action === 'get'
@@ -52,18 +52,16 @@ module Mints
                     time = group['time']
                     url_need_cache = true
                     @redis_server = Redis.new(host: config['redis_cache']['redis_host'], port: config['redis_cache']['redis_port'] ? config['redis_cache']['redis_port'] : 6379, db: config['redis_cache']['redis_db'] ? config['redis_cache']['redis_db'] : 1)
-                    if @redis_server.get(full_url)
-                      response = @redis_server.get(full_url)
+                    redis_response = @redis_server.get(full_url)
+                    if redis_response
+                      response = redis_response
                       result_from_cache = true
 
                       headers = nil
                       if only_tracking
                         headers = {"Only-Tracking" => "true"}
-                      end
-                      #when is already in redis notify to California to register the object usage
-                      cali_response = self.send("#{@scope}_#{action}", "#{full_url}", headers, compatibility_options)
-                      if @debug
-                        puts "CALI RESPONSE: #{cali_response}"
+                        #when is already in redis notify to California to register the object usage
+                        #cali_response = self.send("#{@scope}_#{action}", "#{full_url}", headers, compatibility_options)
                       end
                     else
                       response = self.send("#{@scope}_#{action}", "#{full_url}", nil, compatibility_options)
@@ -72,7 +70,7 @@ module Mints
                     break
                   end
               end
-              break if url_need_cache    
+              break if url_need_cache
             end
           end
 
@@ -82,7 +80,7 @@ module Mints
 
         elsif action === 'create' or action === 'post'
           action = 'post'
-          response = self.send("#{@scope}_#{action}", "#{full_url}", data, compatibility_options)          
+          response = self.send("#{@scope}_#{action}", "#{full_url}", data, compatibility_options)
         elsif action === 'put' or action === 'patch' or action ==='update'
           action = 'put'
           response = self.send("#{@scope}_#{action}", "#{full_url}", data, compatibility_options)
@@ -90,19 +88,35 @@ module Mints
           action = 'delete'
           response = self.send("#{@scope}_#{action}", "#{full_url}", data, compatibility_options)
         end
-        if result_from_cache
-          return parsed_response = JSON.parse(response)
-        else
-          if (response.response.code == "404")
-            raise 'NotFoundError'
+
+        begin
+          if result_from_cache
+            if @debug
+              puts "Method: #{action} \nURL: #{url} \nOptions: #{options.to_json} \nOnly tracking: #{only_tracking} \nResponse from: REDIS"
+              if (data)
+                puts "Data: #{data.to_json}"
+              end
+            end
+            return JSON.parse(response)
+          else
+            if (response.response.code == "404")
+              raise 'NotFoundError'
+            end
+            if @debug
+              puts "Method: #{action} \nURL: #{url} \nOptions: #{options.to_json} \nOnly tracking: #{only_tracking} \nResponse from: CALI"
+              if (data)
+                puts "Data: #{data.to_json}"
+              end
+            end
+            return JSON.parse(response.body)
           end
-          parsed_response = JSON.parse(response.body) 
-          return parsed_response
-        end        
+        rescue
+          return response
+        end
       end
-  
+
       def method_missing(name, *args, &block)
-        name.to_s.include?("__") ? separator = "__" : separator = "_"        
+        name.to_s.include?("__") ? separator = "__" : separator = "_"
         # split the name to identify their elements
         name_spplited = name.to_s.split(separator)
         # count the elments
@@ -125,8 +139,8 @@ module Mints
             route_array.push n
         end
         route = route_array.join("/")
-        
-        
+
+
         slug = nil
         uri = Addressable::URI.new
         if action == "get"
@@ -161,9 +175,9 @@ module Mints
         if response.response.code == "404"
           raise 'NotFoundError'
         elsif response.response.code == "500"
-          raise 'InternalServerError'  
+          raise 'InternalServerError'
         end
-        return JSON.parse(response.body)        
+        return JSON.parse(response.body)
       end
 
       def get_url(route, object, uri, slug = nil)
@@ -173,7 +187,7 @@ module Mints
           return "#{@host}#{@base_url}/#{route}/#{object}#{uri}"
         end
       end
-      
+
       def replacements
         return [
             {old_value: '_', new_value: '-'},
@@ -199,56 +213,56 @@ module Mints
       ##### HTTTP CLIENTS ######
       # Simple HTTP GET
       def http_get(url, headers = nil)
-        if @debug
-          puts "Url:"
-          puts url
-          puts "Headers:"
-          puts headers
-          puts "Method: get"
-        end
+        # if @debug
+        #   puts "Url:"
+        #   puts url
+        #   puts "Headers:"
+        #   puts headers
+        #   puts "Method: get"
+        # end
         return headers ? HTTParty.get(url, :headers => headers) : HTTParty.get(url)
-      end    
+      end
 
       # Simple HTTP POST
       def http_post(url, headers = nil, data = nil)
-        if @debug
-          puts "Url:"
-          puts url
-          puts "Headers:"
-          puts headers
-          puts "Data:"
-          puts data
-          puts "Method: post"
-        end
-        return headers ? HTTParty.post(url, :headers=> headers, :body => data) : HTTParty.post(url, :body => data)  
+        # if @debug
+        #   puts "Url:"
+        #   puts url
+        #   puts "Headers:"
+        #   puts headers
+        #   puts "Data:"
+        #   puts data
+        #   puts "Method: post"
+        # end
+        return headers ? HTTParty.post(url, :headers=> headers, :body => data) : HTTParty.post(url, :body => data)
       end
 
       # Simple HTTP PUT
       def http_put(url, headers = nil, data = nil)
-        if @debug
-          puts "Url:"
-          puts url
-          puts "Headers:"
-          puts headers
-          puts "Data:"
-          puts data
-          puts "Method: put"
-        end
+        # if @debug
+        #   puts "Url:"
+        #   puts url
+        #   puts "Headers:"
+        #   puts headers
+        #   puts "Data:"
+        #   puts data
+        #   puts "Method: put"
+        # end
         return headers ? HTTParty.put(url, :headers=> headers, :body => data) : HTTParty.put(url, :body => data)
       end
 
       # Simple HTTP DELETE
       def http_delete(url, headers = nil, data = nil)
-        if @debug
-          puts "Url:"
-          puts url
-          puts "Headers:"
-          puts headers
-          puts "Data:"
-          puts data
-          puts "Method: delete"
-        end
-        return headers ? HTTParty.delete(url, :headers=> headers, :body => data) : HTTParty.delete(url, :body => data)  
+        # if @debug
+        #   puts "Url:"
+        #   puts url
+        #   puts "Headers:"
+        #   puts headers
+        #   puts "Data:"
+        #   puts data
+        #   puts "Method: delete"
+        # end
+        return headers ? HTTParty.delete(url, :headers=> headers, :body => data) : HTTParty.delete(url, :body => data)
       end
 
       # Start contact context
@@ -336,7 +350,7 @@ module Mints
         return self.http_delete(url, headers, data)
       end
       # End User Context
-      
+
       def public_get(url, headers = nil, compatibility_options)
         h = {
           "Accept" => "application/json",

@@ -30,7 +30,7 @@ module Mints
   #     { "fields": "id, title, slug" }
   #     { "fields[products]": "id, title, slug" }
   #
-  # == Resource collections options 
+  # == Resource collections options
   # * +search+ - [_String_] If present, it will search for records matching the search string. _Example:_
   #     { "search": "searchstring" }
   # * +scopes+ - [_String_] If present, it will apply the specified Model's scopes. _Example:_
@@ -49,7 +49,7 @@ module Mints
   #         }
   #       ],
   #       "operator":"or"
-  #     } 
+  #     }
   #     options = { "jfilters": jfilter }
   # * +catfilters+ - [_String_] filter by categories. _Example:_
   #     { "catfilters": "categoryName" }
@@ -86,7 +86,7 @@ module Mints
     def initialize(host, api_key, contact_token_id = nil, visit_id = nil, debug = false)
       @client = Mints::Client.new(host, api_key, 'public', nil, contact_token_id, visit_id, debug)
     end
-    
+
     ##
     # === Register Visit.
     # Register a ghost/contact visit in Mints.Cloud.
@@ -206,7 +206,7 @@ module Mints
     # ==== Example
     #     @data = @mints_pub.get_form("form_slug")
     def get_form(slug)
-      return @client.raw("get", "/content/forms/#{slug}", nil, nil, nil, nil, true)
+      return @client.raw("get", "/content/forms/#{slug}", nil, nil, nil, nil, false)
     end
 
     ##
@@ -228,11 +228,11 @@ module Mints
     #     @data = @mints_pub.submit_form(data)
     def submit_form(data)
       return @client.raw("post", "/content/forms/submit", nil, data_transform(data))
-    end    
+    end
 
     ##
     # === Get Content Instances.
-    # Get a collection of content instances. _Note:_ Options must be specified. 
+    # Get a collection of content instances. _Note:_ Options must be specified.
     #
     # ==== Parameters
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::Pub-label-Resource+collections+options+] shown above can be used as parameter.
@@ -249,7 +249,7 @@ module Mints
     #       "sort": "-id"
     #     }
     #     @data = @mints_pub.get_content_instances(options)
-    def get_content_instances(options) 
+    def get_content_instances(options)
       return @client.raw("get", "/content/content-instances", options)
     end
 
@@ -287,7 +287,7 @@ module Mints
     # ==== Example
     #     @data = @mints_pub.get_content_page("test-page")
     def get_content_page(slug)
-      return @client.raw("get", "/content/content-pages/#{slug}", nil, nil, nil, nil, true)
+      return @client.raw("get", "/content/content-pages/#{slug}", nil, nil, nil, nil, false)
     end
 
     ### V1/ECOMMERCE ###
@@ -313,7 +313,7 @@ module Mints
     def get_locations(options = nil, use_post = true)
       return get_query_results("/ecommerce/locations", options, use_post)
     end
-    
+
     ##
     # === Get Products.
     # Get a collection of products.
@@ -444,7 +444,7 @@ module Mints
     def get_tag(slug, options = nil)
       return @client.raw("get", "/config/tags/#{slug}", options)
     end
-    
+
     ##
     # === Get Taxonomies.
     # Get a collection of taxonomies.
@@ -458,13 +458,13 @@ module Mints
     #
     # ==== Second Example
     #     options = {
-    #       "fields": "id, title"      
+    #       "fields": "id, title"
     #     }
     #     @data = @mints_pub.get_taxonomies(options)
     #
     # ==== Third Example
     #     options = {
-    #       "fields": "id, title"      
+    #       "fields": "id, title"
     #     }
     #     @data = @mints_pub.get_taxonomies(options, false)
     def get_taxonomies(options = nil, use_post = true)
