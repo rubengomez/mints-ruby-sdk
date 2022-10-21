@@ -24,7 +24,7 @@ module Forms
     #
     # ==== Parameters
     # id:: (Integer) -- Form id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -42,7 +42,7 @@ module Forms
     #
     # ==== Parameters
     # id:: (Integer) -- Form id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -79,6 +79,18 @@ module Forms
         return @client.raw("post", "/content/forms/#{id}/duplicate")
     end
 
+    # === Get activation words form.
+    # Get activation words a form.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Form id.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_form_activation_words(3)
+    def get_form_activation_words(id)
+        return @client.raw("post", "/content/forms/#{id}/activation-words")
+    end
+
     # === Get form support data.
     # Get form support data.
     #
@@ -104,6 +116,34 @@ module Forms
         return @client.raw("get", "/content/forms/submissions", options)
     end
 
+    # === Get form submission.
+    # Get form submission.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of Resource Collection Options shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_form_submissions
+    #
+    # ==== Second Example
+    #     options = { "fields": "id" }
+    #     @data = @mints_user.get_form_submissions(options)
+    def get_form_submission(id, options)
+        return @client.raw("get", "/content/forms/submissions/#{id}", options)
+    end
+
+    # === Delete form submission.
+    # Delete a form submission.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Form submission id.
+    #
+    # ==== Example
+    #     @data = @mints_user.delete_form_submission(1)
+    def delete_form_submission(id)
+        return @client.raw("delete", "/content/forms/submissions/#{id}")
+    end
+
     # === Get form.
     # Get a form info.
     #
@@ -125,7 +165,7 @@ module Forms
     # Create a form with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -142,7 +182,7 @@ module Forms
     #
     # ==== Parameters
     # id:: (Integer) -- Form id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -164,5 +204,31 @@ module Forms
     #     @data = @mints_user.delete_form(9)
     def delete_form(id)
         return @client.raw("delete", "/content/forms/#{id}")
+    end
+
+    # === Get form aggregates.
+    # Get a form aggregates info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Form id.
+    # object_id:: (Integer) -- Object id.
+    # ==== First Example
+    #     @data = @mints_user.get_form_aggregates(1)
+    def get_form_aggregates(id, object_id)
+        return @client.raw("get", "/content/forms/#{id}/aggregates?object_id=#{object_id}", options)
+    end
+
+    # === Reset aggregates.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submitted.
+    #
+    # ==== Example
+    #     data = {
+    #       "object_id": 1
+    #     }
+    #     @data = @mints_user.reset_form_aggregates(data)
+    def reset_form_aggregates(data)
+        return @client.raw("post", "/content/forms/#{id}/aggregates", nil, data_transform(data))
     end
 end

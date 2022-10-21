@@ -8,6 +8,7 @@ require_relative './message_templates.rb'
 require_relative './messages.rb'
 require_relative './pages.rb'
 require_relative './stories.rb'
+require_relative './story_versions.rb'
 require_relative './story_templates.rb'
 
 module Content
@@ -21,6 +22,7 @@ module Content
     include Messages
     include Pages
     include Stories
+    include StoryVersions
     include StoryTemplates
 
     # === Get public images url.
@@ -62,7 +64,7 @@ module Content
     # Create an author with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -79,7 +81,7 @@ module Content
     #
     # ==== Parameters
     # id:: (Integer) -- Author id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     
@@ -122,7 +124,7 @@ module Content
     # Create a keyword with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -138,7 +140,7 @@ module Content
     #
     # ==== Parameters
     # id:: (Integer) -- Keyword id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     
@@ -183,7 +185,7 @@ module Content
     # Create a stage with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     config_json = {
@@ -209,7 +211,7 @@ module Content
     #
     # ==== Parameters
     # id:: (Integer) -- Stage id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     config_json = {

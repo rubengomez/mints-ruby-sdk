@@ -78,7 +78,7 @@ module Deals
     # Create a deal with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -89,8 +89,8 @@ module Deals
     #       }
     #     }
     #     @data = @mints_user.create_deal(data.to_json)
-    def create_deal(data)
-        return @client.raw("post", "/crm/deals", nil, data)
+    def create_deal(data, options = nil)
+        return @client.raw("post", "/crm/deals", options, data)
     end
 
     # === Update deal.
@@ -98,14 +98,14 @@ module Deals
     #
     # ==== Parameters
     # id:: (Integer) -- Deal id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
     #       "title": "New Deal Modified"
     #     }
     #     @data = @mints_user.update_deal(102, data.to_json)
-    def update_deal(id, data)
-        return @client.raw("put", "/crm/deals/#{id}", nil, data)
+    def update_deal(id, data, options = nil)
+        return @client.raw("put", "/crm/deals/#{id}", options, data)
     end
 end

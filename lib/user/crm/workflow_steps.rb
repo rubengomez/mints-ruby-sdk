@@ -7,7 +7,7 @@ module WorkFlowSteps
     # Create a workflow step with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = { 
@@ -24,7 +24,7 @@ module WorkFlowSteps
     #
     # ==== Parameters
     # id:: (Integer) -- Workflow step id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = { 

@@ -38,7 +38,7 @@ module Users
     # Create an user with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -59,7 +59,7 @@ module Users
     #
     # ==== Parameters
     # id:: (Integer) -- User id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {

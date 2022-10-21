@@ -16,7 +16,7 @@ module Helpers
     # Slugify a text using an object type.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     

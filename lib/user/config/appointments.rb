@@ -44,7 +44,7 @@ module Appointments
     # Create an appointment with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -65,7 +65,7 @@ module Appointments
     #
     # ==== Parameters
     # id:: (Integer) -- Appointment id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -92,7 +92,7 @@ module Appointments
     # Schedule an appointment.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -110,7 +110,7 @@ module Appointments
     # Reschedule an appointment.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -127,7 +127,7 @@ module Appointments
     # Attach invitee.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -143,7 +143,7 @@ module Appointments
     # Attach follower.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -159,7 +159,7 @@ module Appointments
     # Detach invitee.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -175,7 +175,7 @@ module Appointments
     # Detach follower.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -191,7 +191,7 @@ module Appointments
     # Sync invitee.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -207,7 +207,7 @@ module Appointments
     # Sync follower.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {

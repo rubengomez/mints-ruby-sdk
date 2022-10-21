@@ -41,15 +41,15 @@ module Conversations
     # Create a conversation with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
     #       "title": "New Conversation"
     #     }
     #     @data = @mints_user.create_conversation(data)
-    def create_conversation(data)
-        return @client.raw("post", "/content/conversations", nil, data_transform(data))
+    def create_conversation(data, options = nil)
+        return @client.raw("post", "/content/conversations", options, data_transform(data))
     end
 
     # === Update conversation.
@@ -57,15 +57,15 @@ module Conversations
     #
     # ==== Parameters
     # id:: (Integer) -- Conversation id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
     #       "title": "New Conversation Modified"
     #     }
     #     @data = @mints_user.update_conversation(13, data)
-    def update_conversation(id, data)
-        return @client.raw("put", "/content/conversations/#{id}", nil, data_transform(data))
+    def update_conversation(id, data, options = nil)
+        return @client.raw("put", "/content/conversations/#{id}", options, data_transform(data))
     end
 
     # === Delete conversation.
@@ -85,7 +85,7 @@ module Conversations
     #
     # ==== Parameters
     # id:: (Integer) -- Conversation id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -113,7 +113,7 @@ module Conversations
     #
     # ==== Parameters
     # id:: (Integer) -- Conversation id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -129,7 +129,7 @@ module Conversations
     #
     # ==== Parameters
     # id:: (Integer) -- Conversation id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -145,7 +145,7 @@ module Conversations
     #
     # ==== Parameters
     # id:: (Integer) -- Conversation id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -161,7 +161,7 @@ module Conversations
     #
     # ==== Parameters
     # id:: (Integer) -- Contact id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -170,5 +170,37 @@ module Conversations
     #     @data = @mints_user.detach_contact_in_conversation(1, data)
     def detach_contact_in_conversation(id, data)
         return @client.raw("post", "/content/conversations/#{id}/detach-contact", nil, data_transform(data))
+    end
+
+    # === Attach form in conversation.
+    # Attach a form in a conversation.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Conversation id.
+    # data:: (Hash) -- Data to be submitted.
+    #
+    # ==== Example
+    #     data = {
+    #       "form_id": 2
+    #     }
+    #     @data = @mints_user.attach_form_in_conversation(1, data)
+    def attach_form_in_conversation(id, data)
+        return @client.raw("post", "/content/conversations/#{id}/attach-form", nil, data_transform(data))
+    end
+
+    # === Detach form in conversation.
+    # Detach a form in a conversation.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Contact id.
+    # data:: (Hash) -- Data to be submitted.
+    #
+    # ==== Example
+    #     data = {
+    #       "form_id": 2
+    #     }
+    #     @data = @mints_user.detach_form_in_conversation(1, data)
+    def detach_form_in_conversation(id, data)
+        return @client.raw("post", "/content/conversations/#{id}/detach-form", nil, data_transform(data))
     end
 end

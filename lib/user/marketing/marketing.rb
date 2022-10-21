@@ -44,7 +44,7 @@ module Marketing
     # Create an automation with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -60,7 +60,7 @@ module Marketing
     #
     # ==== Parameters
     # id:: (Integer) -- Automation id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     def update_automation(id, data) #FIXME: Method doesn't work.
         return @client.raw("put", "/marketing/automation/#{id}", nil, data_transform(data))
@@ -107,7 +107,7 @@ module Marketing
     #
     # ==== Parameters
     # id:: (Integer) -- Automation id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {

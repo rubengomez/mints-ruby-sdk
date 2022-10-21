@@ -37,7 +37,7 @@ module MessageTemplates
     # Preview an message template based in data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     variables = {
@@ -57,7 +57,7 @@ module MessageTemplates
     # Send an message template to different contacts.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -77,7 +77,7 @@ module MessageTemplates
     #
     # ==== Parameters
     # id:: (Integer) -- Message template id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     def duplicate_message_template(id, data) #FIXME: Error in duplicating
         return @client.raw("post", "/content/message-templates/#{id}/duplicate", nil, data_transform(data))
@@ -120,7 +120,7 @@ module MessageTemplates
     # Create an message template with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -137,7 +137,7 @@ module MessageTemplates
     #
     # ==== Parameters
     # id:: (Integer) -- Message template id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {

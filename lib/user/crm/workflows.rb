@@ -40,7 +40,7 @@ module Workflows
     # Create a workflow with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -57,7 +57,7 @@ module Workflows
     #
     # ==== Parameters
     # id:: (Integer) -- Workflow id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {

@@ -18,8 +18,17 @@ module Pages
     #
     # ==== Example
     #     @data = @mints_user.get_pages
-    def get_pages
-        return @client.raw("get", "/content/pages")
+    def get_pages(options = nil)
+        return @client.raw("get", "/content/pages", options)
+    end
+
+    # === Get bundles.
+    # Get a collection of content pages.
+    #
+    # ==== Example
+    #     @data = @mints_user.get_pages
+    def get_bundles(options = nil)
+        return @client.raw("get", "/content/pages", options)
     end
 
     # === Get page.
@@ -38,7 +47,7 @@ module Pages
     # Create a content page with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = { 
@@ -56,7 +65,7 @@ module Pages
     #
     # ==== Parameters
     # id:: (Integer) -- Page id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = { 

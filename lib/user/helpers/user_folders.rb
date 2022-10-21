@@ -40,7 +40,7 @@ module UserFolders
     # Create an user folder with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -57,7 +57,7 @@ module UserFolders
     #
     # ==== Parameters
     # id:: (Integer) -- User folder id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {

@@ -8,7 +8,7 @@ module ProductVariations
     #
     # ==== Parameters
     # productId:: (Integer) -- Product id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     def generate_product_variation(productId, data) #TODO: Research use
         #TODO: Notify line 247 had a '/' before Exception
@@ -19,7 +19,7 @@ module ProductVariations
     # Set prices to product variations.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     skus = [
@@ -78,7 +78,7 @@ module ProductVariations
     # Create a product variation with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -100,7 +100,7 @@ module ProductVariations
     #
     # ==== Parameters
     # id:: (Integer) -- Product variation id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {

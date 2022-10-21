@@ -55,7 +55,7 @@ module Companies
     # Create a company with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -70,8 +70,8 @@ module Companies
     #         "tax_identifier": nil
     #     }
     #     @data = @mints_user.create_company(data)
-    def create_company(data)
-        return @client.raw("post", "/crm/companies/", nil, data_transform(data))
+    def create_company(data, options = nil)
+        return @client.raw("post", "/crm/companies/", options, data_transform(data))
     end
 
     # === Update company.
@@ -79,15 +79,15 @@ module Companies
     #
     # ==== Parameters
     # id:: (Integer) -- Company id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = { 
     #       "title": "Company Title Modified"
     #     }
     #     @data = @mints_user.update_company(23, data)
-    def update_company(id, data)
-        return @client.raw("put", "/crm/companies/#{id}", nil, data_transform(data))
+    def update_company(id, data, options = nil)
+        return @client.raw("put", "/crm/companies/#{id}", options, data_transform(data))
     end
 
     ##
@@ -98,7 +98,7 @@ module Companies
     # Delete a group of companies.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {

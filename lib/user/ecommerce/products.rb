@@ -8,7 +8,7 @@ module Products
     #
     # ==== Parameters
     # productId:: (Integer) -- Product id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     def update_product_variations_config(productId, data) #TODO: Method doesnt work, research use
         return @client.raw("post", "/ecommerce/products/update-variations-config/#{productId}", nil, data_transform(data))
@@ -38,7 +38,7 @@ module Products
     #
     # ==== Parameters
     # id:: (Integer) -- Product id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -54,7 +54,7 @@ module Products
     #
     # ==== Parameters
     # id:: (Integer) -- Product id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -137,7 +137,7 @@ module Products
     # Create a product with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -146,8 +146,8 @@ module Products
     #       "sku_prefix": "sku_prefix"
     #     }
     #     @data = @mints_user.create_product(data)
-    def create_product(data)
-        return @client.raw("post", "/ecommerce/products/", nil, data_transform(data))
+    def create_product(data, options = nil)
+        return @client.raw("post", "/ecommerce/products/", options, data_transform(data))
     end
 
     # === Update product.
@@ -155,7 +155,7 @@ module Products
     #
     # ==== Parameters
     # id:: (Integer) -- Product id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -163,7 +163,7 @@ module Products
     #       "slug": "new-product"
     #     }
     #     @data = @mints_user.update_product(9, data)
-    def update_product(id, data)
-        return @client.raw("put", "/ecommerce/products/#{id}", nil, data_transform(data))
+    def update_product(id, data, options = nil)
+        return @client.raw("put", "/ecommerce/products/#{id}", options, data_transform(data))
     end
 end

@@ -65,7 +65,7 @@ module OrderItemsGroups
     # Create a order item group with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -84,7 +84,7 @@ module OrderItemsGroups
     #
     # ==== Parameters
     # id:: (Integer) -- Order item group id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {

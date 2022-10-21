@@ -4,7 +4,7 @@ module Relationships
     #
     
     # === Get relationships available for.
-    # Get relationships availables.
+    # Get relationships available.
     #
     # ==== Parameters
     # options:: (Hash) -- List of Resource Collection Options shown above can be used as parameter.
@@ -22,24 +22,24 @@ module Relationships
     # Attach a relationship.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     
     def attach_relationship(data) #FIXME: Method doesn't work, RelationshipManager cannot access to id attribute.
-        return @client.raw("post", "/config/relationships/attach", nil, data)
+        return @client.raw("post", "/config/relationships/attach", nil, data_transform(data))
     end
 
     # === Detach relationship.
     # Detach a relationship.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     
     def detach_relationship(data) #FIXME: Method doesn't work, RelationshipManager cannot access to id attribute.
-        return @client.raw("post", "/config/relationships/detach", nil, data)
+        return @client.raw("post", "/config/relationships/detach", nil, data_transform(data))
     end
     
     # === Relationship has objects.
@@ -91,7 +91,7 @@ module Relationships
     # Create a relationship with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -110,7 +110,7 @@ module Relationships
     #
     # ==== Parameters
     # id:: (Integer) -- Relationship id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {

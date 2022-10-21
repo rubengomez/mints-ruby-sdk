@@ -40,7 +40,7 @@ module Taxes
     # Create a tax with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -57,7 +57,7 @@ module Taxes
     #
     # ==== Parameters
     # id:: (Integer) -- Tax id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {

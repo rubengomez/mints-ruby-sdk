@@ -28,7 +28,7 @@ module Tags
     # Create a tag with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -45,7 +45,7 @@ module Tags
     #
     # ==== Parameters
     # id:: (Integer) -- Tag id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {

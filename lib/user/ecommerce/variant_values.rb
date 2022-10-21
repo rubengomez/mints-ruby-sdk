@@ -40,7 +40,7 @@ module VariantValues
     # Create a variant value with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -59,7 +59,7 @@ module VariantValues
     #
     # ==== Parameters
     # id:: (Integer) -- Variant value id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {

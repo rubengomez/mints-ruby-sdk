@@ -40,7 +40,7 @@ module WorkflowStepObjects
     # Create a workflow step object with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -58,7 +58,7 @@ module WorkflowStepObjects
     #
     # ==== Parameters
     # id:: (Integer) -- Workflow step object id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {

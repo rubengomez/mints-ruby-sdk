@@ -59,7 +59,7 @@ module ContentTemplates
     # Create a content template with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -80,7 +80,7 @@ module ContentTemplates
     #
     # ==== Parameters
     # id:: (Integer) -- Content template id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {

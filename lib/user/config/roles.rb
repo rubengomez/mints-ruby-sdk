@@ -12,7 +12,7 @@ module Roles
     #
     # ==== Parameters
     # id:: (Integer) -- Role id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = { 
@@ -49,7 +49,7 @@ module Roles
     # Create a role with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -67,7 +67,7 @@ module Roles
     #
     # ==== Parameters
     # id:: (Integer) -- Role id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {

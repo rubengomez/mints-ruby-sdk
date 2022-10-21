@@ -40,7 +40,7 @@ module VariantOptions
     # Create a variant option with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -56,7 +56,7 @@ module VariantOptions
     #
     # ==== Parameters
     # id:: (Integer) -- Variant option id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {

@@ -8,7 +8,7 @@ module Orders
     #
     # ==== Parameters
     # orderId:: (Integer) -- Order id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     def duplicate_order(orderId, data) #FIXME: Doesnt read options from data and sale_price_cents column doesnt have to be null
         return @client.raw("post", "/ecommerce/orders/duplicate/#{orderId}", nil, data)
@@ -18,7 +18,7 @@ module Orders
     # Delete orders.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -80,7 +80,7 @@ module Orders
     # Create a order with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -88,8 +88,8 @@ module Orders
     #       "order_template_id": 2
     #     }
     #     @data = @mints_user.create_order(data)
-    def create_order(data)
-        return @client.raw("post", "/ecommerce/orders", nil, data_transform(data))
+    def create_order(data, options = nil)
+        return @client.raw("post", "/ecommerce/orders", options, data_transform(data))
     end
 
     # === Update order.
@@ -97,15 +97,15 @@ module Orders
     #
     # ==== Parameters
     # id:: (Integer) -- Order id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
     #       "title": "New Order Modified"
     #     }
     #     @data = @mints_user.update_order(26, data)
-    def update_order(id, data)
-        return @client.raw("put", "/ecommerce/orders/#{id}", nil, data_transform(data))
+    def update_order(id, data, options = nil)
+        return @client.raw("put", "/ecommerce/orders/#{id}", options, data_transform(data))
     end
     
     ##
@@ -162,7 +162,7 @@ module Orders
     #
     # ==== Parameters
     # id:: (Integer) -- Order template id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -247,7 +247,7 @@ module Orders
     #
     # ==== Parameters
     # id:: (Integer) -- Order item id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = { "title": "No title in order items" }

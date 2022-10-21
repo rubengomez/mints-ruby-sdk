@@ -79,7 +79,7 @@ module Contacts
     # Create a contact with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -89,8 +89,8 @@ module Contacts
     #       "password": "123456"
     #     }
     #     @data = @mints_user.create_contact(data)
-    def create_contact(data)
-        return @client.raw("post", "/crm/contacts", nil, data_transform(data))
+    def create_contact(data, options = nil)
+        return @client.raw("post", "/crm/contacts", options, data_transform(data))
     end
 
     ##
@@ -99,7 +99,7 @@ module Contacts
     #
     # ==== Parameters
     # id:: (Integer) -- Contact id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -107,8 +107,8 @@ module Contacts
     #       "company_id": 3
     #     }
     #     @data = @mints_user.update_contact(65, data)
-    def update_contact(id, data)
-        return @client.raw("put", "/crm/contacts/#{id}", nil, data_transform(data))
+    def update_contact(id, data, options = nil)
+        return @client.raw("put", "/crm/contacts/#{id}", options, data_transform(data))
     end
 
     ##
@@ -130,7 +130,7 @@ module Contacts
     #
     # ==== Parameters
     # contact_id:: (Integer) -- Contact id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -176,7 +176,7 @@ module Contacts
     #
     # ==== Parameters
     # contact_id:: (Integer) -- Contact id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = { 
@@ -259,7 +259,7 @@ module Contacts
     #
     # ==== Parameters
     # id:: (Integer) -- Contact id.
-    # data:: (Hash) -- Data to be submited. It contains ids to be merged.
+    # data:: (Hash) -- Data to be submitted. It contains ids to be merged.
     #
     # ==== Example
     #     data = {
@@ -275,7 +275,7 @@ module Contacts
     # Send magic links to contacts.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = { 
@@ -299,7 +299,7 @@ module Contacts
     # Delete different contacts.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = { 

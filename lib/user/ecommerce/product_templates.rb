@@ -73,7 +73,7 @@ module ProductTemplates
     # Create a product template with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = { 
@@ -90,7 +90,7 @@ module ProductTemplates
     #
     # ==== Parameters
     # id:: (Integer) -- Product template id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {

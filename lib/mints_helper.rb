@@ -20,7 +20,7 @@ module MintsHelper
     # Transform a 'data' variable to a standardized 'data' variable.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     def data_transform(data)
         data = correct_json(data)
@@ -34,7 +34,7 @@ module MintsHelper
     # Receives a json data and convert it to a symbolized object.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     def correct_json(data)
         if data.is_a? String

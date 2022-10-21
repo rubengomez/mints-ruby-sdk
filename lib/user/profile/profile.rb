@@ -5,8 +5,8 @@ module Profile
     #
     # ==== Example
     #     @data = @mints_user.me
-    def me
-        return @client.raw("get", "/profile/me")
+    def me(options = nil)
+        return @client.raw("get", "/profile/me", options)
     end
 
     ##
@@ -28,7 +28,7 @@ module Profile
     # Create preferences of current user logged with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -78,7 +78,7 @@ module Profile
     # Read notifications by data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -96,7 +96,7 @@ module Profile
     # Delete notifications by data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {

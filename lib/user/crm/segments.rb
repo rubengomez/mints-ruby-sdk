@@ -42,7 +42,7 @@ module Segments
     #
     # ==== Parameters
     # id:: (Integer) -- Segment id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = { 
@@ -90,7 +90,7 @@ module Segments
     # Create a segment with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = { 
@@ -107,7 +107,7 @@ module Segments
     #
     # ==== Parameters
     # id:: (Integer) -- Segment id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = { 

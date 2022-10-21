@@ -41,7 +41,7 @@ module Messages
     # Create a message with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -63,7 +63,7 @@ module Messages
     #
     # ==== Parameters
     # id:: (Integer) -- Message id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {

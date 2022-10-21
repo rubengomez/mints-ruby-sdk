@@ -7,7 +7,7 @@ module Taxonomies
     # Sync taxonomies for object.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -91,7 +91,7 @@ module Taxonomies
     # Create a taxonomy with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -100,8 +100,8 @@ module Taxonomies
     #       "object_type": "contacts"
     #     }
     #     @data = @mints_user.create_taxonomy(data)
-    def create_taxonomy(data)
-        return @client.raw("post", "/config/taxonomies", nil, data_transform(data))
+    def create_taxonomy(data, options = nil)
+        return @client.raw("post", "/config/taxonomies", options, data_transform(data))
     end
     
     # === Update taxonomy.
@@ -109,7 +109,7 @@ module Taxonomies
     #
     # ==== Parameters
     # id:: (Integer) -- Taxonomy id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -118,7 +118,7 @@ module Taxonomies
     #       "object_type": "contacts"
     #     }
     #     @data = @mints_user.update_taxonomy(104, data)
-    def update_taxonomy(id, data)
-        return @client.raw("put", "/config/taxonomies/#{id}", nil, data_transform(data))
+    def update_taxonomy(id, data, options = nil)
+        return @client.raw("put", "/config/taxonomies/#{id}", options, data_transform(data))
     end
 end

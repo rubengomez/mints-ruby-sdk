@@ -44,7 +44,7 @@ module PriceList
     # Create a price list with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -60,7 +60,7 @@ module PriceList
     #
     # ==== Parameters
     # id:: (Integer) -- Price list id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {

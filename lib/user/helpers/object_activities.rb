@@ -40,7 +40,7 @@ module ObjectActivities
     # Create an object activity with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -58,7 +58,7 @@ module ObjectActivities
     #
     # ==== Parameters
     # id:: (Integer) -- Object activity id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {

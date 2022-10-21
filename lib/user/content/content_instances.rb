@@ -24,7 +24,7 @@ module ContentInstances
     #
     # ==== Parameters
     # id:: (Integer) -- Content instance id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = { 
@@ -57,7 +57,7 @@ module ContentInstances
     #
     # ==== Parameters
     # id:: (Integer) -- Content instance id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -75,7 +75,7 @@ module ContentInstances
     #
     # ==== Parameters
     # id:: (Integer) -- Content instance id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = { 
@@ -102,7 +102,7 @@ module ContentInstances
     # Create a content instance with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -120,7 +120,7 @@ module ContentInstances
     #
     # ==== Parameters
     # id:: (Integer) -- Content instance id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {

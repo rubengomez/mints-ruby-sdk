@@ -12,10 +12,13 @@ module Locations
     # ==== First Example
     #     @data = @mints_user.get_locations
     #
-    # ==== Second Example
-    #     @data = @mints_user.get_locations(false)
-    def get_locations(use_post = true)
-        return get_query_results("/ecommerce/locations", nil, use_post)
+     # ==== Second Example
+    #     options = {
+    #       "fields": "id, title"
+    #     }
+    #     @data = @mints_user.get_locations(options)
+    def get_locations(options = nil, use_post = true)
+        return get_query_results("/ecommerce/locations", options, use_post)
     end
     
     # === Get location.
@@ -34,7 +37,7 @@ module Locations
     # Create a location with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -42,8 +45,8 @@ module Locations
     #       "location_template_id": 1
     #     }
     #     @data = @mints_user.create_location(data)
-    def create_location(data)
-        return @client.raw("post", "/ecommerce/locations", nil, data_transform(data))
+    def create_location(data, options = nil)
+        return @client.raw("post", "/ecommerce/locations", options, data_transform(data))
     end
 
     # === Update location.
@@ -51,15 +54,15 @@ module Locations
     #
     # ==== Parameters
     # id:: (Integer) -- Location id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
     #       "title": "New Location Modified"
     #     }
     #     @data = @mints_user.update_location(5, data.to_json)
-    def update_location(id, data)
-        return @client.raw("put", "/ecommerce/locations/#{id}", nil, data)
+    def update_location(id, data, options = nil)
+        return @client.raw("put", "/ecommerce/locations/#{id}", options, data)
     end
 
     # === Delete location.
@@ -136,7 +139,7 @@ module Locations
     # Create a location template with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -153,7 +156,7 @@ module Locations
     #
     # ==== Parameters
     # id:: (Integer) -- Location template id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {

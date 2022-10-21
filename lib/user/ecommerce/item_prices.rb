@@ -40,7 +40,7 @@ module ItemPrices
     # Create a item price with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -61,7 +61,7 @@ module ItemPrices
     #
     # ==== Parameters
     # id:: (Integer) -- Order item price id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {

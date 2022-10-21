@@ -40,7 +40,7 @@ module ObjectFolders
     # Create an object folder with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -57,7 +57,7 @@ module ObjectFolders
     #
     # ==== Parameters
     # id:: (Integer) -- Object folder id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {

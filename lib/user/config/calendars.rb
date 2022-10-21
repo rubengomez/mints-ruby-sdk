@@ -44,7 +44,7 @@ module Calendars
     # Create a calendar with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = { 
@@ -62,7 +62,7 @@ module Calendars
     #
     # ==== Parameters
     # id:: (Integer) -- Calendar id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = { 

@@ -38,7 +38,7 @@ module Teams
     # Create a team with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -55,7 +55,7 @@ module Teams
     #
     # ==== Parameters
     # id:: (Integer) -- Team id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {

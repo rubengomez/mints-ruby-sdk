@@ -44,7 +44,7 @@ module Skus
     # Create a sku with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -63,7 +63,7 @@ module Skus
     #
     # ==== Parameters
     # id:: (Integer) -- Sku id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {

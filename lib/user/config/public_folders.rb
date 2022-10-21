@@ -7,7 +7,7 @@ module PublicFolders
     # Sync public folders for object.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -40,15 +40,15 @@ module PublicFolders
     #
     # ==== Example
     #     @data = @mints_user.get_public_folders
-    def get_public_folders
-        return @client.raw("get", "/config/public-folders")
+    def get_public_folders(options = nil)
+        return @client.raw("get", "/config/public-folders", options)
     end
     
     # === Create public folder.
     # Create a public folder with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -67,7 +67,7 @@ module PublicFolders
     #
     # ==== Parameters
     # id:: (Integer) -- Public folder id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {

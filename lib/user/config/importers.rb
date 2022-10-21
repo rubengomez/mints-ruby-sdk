@@ -61,7 +61,7 @@ module Importers
     #
     # ==== Parameters
     # id:: (Integer) -- Importer id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -76,7 +76,7 @@ module Importers
     # Import a row.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     
@@ -88,7 +88,7 @@ module Importers
     # Remove an active process in an importer.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     
@@ -133,7 +133,7 @@ module Importers
     # Create an importer with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -150,7 +150,7 @@ module Importers
     #
     # ==== Parameters
     # id:: (Integer) -- Importer id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {

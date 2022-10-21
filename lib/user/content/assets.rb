@@ -4,13 +4,100 @@ module Assets
     ##
     # == Assets
     #
+    # === Get assets.
+    # Get a collection of assets.
+    #
+    # ==== Parameters
+    # options:: (Hash) -- List of Resource Collection Options shown above can be used as parameter.
+    # use_post:: (Boolean) -- Variable to determine if the request is by 'post' or 'get' functions.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_assets
+    #
+    # ==== Second Example
+    #     options = {
+    #       "fields": "id, title"
+    #     }
+    #     @data = @mints_user.get_assets(options)
+    #
+    # ==== Third Example
+    #     options = {
+    #       "fields": "id, title"
+    #     }
+    #     @data = @mints_user.get_assets(options, true)
+    def get_assets(options = nil, use_post = true)
+        return get_query_results("/content/assets", options, use_post)
+    end
 
+    # === Get asset.
+    # Get a asset info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Asset id.
+    # options:: (Hash) -- List of Resource Collection Options shown above can be used as parameter.
+    #
+    # ==== First Example
+    #     @data = @mints_user.get_asset(1)
+    #
+    # ==== Second Example
+    #     options = {
+    #       "fields": "id, title"
+    #     }
+    #     @data = @mints_user.get_asset(1, options)
+    def get_asset(id, options = nil)
+        return @client.raw("get", "/content/assets/#{id}", options)
+    end
+
+    # === Create asset.
+    # Create a asset with data.
+    #
+    # ==== Parameters
+    # data:: (Hash) -- Data to be submitted.
+    #
+    # ==== Example
+    #     data = {
+    #       "title": "New Asset",
+    #       "slug": "new-asset",
+    #     }
+    #     @data = @mints_user.create_asset(data)
+    def create_asset(data)
+        return @client.raw("post", "/content/assets", nil, data_transform(data))
+    end
+
+    # === Update asset.
+    # Update a asset info.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Asset id.
+    # data:: (Hash) -- Data to be submitted.
+    #
+    # ==== Example
+    #     data = {
+    #       "title": "New Asset Modified",
+    #       "slug": "new-asset"
+    #     }
+    #     @data = @mints_user.update_asset(5, data)
+    def update_asset(id, data)
+        return @client.raw("put", "/content/assets/#{id}", nil, data_transform(data))
+    end
+
+    # === Delete asset.
+    # Delete a asset.
+    #
+    # ==== Parameters
+    # id:: (Integer) -- Asset id.
+    #
+    # ==== Example
+    #     @data = @mints_user.delete_asset(6)
+    def delete_asset(id)
+        return @client.raw("delete", "/content/assets/#{id}")
+    end
 
     # === Get asset link info.
     # Get information of an asset by url.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = { 
@@ -43,7 +130,7 @@ module Assets
     #
     # ==== Parameters
     # options:: (Hash) -- List of Resource Collection Options shown above can be used as parameter.
-    def get_asset_usage(options) #get, le mandas el asset id para saber donde lo has puesto 
+    def get_asset_usage(options)
         return @client.raw("get", "/content/assets/usage", options)
     end
 
@@ -73,7 +160,7 @@ module Assets
     # Upload an asset. It can be images, documents and videos.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== First Example (with files)
     #
@@ -137,7 +224,7 @@ module Assets
     # ==== Parameters
     # options:: (Hash) -- List of Resource Collection Options shown above can be used as parameter.    
     def get_asset_sizes(options)
-        return @client.raw("get", "/content/assets/getSizes", options)
+        return @client.raw("get", "/content/assets/sizes", options)
     end
 
     # === Get asset sizes.
@@ -148,7 +235,7 @@ module Assets
     #
     # ==== Example
     #     @data = @mints_user.get_asset_sizes(2)
-    def get_asset_sizes(id) #FIXME: wrong number of arguments (given 1, expected 0)
+    def get_asset_size(id) #FIXME: wrong number of arguments (given 1, expected 0)
         return @client.raw("get", "/content/assets/sizes/#{id}")
     end
 
@@ -156,7 +243,7 @@ module Assets
     # Create an asset size by data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -178,21 +265,7 @@ module Assets
     #    }
     #    @data = @mints_user.create_asset_size(data.to_json)
     def create_asset_size(data)
-        return @client.raw("post", "/content/assets/createSize", nil, data)
-    end
-
-    # === Edit asset size.
-    # Edit an asset size.
-    #
-    # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
-    def edit_asset_size(data) #TODO: Not tested
-        return @client.raw("post", "/content/assets/editSize", nil, data)
-    end
-
-    # === Delete asset size.
-    def delete_asset_size #TODO: Not tested
-        return @client.raw("get", "/content/assets/deleteSize") #DELETE OR GET?
+        return @client.raw("post", "/content/assets/sizes", nil, data)
     end
 
 
@@ -210,7 +283,7 @@ module Assets
     # ==== Example
     #     @data = @mints_user.get_asset_sizes(2)
     def get_asset_variation(id)
-        #FIXME: Id 1 and 4: Trying to get property 'path' of non-object maybe json convertion is bad
+        #FIXME: Id 1 and 4: Trying to get property 'path' of non-object maybe json conversion is bad
         #FIXME: Id 2 and 3: File not found at path maybe doesnt exist
         return @client.raw("get", "/content/assets/variation/#{id}")
     end
@@ -219,42 +292,8 @@ module Assets
     # Create an asset variation of an existing asset.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     def generate_asset_variation(data) #FIXME: Trying to get property 'width' of non-object
-        return @client.raw("post", "/content/assets/generateAssetVariations", nil, data)
+        return @client.raw("post", "/content/assets/generate-asset-variations", nil, data)
     end
-
-    # === Upload asset variation.
-    #
-    # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
-    def upload_asset_variation(data) #FIXME: Call to a member function guessClientExtension() on null
-        return @client.raw("post", "/content/assets/uploadVariation", nil, data)
-    end
-
-    # === Update asset variation.
-    #
-    # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
-    def update_asset_variation(id, data) #TODO:
-        return @client.raw("post", "/content/assets/updateVariation/#{id}", nil, data)
-    end
-
-    # === Delete asset variation.
-    def delete_asset_variation #TODO: Not tested
-        return @client.raw("get", "/content/assets/deleteVariation") #DELETE OR GET?
-    end
-
-    
-
-    
-
-    # === Get original asset.
-    #
-    # ==== Parameters
-    # id:: (Integer) Asset id.
-    def get_original_asset(id) #FIXME: Doesn't return JSON
-        return @client.raw("get", "/content/assets/original/#{id}")
-    end
-
 end

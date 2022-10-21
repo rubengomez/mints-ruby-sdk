@@ -127,7 +127,7 @@ module Mints
     # Send magic link to contact by email. That magic link will be used in magic_link_login method.
     #
     # ==== Parameters
-    # email:: (String) -- Contact's email.
+    # email_or_phone:: (String) -- Contact's email.
     # template_slug:: (String) -- Email template's slug to be used in the email.
     # redirectUrl:: (String) -- Url to be redirected in the implemented page.
     # lifeTime:: (Integer) -- Maximum time of use in minutes.
@@ -137,17 +137,21 @@ module Mints
     #     @mints_contact.send_magic_link("email@example.com", "template_slug")
     #
     # ==== Second Example
-    #     @mints_contact.send_magic_link("email@example.com", "template_slug", "", 1440, 3)
-    def send_magic_link(email, template_slug, redirectUrl = '', lifeTime = 1440, maxVisits = nil)
+    #     @mints_contact.send_magic_link("+526561234567", "template_slug", "", 1440, 3, 'whatsapp')
+    def send_magic_link(email_or_phone, template_slug, redirect_url = '', life_time = 1440, max_visits = nil, driver = 'email')
       data = {
-        email: email,
-        lifeTime: lifeTime,
-        maxVisits: maxVisits,
-        redirectUrl: redirectUrl,
+        driver: driver,
+        lifeTime: life_time,
+        maxVisits: max_visits,
+        redirectUrl: redirect_url,
         templateId: template_slug
       }
-      response = @client.raw("post", "/contacts/magic-link", nil, { data: data }.to_json, '/api/v1')
-      return response
+      if driver === 'sms' or driver === 'whatsapp'
+        data['phone'] = email_or_phone
+      else
+        data['email'] = email_or_phone
+      end
+      return @client.raw("post", "/contacts/magic-link", nil, { data: data }.to_json, '/api/v1')
     end
 
     ### CONTACT/V1 ###
@@ -257,7 +261,7 @@ module Mints
     # Create a conversation with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -274,7 +278,7 @@ module Mints
     #
     # ==== Parameters
     # id:: (Integer) -- Conversation id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     # FIXME: This method doesn't locate conversation id to be updated. 
     def update_conversation(id, data)
       return @client.raw("put", "/content/conversations/#{id}", nil, data_transform(data), @contact_v1_url)
@@ -286,7 +290,7 @@ module Mints
     #
     # ==== Parameters
     # id:: (Integer) -- Conversation id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     # FIXME: This method doesn't locate conversation id to be updated. 
     def update_conversation_status(id, data)
       return @client.raw("put", "/content/conversations/#{id}/status", nil, data_transform(data), @contact_v1_url)
@@ -332,7 +336,7 @@ module Mints
     # Create a message with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -392,7 +396,7 @@ module Mints
     # Create an appointment with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -413,7 +417,7 @@ module Mints
     #
     # ==== Parameters
     # id:: (Integer) -- Appointment id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -429,7 +433,7 @@ module Mints
     # Get a collection of appointments filtering by object_type, object_id and dates range.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -448,7 +452,7 @@ module Mints
     # Attach invitee to an appointment.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -465,7 +469,7 @@ module Mints
     # Attach follower to an appointment.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -482,7 +486,7 @@ module Mints
     # Detach invitee from an appointment.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -499,7 +503,7 @@ module Mints
     # Detach follower from an appointment.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -516,7 +520,7 @@ module Mints
     # Sync an invitee from an appointment.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -533,7 +537,7 @@ module Mints
     # Sync a follower from an appointment.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -596,7 +600,7 @@ module Mints
     # Create a order with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -615,7 +619,7 @@ module Mints
     #
     # ==== Parameters
     # id:: (Integer) -- Order Id
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     # FIXME: This method doesnt update an order.
     def update_order(id, data)
       return @client.raw("put", "/ecommerce/orders/#{id}", nil, data_transform(data), @contact_v1_url)
@@ -652,8 +656,8 @@ module Mints
     # ==== Example
     #     @data = @mints_contact.get_my_shopping_cart
     # FIXME: This method returns a nil data.
-    def get_my_shopping_cart
-      return @client.raw("get", "/ecommerce/my-shopping-cart", nil, nil, @contact_v1_url)
+    def get_my_shopping_cart(options = nil)
+      return @client.raw("get", "/ecommerce/my-shopping-cart", options, nil, @contact_v1_url)
     end
 
     ##
@@ -661,7 +665,7 @@ module Mints
     # Add an item into a shopping cart.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -670,8 +674,8 @@ module Mints
     #       "price_list_id": 1
     #     }
     #     @data = @mints_contact.add_item_to_shopping_cart(data)
-    def add_item_to_shopping_cart(data)
-      return @client.raw("post", "/ecommerce/shopping-cart", nil, data_transform(data), @contact_v1_url)
+    def add_item_to_shopping_cart(data, options = nil)
+      return @client.raw("post", "/ecommerce/shopping-cart", options, data_transform(data), @contact_v1_url)
     end
 
     ##
@@ -734,7 +738,7 @@ module Mints
     # Create an order item group with data if you are related to that order.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== First Example
     #     data = {
@@ -763,7 +767,7 @@ module Mints
     #
     # ==== Parameters
     # id:: (Integer) -- Order Item Group Id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== First Example
     #     data = {

@@ -7,7 +7,7 @@ module Contacts
     # Change password to an email without auth.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {

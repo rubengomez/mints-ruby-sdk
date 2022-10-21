@@ -49,7 +49,7 @@ module Attributes
     # Create an attribute with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -69,7 +69,7 @@ module Attributes
     #
     # ==== Parameters
     # id:: (Integer) -- Attribute id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {

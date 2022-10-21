@@ -44,7 +44,7 @@ module AttributeGroups
     # Create an attribute group with data.
     #
     # ==== Parameters
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
@@ -61,7 +61,7 @@ module AttributeGroups
     #
     # ==== Parameters
     # id:: (Integer) -- Attribute group id.
-    # data:: (Hash) -- Data to be submited.
+    # data:: (Hash) -- Data to be submitted.
     #
     # ==== Example
     #     data = {
