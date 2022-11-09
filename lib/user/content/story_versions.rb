@@ -119,6 +119,6 @@ module StoryVersions
     #     }
     #     @data = @mints_user.publish_story_version(1, data.to_json)
     def publish_story_version(id, data)
-        return @client.raw("post", "/content/story-versions/#{id}/publish", nil, data)
+        return @client.raw("put", "/content/story-versions/#{id}/publish", nil, data)
     end
 end
