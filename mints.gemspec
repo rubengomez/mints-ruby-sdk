@@ -32,7 +32,7 @@ Gem::Specification.new do |s|
   s.files += Dir["lib/user/**/*.rb"]
   s.require_paths = ["app", "lib"]
   s.add_runtime_dependency 'json', '>= 1.8.3'
-  s.add_runtime_dependency 'httparty', '~> 0.18.0', '>= 0.18.0'
+  s.add_runtime_dependency 'httparty', '>= 0.18', '< 0.22'
   s.add_runtime_dependency 'redis', '~> 4.2.2', '>= 4.2.2'
   s.add_runtime_dependency 'addressable', '~> 2.7.0', '>= 2.7.0'
   s.add_runtime_dependency 'rails-reverse-proxy', '~> 0.9.1', '>= 0.9.1'
