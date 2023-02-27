@@ -1,5 +1,5 @@
 require_relative "./client.rb"
-require_relative "./mints_helper.rb"
+require_relative "./mints/helpers/mints_helper.rb"
 include ActionController::Cookies
 module Mints
   class Contact
@@ -38,7 +38,7 @@ module Mints
     #     }
     #     @mints_contact.register(data);
     def register(data)
-      return @client.raw("post", "/contacts/register", nil, data_transform(data))
+      @client.raw("post", "/contacts/register", nil, data_transform(data))
     end
 
     ##
@@ -74,7 +74,7 @@ module Mints
     #     data = { "email": "email@example.com" }
     #     @mints_contact.recover_password(data)
     def recover_password(data)
-      return @client.raw("post", "/contacts/recover-password", nil, data_transform(data))
+      @client.raw("post", "/contacts/recover-password", nil, data_transform(data))
     end
 
     ##
@@ -93,14 +93,14 @@ module Mints
     #     }
     #     @mints_contact.reset_password(data)
     def reset_password(data)
-      return @client.raw("post", "/contacts/reset-password", nil, data_transform(data))
+      @client.raw("post", "/contacts/reset-password", nil, data_transform(data))
     end
 
     ##
     # === OAuth Login.
     # Login a contact using oauth.
     def oauth_login(data)
-      return @client.raw("post", "/contacts/oauth-login", nil, data)
+      @client.raw("post", "/contacts/oauth-login", nil, data)
     end
 
     ##
@@ -151,7 +151,7 @@ module Mints
       else
         data['email'] = email_or_phone
       end
-      return @client.raw("post", "/contacts/magic-link", nil, { data: data }.to_json, '/api/v1')
+      @client.raw("post", "/contacts/magic-link", nil, { data: data }.to_json, '/api/v1')
     end
 
     ### CONTACT/V1 ###
@@ -173,7 +173,7 @@ module Mints
     #     } 
     #     @data = @mints_contact.me(options)
     def me(options = nil)
-      return @client.raw("get", "/me", options, nil, @contact_v1_url)
+      @client.raw("get", "/me", options, nil, @contact_v1_url)
     end
 
     ##
@@ -183,7 +183,7 @@ module Mints
     # ==== Example
     #     @data = @mints_contact.status
     def status
-      return @client.raw("get", "/status", nil, nil, @contact_v1_url)
+      @client.raw("get", "/status", nil, nil, @contact_v1_url)
     end
 
     ##
@@ -200,7 +200,7 @@ module Mints
     #     }
     #     @data = @mints_contact.update(data)
     def update(data)
-      return @client.raw("put", "/update", nil, data_transform(data), @contact_v1_url)
+      @client.raw("put", "/update", nil, data_transform(data), @contact_v1_url)
     end
 
     ##
@@ -228,7 +228,7 @@ module Mints
     #     data = { "password": "new_password" }
     #     @data = @mints_contact.change_password(data)
     def change_password(data)
-      return @client.raw("post", "/change-password", nil, data_transform(data), @contact_v1_url)
+      @client.raw("post", "/change-password", nil, data_transform(data), @contact_v1_url)
     end
 
     # Conversations
@@ -241,7 +241,7 @@ module Mints
     # options:: (Hash) -- List of Resource Collection Options shown above can be used as parameter.
     # FIXME: This method doesn't return data.
     def get_conversations(options = nil)
-      return @client.raw("get", "/content/conversations", options, nil, @contact_v1_url)
+      @client.raw("get", "/content/conversations", options, nil, @contact_v1_url)
     end
 
     ##
@@ -253,7 +253,7 @@ module Mints
     # options:: (Hash) -- List of Resource Collection Options shown above can be used as parameter.
     # FIXME: This method doesn't return data.
     def get_conversation(id, options = nil)
-      return @client.raw("get", "/content/conversations/#{id}", options, nil, @contact_v1_url)
+      @client.raw("get", "/content/conversations/#{id}", options, nil, @contact_v1_url)
     end
 
     ##
@@ -269,7 +269,7 @@ module Mints
     #     }
     #     @data = @mints_contact.create_conversation(data)
     def create_conversation(data)
-      return @client.raw("post", "/content/conversations", nil, data_transform(data), @contact_v1_url)
+      @client.raw("post", "/content/conversations", nil, data_transform(data), @contact_v1_url)
     end
 
     ##
@@ -281,7 +281,7 @@ module Mints
     # data:: (Hash) -- Data to be submitted.
     # FIXME: This method doesn't locate conversation id to be updated. 
     def update_conversation(id, data)
-      return @client.raw("put", "/content/conversations/#{id}", nil, data_transform(data), @contact_v1_url)
+      @client.raw("put", "/content/conversations/#{id}", nil, data_transform(data), @contact_v1_url)
     end
 
     ##
@@ -293,7 +293,7 @@ module Mints
     # data:: (Hash) -- Data to be submitted.
     # FIXME: This method doesn't locate conversation id to be updated. 
     def update_conversation_status(id, data)
-      return @client.raw("put", "/content/conversations/#{id}/status", nil, data_transform(data), @contact_v1_url)
+      @client.raw("put", "/content/conversations/#{id}/status", nil, data_transform(data), @contact_v1_url)
     end
 
     ##
@@ -305,7 +305,7 @@ module Mints
     # FIXME: This method doesn't locate conversation id to be updated. 
     def get_conversation_participants(id)
       #TODO: Test if this method needs data in options.
-      return @client.raw("get", "/content/conversations/#{id}/participants", nil, nil, @contact_v1_url)
+      @client.raw("get", "/content/conversations/#{id}/participants", nil, nil, @contact_v1_url)
     end
 
     ##
@@ -316,7 +316,7 @@ module Mints
     # options:: (Hash) -- List of Resource Collection Options shown above can be used as parameter.
     # FIXME: This method doesn't return data.
     def get_messages(options = nil)
-      return @client.raw("get", "/content/messages", options, nil, @contact_v1_url)
+      @client.raw("get", "/content/messages", options, nil, @contact_v1_url)
     end
 
     ##
@@ -328,7 +328,7 @@ module Mints
     # options:: (Hash) -- List of Resource Collection Options shown above can be used as parameter.
     # FIXME: This method doesn't return data.
     def get_message(id, options = nil)
-      return @client.raw("get", "/content/messages/#{id}", options, nil, @contact_v1_url)
+      @client.raw("get", "/content/messages/#{id}", options, nil, @contact_v1_url)
     end
 
     ##
@@ -348,7 +348,7 @@ module Mints
     #     }
     #     @data = @mints_contact.create_message(data)
     def create_message(data)
-      return @client.raw("post", "/content/messages", nil, data_transform(data), @contact_v1_url)
+      @client.raw("post", "/content/messages", nil, data_transform(data), @contact_v1_url)
     end
 
     # Appointments
@@ -369,7 +369,7 @@ module Mints
     #     }
     #     @data = @mints_contact.get_appointments(options)
     def get_appointments(options = nil)
-      return @client.raw("get", "/contacts/appointments", options)
+      @client.raw("get", "/contacts/appointments", options)
     end
 
     ##
@@ -388,7 +388,7 @@ module Mints
     #     }
     #     @data = @mints_contact.get_appointment(1, options)
     def get_appointment(id, options = nil)
-      return @client.raw("get", "/contacts/appointments/#{id}", options)
+      @client.raw("get", "/contacts/appointments/#{id}", options)
     end
 
     ##
@@ -408,7 +408,7 @@ module Mints
     #     }
     #     @data = @mints_contact.create_appointment(data)
     def create_appointment(data)
-      return @client.raw("post", "/contacts/appointments", nil, data_transform(data))
+      @client.raw("post", "/contacts/appointments", nil, data_transform(data))
     end
 
     ##
@@ -425,7 +425,7 @@ module Mints
     #     }
     #     @data = @mints_contact.update_appointment(1, data)
     def update_appointment(id, data)
-      return @client.raw("put", "/contacts/appointments/#{id}", nil, data_transform(data))
+      @client.raw("put", "/contacts/appointments/#{id}", nil, data_transform(data))
     end
 
     ##
@@ -444,7 +444,7 @@ module Mints
     #     }
     #     @data = @mints_contact.scheduled_appointments(data)
     def scheduled_appointments(data)
-      return @client.raw("post", "/contacts/appointments/scheduled-appointments", nil, data_transform(data))
+      @client.raw("post", "/contacts/appointments/scheduled-appointments", nil, data_transform(data))
     end
 
     ## 
@@ -461,7 +461,7 @@ module Mints
     #     }
     #     @data = @mints_contact.attach_invitee(data)
     def attach_invitee(data)
-      return @client.raw("post", "/contacts/appointments/attach-invitee", nil, data_transform(data))
+      @client.raw("post", "/contacts/appointments/attach-invitee", nil, data_transform(data))
     end
 
     ##
@@ -478,7 +478,7 @@ module Mints
     #     }
     #     @data = @mints_contact.attach_follower(data)
     def attach_follower(data)
-      return @client.raw("post", "/contacts/appointments/attach-follower", nil, data_transform(data))
+      @client.raw("post", "/contacts/appointments/attach-follower", nil, data_transform(data))
     end
 
     ##
@@ -495,7 +495,7 @@ module Mints
     #     }
     #     @data = @mints_contact.detach_invitee(data)
     def detach_invitee(data)
-      return @client.raw("post", "/contacts/appointments/detach-invitee", nil, data_transform(data))
+      @client.raw("post", "/contacts/appointments/detach-invitee", nil, data_transform(data))
     end
 
     ##
@@ -512,7 +512,7 @@ module Mints
     #     }
     #     @data = @mints_contact.detach_follower(data)
     def detach_follower(data)
-      return @client.raw("post", "/contacts/appointments/detach-follower", nil, data_transform(data))
+      @client.raw("post", "/contacts/appointments/detach-follower", nil, data_transform(data))
     end
 
     ##
@@ -529,7 +529,7 @@ module Mints
     #     }
     #     @data = @mints_contact.sync_invitee(data)
     def sync_invitee(data)
-      return @client.raw("post", "/contacts/appointments/sync-invitee", nil, data_transform(data))
+      @client.raw("post", "/contacts/appointments/sync-invitee", nil, data_transform(data))
     end
 
     ##
@@ -546,7 +546,7 @@ module Mints
     #     }
     #     @data = @mints_contact.sync_follower(data)
     def sync_follower(data)
-      return @client.raw("post", "/contacts/appointments/sync-follower", nil, data_transform(data))
+      @client.raw("post", "/contacts/appointments/sync-follower", nil, data_transform(data))
     end
 
     ##
@@ -569,9 +569,9 @@ module Mints
     #     @data = @mints_pub.get_orders(options, false)
     def get_orders(options = nil, use_post = true)
       if use_post
-        return @client.raw("post", "/ecommerce/orders/query", options, nil, @contact_v1_url)
+        @client.raw("post", "/ecommerce/orders/query", options, nil, @contact_v1_url)
       else
-        return @client.raw("get", "/ecommerce/orders", options, nil, @contact_v1_url)
+        @client.raw("get", "/ecommerce/orders", options, nil, @contact_v1_url)
       end
     end
 
@@ -592,7 +592,7 @@ module Mints
     #     }
     #     @data = @mints_pub.get_product(25, options)
     def get_order(id, options = nil)
-      return @client.raw("get", "/ecommerce/orders/#{id}", options, nil, @contact_v1_url)
+      @client.raw("get", "/ecommerce/orders/#{id}", options, nil, @contact_v1_url)
     end
 
     ##
@@ -610,7 +610,7 @@ module Mints
     #     }
     #     @data = @mints_pub.create_order(data)
     def create_order(data)
-      return @client.raw("post", "/ecommerce/orders", nil, data_transform(data), @contact_v1_url)
+      @client.raw("post", "/ecommerce/orders", nil, data_transform(data), @contact_v1_url)
     end
 
     ##
@@ -622,7 +622,7 @@ module Mints
     # data:: (Hash) -- Data to be submitted.
     # FIXME: This method doesnt update an order.
     def update_order(id, data)
-      return @client.raw("put", "/ecommerce/orders/#{id}", nil, data_transform(data), @contact_v1_url)
+      @client.raw("put", "/ecommerce/orders/#{id}", nil, data_transform(data), @contact_v1_url)
     end
 
     #TODO: No tested
@@ -634,7 +634,7 @@ module Mints
     # groupId:: (Integer) -- Order items group id.
     #
     def detach_order_item_from_order_item_group(orderItemId, groupId)
-      return @client.raw("put", "/ecommerce/order-items/detach/#{orderItemId}/order-items-groups/#{groupId}", nil, nil, @contact_v1_url)
+      @client.raw("put", "/ecommerce/order-items/detach/#{orderItemId}/order-items-groups/#{groupId}", nil, nil, @contact_v1_url)
     end
 
     #TODO: No tested
@@ -646,7 +646,7 @@ module Mints
     # groupId:: (Integer) -- Order items group id.
     #
     def update_order_item_from_order_item_group(orderItemId, groupId, data)
-      return @client.raw("put", "/ecommerce/order-items/update/#{orderItemId}/order-items-groups/#{groupId}", nil, data_transform(data), @contact_v1_url)
+      @client.raw("put", "/ecommerce/order-items/update/#{orderItemId}/order-items-groups/#{groupId}", nil, data_transform(data), @contact_v1_url)
     end
 
     ##
@@ -657,7 +657,7 @@ module Mints
     #     @data = @mints_contact.get_my_shopping_cart
     # FIXME: This method returns a nil data.
     def get_my_shopping_cart(options = nil)
-      return @client.raw("get", "/ecommerce/my-shopping-cart", options, nil, @contact_v1_url)
+      @client.raw("get", "/ecommerce/my-shopping-cart", options, nil, @contact_v1_url)
     end
 
     ##
@@ -675,7 +675,7 @@ module Mints
     #     }
     #     @data = @mints_contact.add_item_to_shopping_cart(data)
     def add_item_to_shopping_cart(data, options = nil)
-      return @client.raw("post", "/ecommerce/shopping-cart", options, data_transform(data), @contact_v1_url)
+      @client.raw("post", "/ecommerce/shopping-cart", options, data_transform(data), @contact_v1_url)
     end
 
     ##
@@ -683,7 +683,7 @@ module Mints
     # Get a collection of order items.
     #TODO: Find a way to show order items.
     def get_order_items(options = nil)
-      return @client.raw("get", "/ecommerce/order-items", options, nil, @contact_v1_url)
+      @client.raw("get", "/ecommerce/order-items", options, nil, @contact_v1_url)
     end
 
     ##
@@ -691,7 +691,7 @@ module Mints
     # Get an order item info.
     #TODO: Find a way to show order items.
     def get_order_item(id, options = nil)
-      return @client.raw("get", "/ecommerce/order-items/#{id}", options, nil, @contact_v1_url)
+      @client.raw("get", "/ecommerce/order-items/#{id}", options, nil, @contact_v1_url)
     end
 
     ##
@@ -710,7 +710,7 @@ module Mints
     #     }
     #     @data = @mints_contact.get_order_item_groups(options)
     def get_order_item_groups(options = nil)
-      return @client.raw("get", "/ecommerce/order-items-groups", options, nil, @contact_v1_url)
+      @client.raw("get", "/ecommerce/order-items-groups", options, nil, @contact_v1_url)
     end
 
     ##
@@ -730,7 +730,7 @@ module Mints
     #     }
     #     @data = @mints_contact.get_order_item_group(130, options)
     def get_order_item_group(id, options = nil)
-      return @client.raw("get", "/ecommerce/order-items-groups/#{id}", options, nil, @contact_v1_url)
+      @client.raw("get", "/ecommerce/order-items-groups/#{id}", options, nil, @contact_v1_url)
     end
 
     ##
@@ -758,7 +758,7 @@ module Mints
     #     }
     #     @data = @mints_contact.create_order_item_group(data)
     def create_order_item_group(data)
-      return @client.raw("post", "/ecommerce/order-items-groups", nil, data_transform(data), @contact_v1_url)
+      @client.raw("post", "/ecommerce/order-items-groups", nil, data_transform(data), @contact_v1_url)
     end
 
     ##
@@ -775,7 +775,7 @@ module Mints
     #     }
     #     @data = @mints_contact.update_order_item_group(130, data)
     def update_order_item_group(id, data)
-      return @client.raw("put", "/ecommerce/order-items-groups/#{id}", nil, data_transform(data), @contact_v1_url)
+      @client.raw("put", "/ecommerce/order-items-groups/#{id}", nil, data_transform(data), @contact_v1_url)
     end
 
     ##
@@ -783,7 +783,7 @@ module Mints
     # Delete an order item group.
     # FIXME: This method doesn't work. Throw no action error. 
     def delete_order_item_group(id)
-      return @client.raw("delete", "/ecommerce/order-items-groups/#{id}", nil, nil, @contact_v1_url)
+      @client.raw("delete", "/ecommerce/order-items-groups/#{id}", nil, nil, @contact_v1_url)
     end
 
     private

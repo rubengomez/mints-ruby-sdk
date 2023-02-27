@@ -10,9 +10,9 @@ module MintsHelper
     #
     def get_query_results(url, options = nil, use_post = true)
         if use_post
-            return @client.raw("post", "#{url}/query", options)
+            @client.raw("post", "#{url}/query", options)
         else
-            return @client.raw("get", url, options)
+            @client.raw("get", url, options)
         end
     end
 
@@ -24,10 +24,12 @@ module MintsHelper
     #
     def data_transform(data)
         data = correct_json(data)
+
         unless data[:data]
             data = {data: data}
         end
-        return data.to_json
+
+        data.to_json
     end
 
     # === Correct json.
@@ -40,8 +42,8 @@ module MintsHelper
         if data.is_a? String
             data = JSON.parse(data)
         end
-        data = data.symbolize_keys
-        return data
+
+        data.symbolize_keys
     end
 
 end

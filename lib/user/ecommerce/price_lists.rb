@@ -37,7 +37,7 @@ module PriceList
     #     }
     #     @data = @mints_user.get_price_list(1, options)
     def get_price_list(id, options = nil)
-        return @client.raw("get", "/ecommerce/price-list/#{id}", options)
+        @client.raw("get", "/ecommerce/price-list/#{id}", options)
     end
 
     # === Create price list.
@@ -52,7 +52,7 @@ module PriceList
     #     }
     #     @data = @mints_user.create_price_list(data)
     def create_price_list(data)
-        return @client.raw("post", "/ecommerce/price-list", nil, data_transform(data))
+        @client.raw("post", "/ecommerce/price-list", nil, data_transform(data))
     end
 
     # === Update price list.
@@ -68,6 +68,6 @@ module PriceList
     #     }
     #     @data = @mints_user.update_price_list(8, data)
     def update_price_list(id, data)
-        return @client.raw("put", "/ecommerce/price-list/#{id}", nil, data_transform(data))
+        @client.raw("put", "/ecommerce/price-list/#{id}", nil, data_transform(data))
     end
 end

@@ -9,7 +9,7 @@ module Segments
     # ==== Example
     #     @data = @mints_user.get_segments_support_data
     def get_segments_support_data
-        return @client.raw("get", "/crm/segments/support-data")
+        @client.raw("get", "/crm/segments/support-data")
     end
 
     # === Get segments attributes.
@@ -22,7 +22,7 @@ module Segments
     #     options = { "object_type": "contacts" }
     #     @data = @mints_user.get_segments_attributes(options)
     def get_segments_attributes(options = nil)
-        return @client.raw("get", "/crm/segments/attributes", options)
+        @client.raw("get", "/crm/segments/attributes", options)
     end
 
     # === Get segment group.
@@ -34,7 +34,7 @@ module Segments
     # ==== Example
     #     @data = @mints_user.get_segment_group("users")
       def get_segment_group(groupId)
-        return @client.raw("get", "/crm/segments/groups/#{groupId}")
+        @client.raw("get", "/crm/segments/groups/#{groupId}")
     end
 
     # === Duplicate segment.
@@ -50,7 +50,7 @@ module Segments
     #     }
     #     @data = @mints_user.duplicate_segment(107, data)
     def duplicate_segment(id, data)
-        return @client.raw("post", "/crm/segments/#{id}/duplicate", nil, data)
+        @client.raw("post", "/crm/segments/#{id}/duplicate", nil, data)
     end
     
     # === Get segments.
@@ -66,7 +66,7 @@ module Segments
     #     options = { "fields": "id", "sort": "-id" }
     #     @data = @mints_user.get_segments(options)
     def get_segments(options = nil)
-        return @client.raw("get", "/crm/segments", options)
+        @client.raw("get", "/crm/segments", options)
     end
 
     # === Get segment.
@@ -83,7 +83,7 @@ module Segments
     #     options = { "fields": "id, title" }
     #     @data = @mints_user.get_segment(1, options)
     def get_segment(id, options = nil)
-        return @client.raw("get", "/crm/segments/#{id}", options)
+        @client.raw("get", "/crm/segments/#{id}", options)
     end
 
     # === Create segment.
@@ -99,7 +99,7 @@ module Segments
     #     }
     #     @data = @mints_user.create_segment(data)
     def create_segment(data)
-        return @client.raw("post", "/crm/segments", nil, data_transform(data))
+        @client.raw("post", "/crm/segments", nil, data_transform(data))
     end
 
     # === Update segment.
@@ -115,7 +115,7 @@ module Segments
     #     }
     #     @data = @mints_user.update_segment(118, data)
     def update_segment(id, data)
-        return @client.raw("put", "/crm/segments/#{id}", nil, data_transform(data))
+        @client.raw("put", "/crm/segments/#{id}", nil, data_transform(data))
     end
 
     # === Delete segment.
@@ -127,6 +127,6 @@ module Segments
     # ==== Example
     #     @mints_user.delete_segment(113)
     def delete_segment(id)
-        return @client.raw("delete", "/crm/segments/#{id}")
+        @client.raw("delete", "/crm/segments/#{id}")
     end
 end

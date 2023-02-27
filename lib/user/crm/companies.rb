@@ -10,7 +10,7 @@ module Companies
     # ==== Example
     #     @data = @mints_user.get_companies_support_data
     def get_companies_support_data
-        return @client.raw("get", "/crm/companies/support-data")
+        @client.raw("get", "/crm/companies/support-data")
     end
   
     # === Get companies.
@@ -48,7 +48,7 @@ module Companies
     #     options = { "fields": "id, title" }
     #     @data = @mints_user.get_company(21, options)
     def get_company(id, options = nil)
-        return @client.raw("get", "/crm/companies/#{id}", options)
+        @client.raw("get", "/crm/companies/#{id}", options)
     end
   
     # === Create company.
@@ -71,7 +71,7 @@ module Companies
     #     }
     #     @data = @mints_user.create_company(data)
     def create_company(data, options = nil)
-        return @client.raw("post", "/crm/companies/", options, data_transform(data))
+        @client.raw("post", "/crm/companies/", options, data_transform(data))
     end
 
     # === Update company.
@@ -87,7 +87,7 @@ module Companies
     #     }
     #     @data = @mints_user.update_company(23, data)
     def update_company(id, data, options = nil)
-        return @client.raw("put", "/crm/companies/#{id}", options, data_transform(data))
+        @client.raw("put", "/crm/companies/#{id}", options, data_transform(data))
     end
 
     ##
@@ -106,6 +106,6 @@ module Companies
     #     }
     #     @data = @mints_user.delete_companies(data)
     def delete_companies(data)
-        return @client.raw("delete", "/crm/companies/delete", nil, data_transform(data))
+        @client.raw("delete", "/crm/companies/delete", nil, data_transform(data))
     end
 end

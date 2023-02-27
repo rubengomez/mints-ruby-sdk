@@ -7,25 +7,25 @@ module OrderItemsGroups
     # Get a pending order template from an order item group.
     #
     # ==== Parameters
-    # parentOrderId:: (Integer) -- Order items group id.
-    # orderTemplateId:: (Integer) -- Order template id.
+    # parent_order_id:: (Integer) -- Order items group id.
+    # order_template_id:: (Integer) -- Order template id.
     #
     # ==== Example
     #     @data = @mints_user.get_pending_order_template_from_order_item_group(1, 1)
-    def get_pending_order_template_from_order_item_group(parentOrderId, orderTemplateId)
-        return @client.raw("get", "/ecommerce/order-items-groups/#{parentOrderId}/pending-items/order-template/#{orderTemplateId}")
+    def get_pending_order_template_from_order_item_group(parent_order_id, order_template_id)
+        @client.raw("get", "/ecommerce/order-items-groups/#{parent_order_id}/pending-items/order-template/#{order_template_id}")
     end
     
     # === Get order item group support data by order id.
     # Get support data of an order item group by an order id.
     #
     # ==== Parameters
-    # orderId:: (Integer) -- Order id.
+    # order_id:: (Integer) -- Order id.
     #
     # ==== Example
     #     @data = @mints_user.get_order_item_group_support_data_by_order_id(1)
-    def get_order_item_group_support_data_by_order_id(orderId) #FIXME: Return in OrderItemsGroupController.getTemplateSupportDataByOrderId method doesnt create data variable.
-        return @client.raw("get", "/ecommerce/order-items-groups/support-data/#{orderId}")
+    def get_order_item_group_support_data_by_order_id(order_id) #FIXME: Return in OrderItemsGroupController.getTemplateSupportDataByOrderId method doesnt create data variable.
+        @client.raw("get", "/ecommerce/order-items-groups/support-data/#{order_id}")
     end
 
     # === Get order item groups.
@@ -41,7 +41,7 @@ module OrderItemsGroups
     #     options = { "fields": "name" }
     #     @data = @mints_user.get_order_item_groups(options)
     def get_order_item_groups(options = nil)
-        return @client.raw("get", "/ecommerce/order-items-groups", options)
+        @client.raw("get", "/ecommerce/order-items-groups", options)
     end
 
     # === Get order item group.
@@ -58,7 +58,7 @@ module OrderItemsGroups
     #     options = { "fields": "name" }
     #     @data = @mints_user.get_order_item_group(1, options)
     def get_order_item_group(id, options = nil)
-        return @client.raw("get", "/ecommerce/order-items-groups/#{id}", options)
+        @client.raw("get", "/ecommerce/order-items-groups/#{id}", options)
     end
     
     # === Create order item group.
@@ -74,9 +74,10 @@ module OrderItemsGroups
     #       "quantity": 1,
     #       "sale_price": 200
     #     }
-    #     @data = @mints_user.create_order_item_group(data)
-    def create_order_item_group(data)
-        return @client.raw("post", "/ecommerce/order-items-groups", nil, data_transform(data))
+    #     options = { "include": "orderItems" }
+    #     @data = @mints_user.create_order_item_group(data, options)
+    def create_order_item_group(data,  options = nil)
+        @client.raw("post", "/ecommerce/order-items-groups", options, data_transform(data))
     end
     
     # === Update order item group.
@@ -92,7 +93,7 @@ module OrderItemsGroups
     #     }
     #     @data = @mints_user.update_order_item_group(147, data)
     def update_order_item_group(id, data)
-        return @client.raw("put", "/ecommerce/order-items-groups/#{id}", nil, data_transform(data))
+        @client.raw("put", "/ecommerce/order-items-groups/#{id}", nil, data_transform(data))
     end
     
     # === Delete order item group.
@@ -104,6 +105,6 @@ module OrderItemsGroups
     # ==== Example
     #     @data = @mints_user.delete_order_item_group(147)
     def delete_order_item_group(id)
-        return @client.raw("delete", "/ecommerce/order-items-groups/#{id}")
+        @client.raw("delete", "/ecommerce/order-items-groups/#{id}")
     end
 end

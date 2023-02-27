@@ -12,7 +12,7 @@ module StoryTemplates
     # ==== Example
     #     @data = @mints_user.get_story_template_support_data(1)
     def get_story_template_support_data(id)
-        return @client.raw("get", "/content/story-templates/support-data/stories/#{id}")
+        @client.raw("get", "/content/story-templates/support-data/stories/#{id}")
     end
 
     # === Get support data of story templates.
@@ -21,7 +21,7 @@ module StoryTemplates
     # ==== Example
     #     @data = @mints_user.get_story_templates_support_data
     def get_story_templates_support_data
-        return @client.raw("get", "/content/story-templates/support-data")
+        @client.raw("get", "/content/story-templates/support-data")
     end
 
     # === Get story templates.
@@ -39,7 +39,7 @@ module StoryTemplates
     #     }
     #     @data = @mints_user.get_story_templates(options)
     def get_story_templates(options = nil)
-        return @client.raw("get", "/content/story-templates", options)
+        @client.raw("get", "/content/story-templates", options)
     end
 
     # === Get story template.
@@ -58,7 +58,7 @@ module StoryTemplates
     #     }
     #     @data = @mints_user.get_story_template(1, options)
     def get_story_template(id, options = nil)
-        return @client.raw("get", "/content/story-templates/#{id}", options)
+        @client.raw("get", "/content/story-templates/#{id}", options)
     end
 
     # === Create story template.
@@ -74,7 +74,7 @@ module StoryTemplates
     #     }
     #     @data = @mints_user.create_story_template(data)
     def create_story_template(data)
-        return @client.raw("post", "/content/story-templates", nil, data_transform(data))
+        @client.raw("post", "/content/story-templates", nil, data_transform(data))
     end
 
     # === Update story template.
@@ -90,6 +90,6 @@ module StoryTemplates
     #     }
     #     @data = @mints_user.update_story_template(3, data)
     def update_story_template(id, data)
-        return @client.raw("put", "/content/story-templates/#{id}", nil, data_transform(data))
+        @client.raw("put", "/content/story-templates/#{id}", nil, data_transform(data))
     end
 end

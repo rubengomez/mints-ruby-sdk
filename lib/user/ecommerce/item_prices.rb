@@ -16,7 +16,7 @@ module ItemPrices
     #     options = { "fields": "price_cents" }
     #     @data = @mints_user.get_item_prices(options)
     def get_item_prices(options = nil)
-        return @client.raw("get", "/ecommerce/item-prices", options)
+        @client.raw("get", "/ecommerce/item-prices", options)
     end
 
     # === Get item price.
@@ -33,7 +33,7 @@ module ItemPrices
     #     options = { "fields": "price_cents" }
     #     @data = @mints_user.get_item_price(1, options)
     def get_item_price(id, options = nil)
-        return @client.raw("get", "/ecommerce/item-prices/#{id}", options)
+        @client.raw("get", "/ecommerce/item-prices/#{id}", options)
     end
 
     # === Create item price.
@@ -53,7 +53,7 @@ module ItemPrices
     #     }
     #     @data = @mints_user.create_item_price(data)
     def create_item_price(data) #FIXME: Api send sku_id as null and DB doesnt allow that.
-        return @client.raw("post", "/ecommerce/item-prices", nil, data_transform(data))
+        @client.raw("post", "/ecommerce/item-prices", nil, data_transform(data))
     end
 
     # === Update item price.
@@ -69,7 +69,7 @@ module ItemPrices
     #     }
     #     @data = @mints_user.update_item_price(1, data)
     def update_item_price(id, data)
-        return @client.raw("put", "/ecommerce/item-prices/#{id}", nil, data_transform(data))
+        @client.raw("put", "/ecommerce/item-prices/#{id}", nil, data_transform(data))
     end
     
     # === Delete item price.
@@ -81,6 +81,6 @@ module ItemPrices
     # ==== Example
     #     @data = @mints_user.delete_item_price(803)
     def delete_item_price(id)
-        return @client.raw("delete", "/ecommerce/item-prices/#{id}")
+        @client.raw("delete", "/ecommerce/item-prices/#{id}")
     end
 end

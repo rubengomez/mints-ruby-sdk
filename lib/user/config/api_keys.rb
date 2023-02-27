@@ -16,7 +16,7 @@ module ApiKeys
     #     options = { "fields": "id" }
     #     @data = @mints_user.get_api_keys(options)
     def get_api_keys(options = nil)
-        return @client.raw("get", "/config/api-keys", options)
+        @client.raw("get", "/config/api-keys", options)
     end
 
     # === Get api key.
@@ -33,7 +33,7 @@ module ApiKeys
     #     options = { "fields": "id" }
     #     @data = @mints_user.get_api_key(2, options)
     def get_api_key(id, options = nil)
-        return @client.raw("get", "/config/api-keys/#{id}", options)
+        @client.raw("get", "/config/api-keys/#{id}", options)
     end
 
     # === Create api key.
@@ -48,7 +48,7 @@ module ApiKeys
     #     }
     #     @data = @mints_user.create_api_key(data)
     def create_api_key(data)
-        return @client.raw("post", "/config/api-keys", nil, data_transform(data))
+        @client.raw("post", "/config/api-keys", nil, data_transform(data))
     end
 
     # === Delete api key.
@@ -60,6 +60,6 @@ module ApiKeys
     # ==== Example
     #     @data = @mints_user.delete_api_key(2)
     def delete_api_key(id)
-        return @client.raw("delete", "/config/api-keys/#{id}")
+        @client.raw("delete", "/config/api-keys/#{id}")
     end
 end

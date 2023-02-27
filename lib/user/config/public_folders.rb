@@ -16,7 +16,7 @@ module PublicFolders
     #     }
     #     @data = @mints_user.sync_public_folders_for_object(data.to_json)
     def sync_public_folders_for_object(data)
-        return @client.raw("put", "/config/public-folders/sync_public-folders_for_object", nil, data)
+        @client.raw("put", "/config/public-folders/sync_public-folders_for_object", nil, data)
     end
     
     # === Get public folders for object.
@@ -32,7 +32,7 @@ module PublicFolders
     #     }
     #     @data = @mints_user.get_public_folders_for_object(options)
     def get_public_folders_for_object(options)
-        return @client.raw("get", "/config/public-folders/get_public-folders_for_object", options)
+        @client.raw("get", "/config/public-folders/get_public-folders_for_object", options)
     end
 
     # === Get public folders.
@@ -41,7 +41,7 @@ module PublicFolders
     # ==== Example
     #     @data = @mints_user.get_public_folders
     def get_public_folders(options = nil)
-        return @client.raw("get", "/config/public-folders", options)
+        @client.raw("get", "/config/public-folders", options)
     end
     
     # === Create public folder.
@@ -59,7 +59,7 @@ module PublicFolders
     #     }
     #     @data = @mints_user.create_public_folder(data.to_json)
     def create_public_folder(data)
-        return @client.raw("post", "/config/public-folders", nil, data)
+        @client.raw("post", "/config/public-folders", nil, data)
     end
 
     # === Update public folder.
@@ -78,7 +78,7 @@ module PublicFolders
     #     }
     #     @data = @mints_user.update_public_folder(20, data.to_json)
     def update_public_folder(id, data)
-        return @client.raw("put", "/config/public-folders/#{id}", nil, data)
+        @client.raw("put", "/config/public-folders/#{id}", nil, data)
     end
     
     # === Get public folder support data.
@@ -90,7 +90,7 @@ module PublicFolders
     # ==== Example
     #     @data = @mints_user.get_public_folder_support_data(1)
     def get_public_folder_support_data(id)
-        return @client.raw("get", "/config/public-folders/support-data/#{id}")
+        @client.raw("get", "/config/public-folders/support-data/#{id}")
     end
     
     # === Get public folder.
@@ -103,6 +103,6 @@ module PublicFolders
     # ==== Example
     #      @data = @mints_user.get_public_folder(3)
     def get_public_folder(id)
-        return @client.raw("get", "/config/public-folders/#{id}")
+        @client.raw("get", "/config/public-folders/#{id}")
     end
 end

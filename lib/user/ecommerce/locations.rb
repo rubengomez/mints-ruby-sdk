@@ -30,7 +30,7 @@ module Locations
     # ==== Example
     #     @data = @mints_user.get_location(2)
     def get_location(id)
-        return @client.raw("get", "/ecommerce/locations/#{id}")
+        @client.raw("get", "/ecommerce/locations/#{id}")
     end
 
     # === Create location.
@@ -46,7 +46,7 @@ module Locations
     #     }
     #     @data = @mints_user.create_location(data)
     def create_location(data, options = nil)
-        return @client.raw("post", "/ecommerce/locations", options, data_transform(data))
+        @client.raw("post", "/ecommerce/locations", options, data_transform(data))
     end
 
     # === Update location.
@@ -62,7 +62,7 @@ module Locations
     #     }
     #     @data = @mints_user.update_location(5, data.to_json)
     def update_location(id, data, options = nil)
-        return @client.raw("put", "/ecommerce/locations/#{id}", options, data)
+        @client.raw("put", "/ecommerce/locations/#{id}", options, data)
     end
 
     # === Delete location.
@@ -74,7 +74,7 @@ module Locations
     # ==== Example
     #     @data = @mints_user.delete_location(5)
     def delete_location(id)
-        return @client.raw("delete", "/ecommerce/locations/#{id}")
+        @client.raw("delete", "/ecommerce/locations/#{id}")
     end
 
     ##
@@ -90,7 +90,7 @@ module Locations
     # ==== Example
     #     @data = @mints_user.get_location_template_support_data(1)
     def get_location_template_support_data(id)
-        return @client.raw("get", "/ecommerce/location-templates/#{id}/support-data")
+        @client.raw("get", "/ecommerce/location-templates/#{id}/support-data")
     end
     
     # === Get location templates support data.
@@ -99,7 +99,7 @@ module Locations
     # ==== Example
     #     @data = @mints_user.get_location_templates_support_data
     def get_location_templates_support_data
-        return @client.raw("get", "/ecommerce/location-templates/support-data")
+        @client.raw("get", "/ecommerce/location-templates/support-data")
     end
 
     # === Get location templates.
@@ -115,7 +115,7 @@ module Locations
     #     options = { "fields": "title" }
     #     @data = @mints_user.get_location_templates(options)
     def get_location_templates(options = nil)
-        return @client.raw("get", "/ecommerce/location-templates", options)
+        @client.raw("get", "/ecommerce/location-templates", options)
     end
 
     # === Get location template.
@@ -132,7 +132,7 @@ module Locations
     #     options = { "fields": "title" }
     #     @data = @mints_user.get_location_template(1, options)
     def get_location_template(id, options = nil)
-        return @client.raw("get", "/ecommerce/location-templates/#{id}", options)
+        @client.raw("get", "/ecommerce/location-templates/#{id}", options)
     end
     
     # === Create location template.
@@ -148,7 +148,7 @@ module Locations
     #     }
     #     @data = @mints_user.create_location_template(data)
     def create_location_template(data)
-        return @client.raw("post", "/ecommerce/location-templates", nil, data_transform(data))
+        @client.raw("post", "/ecommerce/location-templates", nil, data_transform(data))
     end
     
     # === Update location template.
@@ -164,6 +164,6 @@ module Locations
     #     }
     #     @data = @mints_user.update_location_template(3, data)
     def update_location_template(id, data)
-        return @client.raw("put", "/ecommerce/location-templates/#{id}", nil, data_transform(data))
+        @client.raw("put", "/ecommerce/location-templates/#{id}", nil, data_transform(data))
     end
 end

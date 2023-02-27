@@ -11,7 +11,7 @@ module Products
     # data:: (Hash) -- Data to be submitted.
     #
     def update_product_variations_config(productId, data) #TODO: Method doesnt work, research use
-        return @client.raw("post", "/ecommerce/products/update-variations-config/#{productId}", nil, data_transform(data))
+        @client.raw("post", "/ecommerce/products/update-variations-config/#{productId}", nil, data_transform(data))
     end
 
     # === Get product support data.
@@ -20,7 +20,7 @@ module Products
     # ==== Example
     #     @data = @mints_user.get_products_support_data
     def get_products_support_data
-        return @client.raw("get", "/ecommerce/products/support-data")
+        @client.raw("get", "/ecommerce/products/support-data")
     end
 
     # === Delete product.
@@ -30,7 +30,7 @@ module Products
     # id:: (Integer) -- Product id.
     #
     def delete_product(id)
-        return @client.raw("delete", "/ecommerce/products/#{id}")
+        @client.raw("delete", "/ecommerce/products/#{id}")
     end
     
     # === Publish product.
@@ -46,7 +46,7 @@ module Products
     #     }
     #     @data = @mints_user.publish_product(2, data)
     def publish_product(id, data)
-        return @client.raw("put", "/ecommerce/products/#{id}/publish", nil, data_transform(data))
+        @client.raw("put", "/ecommerce/products/#{id}/publish", nil, data_transform(data))
     end
 
     # === Schedule product.
@@ -62,7 +62,7 @@ module Products
     #     }
     #     @data = @mints_user.schedule_product(2, data)
     def schedule_product(id, data)
-        return @client.raw("put", "/ecommerce/products/#{id}/schedule", nil, data_transform(data))
+        @client.raw("put", "/ecommerce/products/#{id}/schedule", nil, data_transform(data))
     end
 
     # === Get product variant options config.
@@ -74,7 +74,7 @@ module Products
     # ==== Example
     #     @data = @mints_user.get_product_variant_options_config(1)
     def get_product_variant_options_config(id)
-        return @client.raw("get", "/ecommerce/products/#{id}/variant-options-config")
+        @client.raw("get", "/ecommerce/products/#{id}/variant-options-config")
     end
 
     # === Revert published product.
@@ -86,7 +86,7 @@ module Products
     # ==== Example
     #     @data = @mints_user.revert_published_product(2)
     def revert_published_product(id)
-        return @client.raw("get", "/ecommerce/products/#{id}/revert-published-data")
+        @client.raw("get", "/ecommerce/products/#{id}/revert-published-data")
     end
     
     # === Get products.
@@ -130,7 +130,7 @@ module Products
     #     }
     #     @data = @mints_user.get_product(3, options)
     def get_product(id, options = nil)
-        return @client.raw("get", "/ecommerce/products/#{id}", options)
+        @client.raw("get", "/ecommerce/products/#{id}", options)
     end
 
     # === Create product.
@@ -147,7 +147,7 @@ module Products
     #     }
     #     @data = @mints_user.create_product(data)
     def create_product(data, options = nil)
-        return @client.raw("post", "/ecommerce/products/", options, data_transform(data))
+        @client.raw("post", "/ecommerce/products/", options, data_transform(data))
     end
 
     # === Update product.
@@ -164,6 +164,6 @@ module Products
     #     }
     #     @data = @mints_user.update_product(9, data)
     def update_product(id, data, options = nil)
-        return @client.raw("put", "/ecommerce/products/#{id}", options, data_transform(data))
+        @client.raw("put", "/ecommerce/products/#{id}", options, data_transform(data))
     end
 end

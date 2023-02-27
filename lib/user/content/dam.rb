@@ -9,7 +9,7 @@ module DAM
     # ==== Example
     #     @data = @mints_user.get_dam_loadtree
     def get_dam_loadtree
-        return @client.raw("get", "/content/dam/loadtree")
+        @client.raw("get", "/content/dam/loadtree")
     end
 
     # === Get dam asset locations.
@@ -21,11 +21,11 @@ module DAM
     # ==== Example
     #     @data = @mints_user.get_dam_asset_locations(options)
     def get_dam_asset_locations(options)
-        return @client.raw("get", "/content/dam/asset-locations", options)
+        @client.raw("get", "/content/dam/asset-locations", options)
     end
     
     def paste_dam(data) #FIXME: Controller detect object array like a single array.
-        return @client.raw("post", "/content/dam/paste", nil, data)
+        @client.raw("post", "/content/dam/paste", nil, data)
     end
 
     # === Rename dam.
@@ -44,7 +44,7 @@ module DAM
     #     }
     #     @data = @mints_user.rename_dam(data.to_json)
     def rename_dam(data)
-        return @client.raw("post", "/content/dam/rename", nil, data)
+        @client.raw("post", "/content/dam/rename", nil, data)
     end
 
     # === Search dam.
@@ -59,15 +59,15 @@ module DAM
     #     }
     #     @data = @mints_user.search_dam(data.to_json)
     def search_dam(data)
-        return @client.raw("post", "/content/dam/search", nil, data)
+        @client.raw("post", "/content/dam/search", nil, data)
     end
 
     def send_to_trash_dam(data) #FIXME: Invalid argument supplied for foreach()
-        return @client.raw("post", "/content/dam/sendToTrash", nil, data)
+        @client.raw("post", "/content/dam/sendToTrash", nil, data)
     end
 
     def delete_dam(data) #FIXME: Invalid argument supplied for foreach()
-        return @client.raw("post", "/content/dam/delete", nil, data)
+        @client.raw("post", "/content/dam/delete", nil, data)
     end
 
     # === Create dam folder.
@@ -83,6 +83,6 @@ module DAM
     #     }
     #     @data = @mints_user.create_dam_folder(data.to_json)
     def create_dam_folder(data)
-        return @client.raw("post", "/content/folders/create", nil, data)
+        @client.raw("post", "/content/folders/create", nil, data)
     end
 end

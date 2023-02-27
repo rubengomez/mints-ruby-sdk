@@ -21,7 +21,7 @@ module Helpers
     # ==== Example
     #     
     def slugify(data) #TODO: Research use of variable polymorphicObjectType
-        return @client.raw("post", "/helpers/slugify", nil, data_transform(data))
+        @client.raw("post", "/helpers/slugify", nil, data_transform(data))
     end
     
     # === Get available types from usage.
@@ -31,7 +31,7 @@ module Helpers
     # usage:: () -- ...
     #
     def get_available_types_from_usage(usage) #TODO: Research use
-        return @client.raw("get", "/helpers/available-types/#{usage}")
+        @client.raw("get", "/helpers/available-types/#{usage}")
     end
 
     # === Get magic link config.
@@ -40,7 +40,7 @@ module Helpers
     # ==== Example
     #     @data = @mints_user.get_magic_link_config
     def get_magic_link_config
-        return @client.raw("get", "/helpers/magic-link-config")
+        @client.raw("get", "/helpers/magic-link-config")
     end
 
     ##
@@ -57,7 +57,7 @@ module Helpers
     # ==== Example
     #     @data = @mints_user.get_activities_by_object_type_and_id("contacts", 1)
     def get_activities_by_object_type_and_id(object_type, id)
-        return @client.raw("get", "/helpers/activities/#{object_type}/#{id}")
+        @client.raw("get", "/helpers/activities/#{object_type}/#{id}")
     end
 
     ##
@@ -78,7 +78,7 @@ module Helpers
     #     }
     #     @data = @mints_user.get_dice_coefficient(options)
     def get_dice_coefficient(options)
-        return @client.raw("get", "/helpers/dice-coefficient", options)
+        @client.raw("get", "/helpers/dice-coefficient", options)
     end
 
     ##
@@ -91,7 +91,7 @@ module Helpers
     # ==== Example
     #     @data = @mints_user.get_permission_menu
     def get_permission_menu
-        return @client.raw("get", "/helpers/menu")
+        @client.raw("get", "/helpers/menu")
     end
 
     ##
@@ -107,7 +107,7 @@ module Helpers
     #
     # ==== Example
     #     @data = @mints_user.generate_seed("contacts", 1)
-    def generate_seed(objectType, id)
-        return @client.raw("get", "/helpers/seeds/#{objectType}/#{id}")
+    def generate_seed(object_type, id)
+        @client.raw("get", "/helpers/seeds/#{object_type}/#{id}")
     end
 end

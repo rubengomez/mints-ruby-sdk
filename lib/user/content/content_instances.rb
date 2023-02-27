@@ -16,7 +16,7 @@ module ContentInstances
     #     options = { "fields": "id" }
     #     @data = @mints_user.get_content_instances(options)
     def get_content_instances(options = nil)
-        return @client.raw("get", "/content/instances", options)
+        @client.raw("get", "/content/instances", options)
     end
 
     # === Duplicate content instance.
@@ -32,7 +32,7 @@ module ContentInstances
     #     }
     #     @data = @mints_user.duplicate_content_instance(1, data.to_json)
     def duplicate_content_instance(id, data)
-        return @client.raw("post", "/content/instances/#{id}/duplicate", nil, data)
+        @client.raw("post", "/content/instances/#{id}/duplicate", nil, data)
     end
     
     # === Get content instance.
@@ -49,7 +49,7 @@ module ContentInstances
     #     options = { "fields": "id, title" }
     #     @data = @mints_user.get_content_instance(1, options)
     def get_content_instance(id, options = nil)
-        return @client.raw("get", "/content/instances/#{id}", options)
+        @client.raw("get", "/content/instances/#{id}", options)
     end
 
     # === Publish content instance.
@@ -67,7 +67,7 @@ module ContentInstances
     #     }
     #     @data = @mints_user.publish_content_instance(2, data)
     def publish_content_instance(id, data)
-        return @client.raw("put", "/content/instances/#{id}/publish", nil, data_transform(data))
+        @client.raw("put", "/content/instances/#{id}/publish", nil, data_transform(data))
     end
 
     # === Schedule content instance.
@@ -83,7 +83,7 @@ module ContentInstances
     #     }
     #     @data = @mints_user.schedule_content_instance(1, data)
     def schedule_content_instance(id, data)
-        return @client.raw("put", "/content/instances/#{id}/schedule", nil, data_transform(data))
+        @client.raw("put", "/content/instances/#{id}/schedule", nil, data_transform(data))
     end
 
     # === Revert published content instance.
@@ -95,7 +95,7 @@ module ContentInstances
     # ==== Example
     #     @data = @mints_user.revert_published_content_instance(1)
     def revert_published_content_instance(id)
-        return @client.raw("get", "/content/instances/#{id}/revert-published-data")
+        @client.raw("get", "/content/instances/#{id}/revert-published-data")
     end
 
     # === Create content instance.
@@ -112,7 +112,7 @@ module ContentInstances
     #     }
     #     @data = @mints_user.create_content_instance(data)
     def create_content_instance(data)
-        return @client.raw("post", "/content/instances",  nil, data_transform(data))
+        @client.raw("post", "/content/instances",  nil, data_transform(data))
     end
 
     # === Update content instance.
@@ -130,7 +130,7 @@ module ContentInstances
     #     }
     #     @data = @mints_user.update_content_instance(18, data)
     def update_content_instance(id, data)
-        return @client.raw("put", "/content/instances/#{id}", nil, data_transform(data))
+        @client.raw("put", "/content/instances/#{id}", nil, data_transform(data))
     end
 
     # === Delete content instance.
@@ -142,6 +142,6 @@ module ContentInstances
     # ==== Example
     #     @data = @mints_user.delete_content_instance(20)
     def delete_content_instance(id)
-        return @client.raw("delete", "/content/instances/#{id}")
+        @client.raw("delete", "/content/instances/#{id}")
     end
 end

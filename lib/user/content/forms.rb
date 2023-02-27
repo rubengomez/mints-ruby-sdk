@@ -16,7 +16,7 @@ module Forms
     #     options = { "sort": "id", "fields": "title" }
     #     @data = @mints_user.get_forms(options)
     def get_forms(options = nil)
-        return @client.raw("get", "/content/forms", options)
+        @client.raw("get", "/content/forms", options)
     end
 
     # === Publish form.
@@ -34,7 +34,7 @@ module Forms
     #     }
     #     @data = @mints_user.publish_form(1, data.to_json)
     def publish_form(id, data) #FIXME: Output cannot be processed. response cannot be converted to json.
-        return @client.raw("put", "/content/forms/#{id}/publish", nil, data)
+        @client.raw("put", "/content/forms/#{id}/publish", nil, data)
     end
 
     # === Schedule form.
@@ -52,7 +52,7 @@ module Forms
     #     }
     #     @data = @mints_user.schedule_form(1, data.to_json)
     def schedule_form(id, data) #FIXME: Output cannot be processed. response cannot be converted to json.
-        return @client.raw("put", "/content/forms/#{id}/schedule", nil, data)
+        @client.raw("put", "/content/forms/#{id}/schedule", nil, data)
     end
 
     # === Revert published form.
@@ -64,7 +64,7 @@ module Forms
     # ==== Example
     #     @data = @mints_user.revert_published_form(1)
     def revert_published_form(id)
-        return @client.raw("get", "/content/forms/#{id}/revert-published-data")
+        @client.raw("get", "/content/forms/#{id}/revert-published-data")
     end
 
     # === Duplicate form.
@@ -76,7 +76,7 @@ module Forms
     # ==== Example
     #     @data = @mints_user.duplicate_form(3)
     def duplicate_form(id)
-        return @client.raw("post", "/content/forms/#{id}/duplicate")
+        @client.raw("post", "/content/forms/#{id}/duplicate")
     end
 
     # === Get activation words form.
@@ -88,7 +88,7 @@ module Forms
     # ==== Example
     #     @data = @mints_user.get_form_activation_words(3)
     def get_form_activation_words(id)
-        return @client.raw("post", "/content/forms/#{id}/activation-words")
+        @client.raw("post", "/content/forms/#{id}/activation-words")
     end
 
     # === Get form support data.
@@ -97,7 +97,7 @@ module Forms
     # ==== Example
     #     @data = @mints_user.get_form_support_data
     def get_form_support_data
-        return @client.raw("get", "/content/forms/support-data")
+        @client.raw("get", "/content/forms/support-data")
     end
 
     # === Get form submissions.
@@ -113,7 +113,7 @@ module Forms
     #     options = { "fields": "id" }
     #     @data = @mints_user.get_form_submissions(options)
     def get_form_submissions(options = nil)
-        return @client.raw("get", "/content/forms/submissions", options)
+        @client.raw("get", "/content/forms/submissions", options)
     end
 
     # === Get form submission.
@@ -129,7 +129,7 @@ module Forms
     #     options = { "fields": "id" }
     #     @data = @mints_user.get_form_submissions(options)
     def get_form_submission(id, options)
-        return @client.raw("get", "/content/forms/submissions/#{id}", options)
+        @client.raw("get", "/content/forms/submissions/#{id}", options)
     end
 
     # === Delete form submission.
@@ -141,7 +141,7 @@ module Forms
     # ==== Example
     #     @data = @mints_user.delete_form_submission(1)
     def delete_form_submission(id)
-        return @client.raw("delete", "/content/forms/submissions/#{id}")
+        @client.raw("delete", "/content/forms/submissions/#{id}")
     end
 
     # === Get form.
@@ -158,7 +158,7 @@ module Forms
     #     options = { "sort": "id", "fields": "title" }
     #     @data = @mints_user.get_form(2, options)
     def get_form(id, options = nil)
-        return @client.raw("get", "/content/forms/#{id}", options)
+        @client.raw("get", "/content/forms/#{id}", options)
     end
 
     # === Create form.
@@ -174,7 +174,7 @@ module Forms
     #     }
     #     @data = @mints_user.create_form(data)
     def create_form(data)
-        return @client.raw("post", "/content/forms", nil, data_transform(data))
+        @client.raw("post", "/content/forms", nil, data_transform(data))
     end
 
     # === Update form.
@@ -191,7 +191,7 @@ module Forms
     #     }
     #     @data = @mints_user.update_form(3, data)
     def update_form(id, data)
-        return @client.raw("put", "/content/forms/#{id}", nil, data_transform(data))
+        @client.raw("put", "/content/forms/#{id}", nil, data_transform(data))
     end
 
     # === Delete form.
@@ -203,7 +203,7 @@ module Forms
     # ==== Example
     #     @data = @mints_user.delete_form(9)
     def delete_form(id)
-        return @client.raw("delete", "/content/forms/#{id}")
+        @client.raw("delete", "/content/forms/#{id}")
     end
 
     # === Get form aggregates.
@@ -215,7 +215,7 @@ module Forms
     # ==== First Example
     #     @data = @mints_user.get_form_aggregates(1)
     def get_form_aggregates(id, object_id)
-        return @client.raw("get", "/content/forms/#{id}/aggregates?object_id=#{object_id}", options)
+        @client.raw("get", "/content/forms/#{id}/aggregates?object_id=#{object_id}", options)
     end
 
     # === Reset aggregates.
@@ -229,6 +229,6 @@ module Forms
     #     }
     #     @data = @mints_user.reset_form_aggregates(data)
     def reset_form_aggregates(data)
-        return @client.raw("post", "/content/forms/#{id}/aggregates", nil, data_transform(data))
+        @client.raw("post", "/content/forms/#{id}/aggregates", nil, data_transform(data))
     end
 end

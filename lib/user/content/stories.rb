@@ -12,7 +12,7 @@ module Stories
     #     }
     #     @data = @mints_user.duplicate_story(1, data.to_json)
     def duplicate_story(id, data)
-        return @client.raw("post", "/content/stories/#{id}/duplicate", nil, data)
+        @client.raw("post", "/content/stories/#{id}/duplicate", nil, data)
     end
 
     # === Get stories.
@@ -37,7 +37,7 @@ module Stories
     #     }
     #     @data = @mints_user.get_stories(options, true)
     def get_stories(options = nil, use_post = true)
-        return get_query_results("/content/stories", options, use_post)
+        get_query_results("/content/stories", options, use_post)
     end
 
     # === Get story.
@@ -56,7 +56,7 @@ module Stories
     #     }
     #     @data = @mints_user.get_story(1, options)
     def get_story(id, options = nil)
-        return @client.raw("get", "/content/stories/#{id}", options)
+        @client.raw("get", "/content/stories/#{id}", options)
     end
 
     # === Create story.
@@ -73,7 +73,7 @@ module Stories
     #     }
     #     @data = @mints_user.create_story(data)
     def create_story(data)
-        return @client.raw("post", "/content/stories", nil, data_transform(data))
+        @client.raw("post", "/content/stories", nil, data_transform(data))
     end
 
     # === Update story.
@@ -90,7 +90,7 @@ module Stories
     #     }
     #     @data = @mints_user.update_story(5, data)
     def update_story(id, data)
-        return @client.raw("put", "/content/stories/#{id}", nil, data_transform(data))
+        @client.raw("put", "/content/stories/#{id}", nil, data_transform(data))
     end
 
     # === Delete story.
@@ -102,6 +102,6 @@ module Stories
     # ==== Example
     #     @data = @mints_user.delete_story(6)
     def delete_story(id)
-        return @client.raw("delete", "/content/stories/#{id}")
+        @client.raw("delete", "/content/stories/#{id}")
     end
 end

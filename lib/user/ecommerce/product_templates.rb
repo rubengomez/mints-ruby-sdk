@@ -12,7 +12,7 @@ module ProductTemplates
     # ==== Example
     #     @data = @mints_user.get_product_templates_support_data_from_product(1)
     def get_product_templates_support_data_from_product(id)
-        return @client.raw("get", "/ecommerce/product-templates/support-data/products/#{id}")
+        @client.raw("get", "/ecommerce/product-templates/support-data/products/#{id}")
     end
 
     # === Get product templates support data from order items group.
@@ -24,7 +24,7 @@ module ProductTemplates
     # ==== Example
     #     @data = @mints_user.get_product_templates_support_data_from_order_items_group(1)
     def get_product_templates_support_data_from_order_items_group(id)
-        return @client.raw("get", "/ecommerce/product-templates/support-data/order-items-groups/#{id}")
+        @client.raw("get", "/ecommerce/product-templates/support-data/order-items-groups/#{id}")
     end
 
     # === Get product templates support data.
@@ -33,7 +33,7 @@ module ProductTemplates
     # ==== Example
     #     @data = @mints_user.get_product_templates_support_data
     def get_product_templates_support_data
-        return @client.raw("get", "/ecommerce/product-templates/support-data")
+        @client.raw("get", "/ecommerce/product-templates/support-data")
     end
     
     # === Get product templates.
@@ -49,7 +49,7 @@ module ProductTemplates
     #     options = { "fields": "title" }
     #     @data = @mints_user.get_product_templates(options)
     def get_product_templates(options = nil)
-        return @client.raw("get", "/ecommerce/product-templates", options)
+        @client.raw("get", "/ecommerce/product-templates", options)
     end
 
     # === Get product template.
@@ -66,7 +66,7 @@ module ProductTemplates
     #     options = { "fields": "title" }
     #     @data = @mints_user.get_product_template(1, options)
     def get_product_template(id, options = nil)
-        return @client.raw("get", "/ecommerce/product-templates/#{id}", options)
+        @client.raw("get", "/ecommerce/product-templates/#{id}", options)
     end
     
     # === Create product template.
@@ -82,7 +82,7 @@ module ProductTemplates
     #     }
     #     @data = @mints_user.create_product_template(data)
     def create_product_template(data)
-        return @client.raw("post", "/ecommerce/product-templates/", nil, data_transform(data))
+        @client.raw("post", "/ecommerce/product-templates/", nil, data_transform(data))
     end
     
     # === Update product template.
@@ -99,6 +99,6 @@ module ProductTemplates
     #     }
     #     @data = @mints_user.update_product_template(3, data)
     def update_product_template(id, data)
-        return @client.raw("put", "/ecommerce/product-templates/#{id}", nil, data_transform(data))
+        @client.raw("put", "/ecommerce/product-templates/#{id}", nil, data_transform(data))
     end
 end

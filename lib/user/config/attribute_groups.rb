@@ -9,7 +9,7 @@ module AttributeGroups
     # ==== Example
     #     @data = @mints_user.get_attribute_groups_data_types
     def get_attribute_groups_data_types
-        return @client.raw("get", "/config/attribute-groups/object-types")
+        @client.raw("get", "/config/attribute-groups/object-types")
     end
 
     # === Get attribute groups.
@@ -25,7 +25,7 @@ module AttributeGroups
     #     options = { "sort": "id" }
     #     @data = @mints_user.get_attribute_groups(options)
     def get_attribute_groups(options = nil)
-        return @client.raw("get", "/config/attribute-groups", options)
+        @client.raw("get", "/config/attribute-groups", options)
     end
     
     # === Get attribute group.
@@ -37,7 +37,7 @@ module AttributeGroups
     # ==== Example
     #     @data = @mints_user.get_attribute_group(10)
     def get_attribute_group(id)
-        return @client.raw("get", "/config/attribute-groups/#{id}")
+        @client.raw("get", "/config/attribute-groups/#{id}")
     end
 
     # === Create attribute group.
@@ -53,7 +53,7 @@ module AttributeGroups
     #     }
     #     @data = @mints_user.create_attribute_group(data)
     def create_attribute_group(data)
-        return @client.raw("post", "/config/attribute-groups", nil, data_transform(data))
+        @client.raw("post", "/config/attribute-groups", nil, data_transform(data))
     end
 
     # === Update attribute group.
@@ -72,6 +72,6 @@ module AttributeGroups
     #     }
     #     @data = @mints_user.update_attribute_group(36, data)
     def update_attribute_group(id, data)
-        return @client.raw("put", "/config/attribute-groups/#{id}", nil, data_transform(data))
+        @client.raw("put", "/config/attribute-groups/#{id}", nil, data_transform(data))
     end
 end

@@ -17,6 +17,6 @@ module Users
     #     options = { "sort": "id", "fields": "id, email" }
     #     @data = @mints_user.get_crm_users(options)
     def get_crm_users(options = nil)
-        return @client.raw("get", "/crm/users", options)
+        @client.raw("get", "/crm/users", options)
     end
 end

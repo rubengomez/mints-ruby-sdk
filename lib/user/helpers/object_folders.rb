@@ -16,7 +16,7 @@ module ObjectFolders
     #     options = { "fields": "id" }
     #     @data = @mints_user.get_object_folders(options)
     def get_object_folders(options = nil)
-        return @client.raw("get", "/helpers/object-folders", options)
+        @client.raw("get", "/helpers/object-folders", options)
     end
 
     # === Get object folder.
@@ -33,7 +33,7 @@ module ObjectFolders
     #     options = { "fields": "id" }
     #     @data = @mints_user.get_object_folder(1, options)
     def get_object_folder(id, options = nil)
-        return @client.raw("get", "/helpers/object-folders/#{id}", options)
+        @client.raw("get", "/helpers/object-folders/#{id}", options)
     end
 
     # === Create object folder.
@@ -49,7 +49,7 @@ module ObjectFolders
     #     }
     #     @data = @mints_user.create_object_folder(data)
     def create_object_folder(data)
-        return @client.raw("post", "/helpers/object-folders", nil, data_transform(data))
+        @client.raw("post", "/helpers/object-folders", nil, data_transform(data))
     end
 
     # === Update object folder.
@@ -65,7 +65,7 @@ module ObjectFolders
     #     }
     #     @data = @mints_user.update_object_folder(1, data)
     def update_object_folder(id, data)
-        return @client.raw("put", "/helpers/object-folders/#{id}", nil, data_transform(data))
+        @client.raw("put", "/helpers/object-folders/#{id}", nil, data_transform(data))
     end
 
     # === Delete object folder.
@@ -77,6 +77,6 @@ module ObjectFolders
     # ==== Example
     #     @data = @mints_user.delete_object_folder(2)
     def delete_object_folder(id)
-        return @client.raw("delete", "/helpers/object-folders/#{id}")
+        @client.raw("delete", "/helpers/object-folders/#{id}")
     end
 end

@@ -13,7 +13,7 @@ module Deals
     # ==== Example
     #     @data = @mints_user.get_deal_permits(7)
     def get_deal_permits(id)
-        return @client.raw("get", "/crm/deals/#{id}/permits")
+        @client.raw("get", "/crm/deals/#{id}/permits")
     end
 
     ##
@@ -23,7 +23,7 @@ module Deals
     # ==== Example
     #     @data = @mints_user.get_deal_support_data
     def get_deal_support_data
-        return @client.raw("get", "/crm/deals/support-data")
+        @client.raw("get", "/crm/deals/support-data")
     end
 
     ##
@@ -33,7 +33,7 @@ module Deals
     # ==== Example
     #     @data = @mints_user.get_deal_currencies
     def get_deal_currencies
-        return @client.raw("get", "/crm/deal/currencies")
+        @client.raw("get", "/crm/deal/currencies")
     end
 
     # === Get deals.
@@ -71,7 +71,7 @@ module Deals
     #     options = { "fields": "id, title" }
     #     @data = @mints_user.get_deal(1, options)
     def get_deal(id, options = nil)
-        return @client.raw("get", "/crm/deals/#{id}", options)
+        @client.raw("get", "/crm/deals/#{id}", options)
     end
 
     # === Create deal.
@@ -90,7 +90,7 @@ module Deals
     #     }
     #     @data = @mints_user.create_deal(data.to_json)
     def create_deal(data, options = nil)
-        return @client.raw("post", "/crm/deals", options, data)
+        @client.raw("post", "/crm/deals", options, data)
     end
 
     # === Update deal.
@@ -106,6 +106,6 @@ module Deals
     #     }
     #     @data = @mints_user.update_deal(102, data.to_json)
     def update_deal(id, data, options = nil)
-        return @client.raw("put", "/crm/deals/#{id}", options, data)
+        @client.raw("put", "/crm/deals/#{id}", options, data)
     end
 end

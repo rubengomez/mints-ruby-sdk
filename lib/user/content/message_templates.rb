@@ -12,7 +12,7 @@ module MessageTemplates
     # ==== Example
     #     @data = @mints_user.get_variables_of_content_page_from_message_templates(2)
     def get_variables_of_content_page_from_message_templates(id)
-        return @client.raw("get", "/content/message-templates/content-pages/#{id}/variables")
+        @client.raw("get", "/content/message-templates/content-pages/#{id}/variables")
     end
 
     # === Get recipient variables.
@@ -21,7 +21,7 @@ module MessageTemplates
     # ==== Example
     #     @data = @mints_user.get_recipient_variables
     def get_recipient_variables
-        return @client.raw("get", "/content/message-templates/recipient-variables")
+        @client.raw("get", "/content/message-templates/recipient-variables")
     end
     
     # === Get driver templates.
@@ -30,7 +30,7 @@ module MessageTemplates
     # ==== Example
     #     @data = @mints_user.get_driver_templates
     def get_driver_templates
-        return @client.raw("get", "/content/email-templates/driver/templates")
+        @client.raw("get", "/content/email-templates/driver/templates")
     end
 
     # === Preview message template.
@@ -50,7 +50,7 @@ module MessageTemplates
     #     }
     #     @data = @mints_user.preview_message_template(data)
     def preview_message_template(data)
-        return @client.raw("post", "/content/message-templates/preview", nil, data_transform(data))
+        @client.raw("post", "/content/message-templates/preview", nil, data_transform(data))
     end
 
     # === Send Message Template.
@@ -69,7 +69,7 @@ module MessageTemplates
     #     }
     #     @data = @mints_user.send_message_template(data)
     def send_message_template(data)
-        return @client.raw("post", "/content/message-templates/send", nil, data_transform(data))
+        @client.raw("post", "/content/message-templates/send", nil, data_transform(data))
     end
 
     # === Duplicate Message Template.
@@ -80,7 +80,7 @@ module MessageTemplates
     # data:: (Hash) -- Data to be submitted.
     #
     def duplicate_message_template(id, data) #FIXME: Error in duplicating
-        return @client.raw("post", "/content/message-templates/#{id}/duplicate", nil, data_transform(data))
+        @client.raw("post", "/content/message-templates/#{id}/duplicate", nil, data_transform(data))
     end
 
     # === Get message templates.
@@ -96,7 +96,7 @@ module MessageTemplates
     #     options = { "fields": "id" }
     #     @data = @mints_user.get_message_templates(options)
     def get_message_templates(options = nil)
-        return @client.raw("get", "/content/message-templates", options)
+        @client.raw("get", "/content/message-templates", options)
     end
 
     # === Get message template.
@@ -113,7 +113,7 @@ module MessageTemplates
     #     options = { "fields": "id" }
     #     @data = @mints_user.get_message_template(1, options)
     def get_message_template(id, options = nil)
-        return @client.raw("get", "/content/message-templates/#{id}", options)
+        @client.raw("get", "/content/message-templates/#{id}", options)
     end
 
     # === Create message template.
@@ -129,7 +129,7 @@ module MessageTemplates
     #     }
     #     @data = @mints_user.create_message_template(data)
     def create_message_template(data)
-        return @client.raw("post", "/content/message-templates", nil, data_transform(data))
+        @client.raw("post", "/content/message-templates", nil, data_transform(data))
     end
 
     # === Update message template.
@@ -145,7 +145,7 @@ module MessageTemplates
     #     }
     #     @data = @mints_user.update_message_template(5, data)
     def update_message_template(id, data)
-        return @client.raw("put", "/content/message-templates/#{id}", nil, data_transform(data))
+        @client.raw("put", "/content/message-templates/#{id}", nil, data_transform(data))
     end
 
     # === Delete message template.
@@ -157,6 +157,6 @@ module MessageTemplates
     # ==== Example
     #     @data = @mints_user.delete_message_template(2)
     def delete_message_template(id)
-        return @client.raw("delete", "/content/message-templates/#{id}")
+        @client.raw("delete", "/content/message-templates/#{id}")
     end
 end

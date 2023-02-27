@@ -17,7 +17,7 @@ module Conversations
     #     options = { "fields": "title" }
     #     @data = @mints_user.get_conversations(options)
     def get_conversations(options = nil)
-        return @client.raw("get", "/content/conversations", options)
+        @client.raw("get", "/content/conversations", options)
     end
 
     # === Get conversation.
@@ -34,7 +34,7 @@ module Conversations
     #     options = { "fields": "title" }
     #     @data = @mints_user.get_conversation(1, options)
     def get_conversation(id, options = nil)
-        return @client.raw("get", "/content/conversations/#{id}", options)
+        @client.raw("get", "/content/conversations/#{id}", options)
     end
 
     # === Create conversation.
@@ -49,7 +49,7 @@ module Conversations
     #     }
     #     @data = @mints_user.create_conversation(data)
     def create_conversation(data, options = nil)
-        return @client.raw("post", "/content/conversations", options, data_transform(data))
+        @client.raw("post", "/content/conversations", options, data_transform(data))
     end
 
     # === Update conversation.
@@ -65,7 +65,7 @@ module Conversations
     #     }
     #     @data = @mints_user.update_conversation(13, data)
     def update_conversation(id, data, options = nil)
-        return @client.raw("put", "/content/conversations/#{id}", options, data_transform(data))
+        @client.raw("put", "/content/conversations/#{id}", options, data_transform(data))
     end
 
     # === Delete conversation.
@@ -77,7 +77,7 @@ module Conversations
     # ==== Example
     #     @data = @mints_user.delete_conversation(11)
     def delete_conversation(id)
-        return @client.raw("delete", "/content/conversations/#{id}")
+        @client.raw("delete", "/content/conversations/#{id}")
     end
     
     # === Update conversation status.
@@ -93,7 +93,7 @@ module Conversations
     #     }
     #     @data = @mints_user.update_conversation_status(13, data)
     def update_conversation_status(id, data)
-        return @client.raw("put", "/content/conversations/#{id}/status", nil, data_transform(data))
+        @client.raw("put", "/content/conversations/#{id}/status", nil, data_transform(data))
     end
 
     # === Get conversation participants.
@@ -105,7 +105,7 @@ module Conversations
     # ==== Example
     #     @data = @mints_user.get_conversation_participants(1)
     def get_conversation_participants(id)
-        return @client.raw("get", "/content/conversations/#{id}/participants")
+        @client.raw("get", "/content/conversations/#{id}/participants")
     end
 
     # === Attach user in conversation.
@@ -121,7 +121,7 @@ module Conversations
     #     }
     #     @data = @mints_user.attach_user_in_conversation(13, data)
     def attach_user_in_conversation(id, data)
-        return @client.raw("post", "/content/conversations/#{id}/attach-user", nil, data_transform(data))
+        @client.raw("post", "/content/conversations/#{id}/attach-user", nil, data_transform(data))
     end
 
     # === Detach user in conversation.
@@ -137,7 +137,7 @@ module Conversations
     #     }
     #     @data = @mints_user.detach_user_in_conversation(13, data)
     def detach_user_in_conversation(id, data)
-        return @client.raw("post", "/content/conversations/#{id}/detach-user", nil, data_transform(data))
+        @client.raw("post", "/content/conversations/#{id}/detach-user", nil, data_transform(data))
     end
 
     # === Attach contact in conversation.
@@ -153,7 +153,7 @@ module Conversations
     #     }
     #     @data = @mints_user.attach_contact_in_conversation(1, data)
     def attach_contact_in_conversation(id, data)
-        return @client.raw("post", "/content/conversations/#{id}/attach-contact", nil, data_transform(data))
+        @client.raw("post", "/content/conversations/#{id}/attach-contact", nil, data_transform(data))
     end
 
     # === Detach contact in conversation.
@@ -169,7 +169,7 @@ module Conversations
     #     }
     #     @data = @mints_user.detach_contact_in_conversation(1, data)
     def detach_contact_in_conversation(id, data)
-        return @client.raw("post", "/content/conversations/#{id}/detach-contact", nil, data_transform(data))
+        @client.raw("post", "/content/conversations/#{id}/detach-contact", nil, data_transform(data))
     end
 
     # === Attach form in conversation.
@@ -185,7 +185,7 @@ module Conversations
     #     }
     #     @data = @mints_user.attach_form_in_conversation(1, data)
     def attach_form_in_conversation(id, data)
-        return @client.raw("post", "/content/conversations/#{id}/attach-form", nil, data_transform(data))
+        @client.raw("post", "/content/conversations/#{id}/attach-form", nil, data_transform(data))
     end
 
     # === Detach form in conversation.
@@ -201,6 +201,6 @@ module Conversations
     #     }
     #     @data = @mints_user.detach_form_in_conversation(1, data)
     def detach_form_in_conversation(id, data)
-        return @client.raw("post", "/content/conversations/#{id}/detach-form", nil, data_transform(data))
+        @client.raw("post", "/content/conversations/#{id}/detach-form", nil, data_transform(data))
     end
 end

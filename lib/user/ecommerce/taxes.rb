@@ -16,7 +16,7 @@ module Taxes
     #     options = { "fields": "title" }
     #     @data = @mints_user.get_taxes(options)
     def get_taxes(options = nil)
-        return @client.raw("get", "/ecommerce/taxes", options)
+        @client.raw("get", "/ecommerce/taxes", options)
     end
 
     # === Get tax.
@@ -33,7 +33,7 @@ module Taxes
     #     options = { "fields": "title" }
     #     @data = @mints_user.get_tax(1, options)
     def get_tax(id, options = nil)
-        return @client.raw("get", "/ecommerce/taxes/#{id}", options)
+        @client.raw("get", "/ecommerce/taxes/#{id}", options)
     end
     
     # === Create tax.
@@ -49,7 +49,7 @@ module Taxes
     #     }
     #     @data = @mints_user.create_tax(data)
     def create_tax(data)
-        return @client.raw("post", "/ecommerce/taxes", nil, data_transform(data))
+        @client.raw("post", "/ecommerce/taxes", nil, data_transform(data))
     end
     
     # === Update tax.
@@ -65,7 +65,7 @@ module Taxes
     #     }
     #     @data = @mints_user.update_tax(11, data)
     def update_tax(id, data)
-        return @client.raw("put", "/ecommerce/taxes/#{id}", nil, data_transform(data))
+        @client.raw("put", "/ecommerce/taxes/#{id}", nil, data_transform(data))
     end
     
     # === Delete tax.
@@ -77,6 +77,6 @@ module Taxes
     # ==== Example
     #     @data = @mints_user.delete_tax(11)
     def delete_tax(id)
-        return @client.raw("delete", "/ecommerce/taxes/#{id}")
+        @client.raw("delete", "/ecommerce/taxes/#{id}")
     end
 end

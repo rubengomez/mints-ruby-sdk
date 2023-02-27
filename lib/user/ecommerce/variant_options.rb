@@ -16,7 +16,7 @@ module VariantOptions
     #     options = { "fields": "id, title" }
     #     @data = @mints_user.get_variant_options(options)
     def get_variant_options(options = nil)
-        return @client.raw("get", "/ecommerce/variant-options", options)
+        @client.raw("get", "/ecommerce/variant-options", options)
     end
 
     # === Get variant option.
@@ -33,7 +33,7 @@ module VariantOptions
     #     options = { "fields": "id, title" }
     #     @data = @mints_user.get_variant_option(1, options)
     def get_variant_option(id, options = nil)
-        return @client.raw("get", "/ecommerce/variant-options/#{id}", options)
+        @client.raw("get", "/ecommerce/variant-options/#{id}", options)
     end
     
     # === Create variant option.
@@ -48,7 +48,7 @@ module VariantOptions
     #     }
     #     @data = @mints_user.create_variant_option(data)
     def create_variant_option(data)
-        return @client.raw("post", "/ecommerce/variant-options", nil, data_transform(data))
+        @client.raw("post", "/ecommerce/variant-options", nil, data_transform(data))
     end
     
     # === Update variant option.
@@ -64,6 +64,6 @@ module VariantOptions
     #     }
     #     @data = @mints_user.update_variant_option(6, data)
     def update_variant_option(id, data)
-        return @client.raw("put", "/ecommerce/variant-options/#{id}", nil, data_transform(data))
+        @client.raw("put", "/ecommerce/variant-options/#{id}", nil, data_transform(data))
     end
 end

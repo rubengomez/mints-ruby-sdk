@@ -11,7 +11,7 @@ module Orders
     # data:: (Hash) -- Data to be submitted.
     #
     def duplicate_order(orderId, data) #FIXME: Doesnt read options from data and sale_price_cents column doesnt have to be null
-        return @client.raw("post", "/ecommerce/orders/duplicate/#{orderId}", nil, data)
+        @client.raw("post", "/ecommerce/orders/duplicate/#{orderId}", nil, data)
     end
 
     # === Delete orders.
@@ -26,7 +26,7 @@ module Orders
     #     }
     #     @data = @mints_user.delete_orders(data)
     def delete_orders(data) #TODO: Inform method should return another response like 'success'
-        return @client.raw("delete", "/ecommerce/orders/delete", nil, data_transform(data))
+        @client.raw("delete", "/ecommerce/orders/delete", nil, data_transform(data))
     end
     
     # === Get orders support data.
@@ -35,7 +35,7 @@ module Orders
     # ==== Example
     #     @data = @mints_user.get_orders_support_data
     def get_orders_support_data
-        return @client.raw("get", "/ecommerce/orders/support-data")
+        @client.raw("get", "/ecommerce/orders/support-data")
     end
     
     # === Get orders.
@@ -73,7 +73,7 @@ module Orders
     #     options = { "fields": "title" }
     #     @data = @mints_user.get_order(1, options)
     def get_order(id, options = nil)
-        return @client.raw("get", "/ecommerce/orders/#{id}", options)
+        @client.raw("get", "/ecommerce/orders/#{id}", options)
     end
 
     # === Create order.
@@ -89,7 +89,7 @@ module Orders
     #     }
     #     @data = @mints_user.create_order(data)
     def create_order(data, options = nil)
-        return @client.raw("post", "/ecommerce/orders", options, data_transform(data))
+        @client.raw("post", "/ecommerce/orders", options, data_transform(data))
     end
 
     # === Update order.
@@ -105,7 +105,7 @@ module Orders
     #     }
     #     @data = @mints_user.update_order(26, data)
     def update_order(id, data, options = nil)
-        return @client.raw("put", "/ecommerce/orders/#{id}", options, data_transform(data))
+        @client.raw("put", "/ecommerce/orders/#{id}", options, data_transform(data))
     end
     
     ##
@@ -121,7 +121,7 @@ module Orders
     # ==== Example
     #     @data = @mints_user.get_order_template_support_data(1)
     def get_order_template_support_data(id)
-        return @client.raw("get", "/ecommerce/order-templates/support-data/#{id}")
+        @client.raw("get", "/ecommerce/order-templates/support-data/#{id}")
     end
 
     # === Get order templates.
@@ -137,7 +137,7 @@ module Orders
     #     options = { "fields": "title" }
     #     @data = @mints_user.get_order_templates(options)
     def get_order_templates(options = nil)
-        return @client.raw("get", "/ecommerce/order-templates", options)
+        @client.raw("get", "/ecommerce/order-templates", options)
     end
 
     # === Get order template.
@@ -154,7 +154,7 @@ module Orders
     #     options = { "fields": "title" }
     #     @data = @mints_user.get_order_template(1, options)
     def get_order_template(id, options = nil)
-        return @client.raw("get", "/ecommerce/order-templates/#{id}", options)
+        @client.raw("get", "/ecommerce/order-templates/#{id}", options)
     end
     
     # === Update order template.
@@ -170,7 +170,7 @@ module Orders
     #     }
     #     @data = @mints_user.update_order_template(12, data)
     def update_order_template(id, data)
-        return @client.raw("put", "/ecommerce/order-templates/#{id}", nil, data_transform(data))
+        @client.raw("put", "/ecommerce/order-templates/#{id}", nil, data_transform(data))
     end
 
     ##
@@ -183,7 +183,7 @@ module Orders
     # ==== Example
     #     @data = @mints_user.get_order_items_support_data
     def get_order_items_support_data
-        return @client.raw("get", "/ecommerce/order-items/support-data")
+        @client.raw("get", "/ecommerce/order-items/support-data")
     end
     
     #TODO: The following two methods receive objects instead integer variable. Research use and test it.
@@ -195,7 +195,7 @@ module Orders
     # groupId:: (Integer) -- Order items group id.
     #
     def detach_order_item_from_order_item_group(orderItemId, groupId) #TODO: Research use
-        return @client.raw("put", "/ecommerce/order-items/detach/#{orderItemId}/order-items-groups/#{groupId}")
+        @client.raw("put", "/ecommerce/order-items/detach/#{orderItemId}/order-items-groups/#{groupId}")
     end
 
     # === Update order item from order item group.
@@ -206,7 +206,7 @@ module Orders
     # groupId:: (Integer) -- Order items group id.
     #
     def update_order_item_from_order_item_group(orderItemId, groupId, data) #TODO: Research use
-        return @client.raw("put", "/ecommerce/order-items/update/#{orderItemId}/order-items-groups/#{groupId}", nil, data_transform(data))
+        @client.raw("put", "/ecommerce/order-items/update/#{orderItemId}/order-items-groups/#{groupId}", nil, data_transform(data))
     end
     
     # === Get order items.
@@ -222,7 +222,7 @@ module Orders
     #     options = { "fields": "id" }
     #     @data = @mints_user.get_order_items(options)
     def get_order_items(options = nil) #FIXME: CaliRouter POST method not supported.
-        return @client.raw("get", "/ecommerce/order-items", options)
+        @client.raw("get", "/ecommerce/order-items", options)
     end
 
     # === Get order item.
@@ -239,7 +239,7 @@ module Orders
     #     options = { "fields": "id" }
     #     @data = @mints_user.get_order_item(1, options)
     def get_order_item(id, options = nil)
-        return @client.raw("get", "/ecommerce/order-items/#{id}", options)
+        @client.raw("get", "/ecommerce/order-items/#{id}", options)
     end
     
     # === Update order item.
@@ -253,6 +253,6 @@ module Orders
     #     data = { "title": "No title in order items" }
     #     @data = @mints_user.update_order_item(1, data)
     def update_order_item(id, data) #TODO: Research what can update
-        return @client.raw("put", "/ecommerce/order-items/#{id}", nil, data_transform(data))
+        @client.raw("put", "/ecommerce/order-items/#{id}", nil, data_transform(data))
     end
 end
