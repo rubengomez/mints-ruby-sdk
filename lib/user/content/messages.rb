@@ -17,7 +17,7 @@ module Messages
     #     options = { "fields": "value" }
     #     @data = @mints_user.get_messages(options)
     def get_messages(options = nil)
-        return @client.raw("get", "/content/messages", options)
+        @client.raw("get", "/content/messages", options)
     end
 
     # === Get message.
@@ -34,7 +34,7 @@ module Messages
     #     options = { "fields": "value" }
     #     @data = @mints_user.get_message(1, options)
     def get_message(id, options = nil)
-        return @client.raw("get", "/content/messages/#{id}", options)
+        @client.raw("get", "/content/messages/#{id}", options)
     end
 
     # === Create message.
@@ -55,7 +55,7 @@ module Messages
     #     }
     #     @data = @mints_user.create_message(data)
     def create_message(data)
-        return @client.raw("post", "/content/messages", nil, data_transform(data))
+        @client.raw("post", "/content/messages", nil, data_transform(data))
     end
     
     # === Update message.
@@ -73,7 +73,7 @@ module Messages
     #     }
     #     @data = @mints_user.update_message(102, data)
     def update_message(id, data)
-        return @client.raw("put", "/content/messages/#{id}", nil, data_transform(data))
+        @client.raw("put", "/content/messages/#{id}", nil, data_transform(data))
     end
     
     # === Delete message.
@@ -85,6 +85,6 @@ module Messages
     # ==== Example
     #     @data = @mints_user.delete_message(101)
     def delete_message(id)
-        return @client.raw("delete", "/content/messages/#{id}")
+        @client.raw("delete", "/content/messages/#{id}")
     end
 end

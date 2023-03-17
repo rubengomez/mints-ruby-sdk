@@ -36,30 +36,30 @@ module Config
     #
 
     # def sync_categories_for_object(data)
-    #  return @client.raw("put", "/config/categories/sync_categories_for_object", nil, data)
+    #  @client.raw("put", "/config/categories/sync_categories_for_object", nil, data)
     #end
 
     # def get_categories_for_object(options)
-    #  return @client.raw("get", "/config/categories/get_categories_for_object", options)
+    #  @client.raw("get", "/config/categories/get_categories_for_object", options)
     #end
     
     # def get_categories
-    #  return @client.raw("get", "/config/categories")
+    #  @client.raw("get", "/config/categories")
     #end
 
     # def create_category(data) #TODO: Research if 'visible' is a boolean or int. It accepts smallint
-    #  return @client.raw("post", "/config/categories", nil, data)
+    #  @client.raw("post", "/config/categories", nil, data)
     #end
 
     # def update_category(id, data)
-    #  return @client.raw("put", "/config/categories/#{id}", nil, data)
+    #  @client.raw("put", "/config/categories/#{id}", nil, data)
     #end
 
     # def get_category_support_data(id)
-    #  return @client.raw("get", "/config/categories/support-data/#{id}")
+    #  @client.raw("get", "/config/categories/support-data/#{id}")
     #end
     
     # def get_category(id)
-    #  return @client.raw("get", "/config/categories/#{id}")
+    #  @client.raw("get", "/config/categories/#{id}")
     #end
 end

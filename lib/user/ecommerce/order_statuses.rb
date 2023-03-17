@@ -9,7 +9,7 @@ module OrderStatuses
     # ==== First Example
     #     @data = @mints_user.get_order_statuses
     def get_order_statuses
-        return @client.raw("get", "/ecommerce/order-statuses")
+        @client.raw("get", "/ecommerce/order-statuses")
     end
     
     # === Get order status.
@@ -21,6 +21,6 @@ module OrderStatuses
     # ==== First Example
     #     @data = @mints_user.get_order_status(1)
     def get_order_status(id)
-        return @client.raw("get", "/ecommerce/order-statuses/#{id}")
+        @client.raw("get", "/ecommerce/order-statuses/#{id}")
     end
 end

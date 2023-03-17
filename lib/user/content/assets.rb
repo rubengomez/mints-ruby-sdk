@@ -45,7 +45,7 @@ module Assets
     #     }
     #     @data = @mints_user.get_asset(1, options)
     def get_asset(id, options = nil)
-        return @client.raw("get", "/content/assets/#{id}", options)
+        @client.raw("get", "/content/assets/#{id}", options)
     end
 
     # === Create asset.
@@ -61,7 +61,7 @@ module Assets
     #     }
     #     @data = @mints_user.create_asset(data)
     def create_asset(data)
-        return @client.raw("post", "/content/assets", nil, data_transform(data))
+        @client.raw("post", "/content/assets", nil, data_transform(data))
     end
 
     # === Update asset.
@@ -78,7 +78,7 @@ module Assets
     #     }
     #     @data = @mints_user.update_asset(5, data)
     def update_asset(id, data)
-        return @client.raw("put", "/content/assets/#{id}", nil, data_transform(data))
+        @client.raw("put", "/content/assets/#{id}", nil, data_transform(data))
     end
 
     # === Delete asset.
@@ -90,7 +90,7 @@ module Assets
     # ==== Example
     #     @data = @mints_user.delete_asset(6)
     def delete_asset(id)
-        return @client.raw("delete", "/content/assets/#{id}")
+        @client.raw("delete", "/content/assets/#{id}")
     end
 
     # === Get asset link info.
@@ -105,7 +105,7 @@ module Assets
     #     }
     #     @data = @mints_user.get_asset_link_info(data.to_json)
     def get_asset_link_info(data)
-        return @client.raw("post", "/content/assets/getLinkInfo", nil, data)
+        @client.raw("post", "/content/assets/getLinkInfo", nil, data)
     end
 
     # === Download asset.
@@ -117,12 +117,12 @@ module Assets
     # ==== Example
     #     @data = @mints_user.download_asset(2)
     def download_asset(id) #FIXME: File not found at path, error in result but method works
-        return @client.raw("get", "/content/assets/download/#{id}")
+        @client.raw("get", "/content/assets/download/#{id}")
     end
 
     # FIXME: Returns json invalid token
     # def get_asset_thumbnails(id)
-    #    return @client.raw("get", "/content/assets/thumbnails/#{id}")
+    #    @client.raw("get", "/content/assets/thumbnails/#{id}")
     #end
     
     # === Get asset usage.
@@ -131,7 +131,7 @@ module Assets
     # ==== Parameters
     # options:: (Hash) -- List of Resource Collection Options shown above can be used as parameter.
     def get_asset_usage(options)
-        return @client.raw("get", "/content/assets/usage", options)
+        @client.raw("get", "/content/assets/usage", options)
     end
 
     # === Get asset info.
@@ -141,19 +141,19 @@ module Assets
     # ==== Parameters
     # options:: (Hash) -- List of Resource Collection Options shown above can be used as parameter.
     def get_asset_info(options)
-        return @client.raw("get", "/content/assets/getAssetInfo", options)
+        @client.raw("get", "/content/assets/getAssetInfo", options)
     end
 
     # === Get asset doc types.
     # Get doc types of assets.
     def get_asset_doc_types
-        return @client.raw("get", "/content/assets/docTypes")
+        @client.raw("get", "/content/assets/docTypes")
     end
 
     # === Get asset public route.
     # Get public route of assets.
     def get_asset_public_route
-        return @client.raw("get", "/content/assets/publicRoute")
+        @client.raw("get", "/content/assets/publicRoute")
     end
     
     # === Upload asset.
@@ -208,7 +208,7 @@ module Assets
     #     }
     #     @data = @mints_user.upload_asset(data.to_json)
     def upload_asset(data) #TODO: Research a way to upload a File accross sdk
-        return @client.raw("post", "/content/assets/upload", nil, data)
+        @client.raw("post", "/content/assets/upload", nil, data)
     end
 
 
@@ -224,7 +224,7 @@ module Assets
     # ==== Parameters
     # options:: (Hash) -- List of Resource Collection Options shown above can be used as parameter.    
     def get_asset_sizes(options)
-        return @client.raw("get", "/content/assets/sizes", options)
+        @client.raw("get", "/content/assets/sizes", options)
     end
 
     # === Get asset sizes.
@@ -236,7 +236,7 @@ module Assets
     # ==== Example
     #     @data = @mints_user.get_asset_sizes(2)
     def get_asset_size(id) #FIXME: wrong number of arguments (given 1, expected 0)
-        return @client.raw("get", "/content/assets/sizes/#{id}")
+        @client.raw("get", "/content/assets/sizes/#{id}")
     end
 
     # === Create asset size.
@@ -265,7 +265,7 @@ module Assets
     #    }
     #    @data = @mints_user.create_asset_size(data.to_json)
     def create_asset_size(data)
-        return @client.raw("post", "/content/assets/sizes", nil, data)
+        @client.raw("post", "/content/assets/sizes", nil, data)
     end
 
 
@@ -285,7 +285,7 @@ module Assets
     def get_asset_variation(id)
         #FIXME: Id 1 and 4: Trying to get property 'path' of non-object maybe json conversion is bad
         #FIXME: Id 2 and 3: File not found at path maybe doesnt exist
-        return @client.raw("get", "/content/assets/variation/#{id}")
+        @client.raw("get", "/content/assets/variation/#{id}")
     end
 
     # === Generate asset variation.
@@ -294,6 +294,6 @@ module Assets
     # ==== Parameters
     # data:: (Hash) -- Data to be submitted.
     def generate_asset_variation(data) #FIXME: Trying to get property 'width' of non-object
-        return @client.raw("post", "/content/assets/generate-asset-variations", nil, data)
+        @client.raw("post", "/content/assets/generate-asset-variations", nil, data)
     end
 end

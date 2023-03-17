@@ -13,7 +13,7 @@ module Importers
     #     options = { "ip_id": 1 }
     #     @data = @mints_user.get_importers_results(options)
     def get_importers_results(options) #FIXME: Query doesnt get results. Maybe no data in db.
-        return @client.raw("get", "/config/importers/results", options)
+        @client.raw("get", "/config/importers/results", options)
     end
     
     # === Get importers configuration.
@@ -22,7 +22,7 @@ module Importers
     # ==== Example
     #     @data = @mints_user.get_importers_configuration
     def get_importers_configuration
-        return @client.raw("get", "/config/importers/configuration")
+        @client.raw("get", "/config/importers/configuration")
     end
 
     # === Get importing process status.
@@ -37,7 +37,7 @@ module Importers
     #     }
     #     @data = @mints_user.get_importing_process_status(options)
     def get_importing_process_status(options = nil)
-        return @client.raw("get", "/config/importers/importing_process_status", options)
+        @client.raw("get", "/config/importers/importing_process_status", options)
     end
 
     # === Get importers attributes.
@@ -53,7 +53,7 @@ module Importers
     #     }
     #     @data = @mints_user.get_importers_attributes(options)
     def get_importers_attributes(options = nil)
-        return @client.raw("get", "/config/importers/attributes", options)
+        @client.raw("get", "/config/importers/attributes", options)
     end
 
     # === Upload importer.
@@ -69,7 +69,7 @@ module Importers
     #     }
     #     @data = @mints_user.upload_importer(1, data.to_json)
     def upload_importer(id, data) #TODO: Search for csv archives
-        return @client.raw("post", "/config/importers/#{id}/upload", nil, data)
+        @client.raw("post", "/config/importers/#{id}/upload", nil, data)
     end
 
     # === Import row.
@@ -81,7 +81,7 @@ module Importers
     # ==== Example
     #     
     def import_row(data) #TODO: Research use
-        return @client.raw("post", "/config/importers/import_row", nil, data)
+        @client.raw("post", "/config/importers/import_row", nil, data)
     end
     
     # === Remove importers active process.
@@ -93,7 +93,7 @@ module Importers
     # ==== Example
     #     
     def remove_importers_active_process(data) #FIXME: Cannot get property 'active_importing_process' of non-object. 
-        return @client.raw("post", "/config/importers/removeActiveProcess", nil, data_transform(data))
+        @client.raw("post", "/config/importers/removeActiveProcess", nil, data_transform(data))
     end
     
     # === Get importers.
@@ -109,7 +109,7 @@ module Importers
     #     options = { "fields": "name" }
     #     @data = @mints_user.get_importers(options)
     def get_importers(options = nil)
-        return @client.raw("get", "/config/importers", options)
+        @client.raw("get", "/config/importers", options)
     end
 
     # === Get importer.
@@ -126,7 +126,7 @@ module Importers
     #     options = { "fields": "name" }
     #     @data = @mints_user.get_importer(1, options)
     def get_importer(id, options = nil)
-        return @client.raw("get", "/config/importers/#{id}", options)
+        @client.raw("get", "/config/importers/#{id}", options)
     end
 
     # === Create importer.
@@ -142,7 +142,7 @@ module Importers
     #     }
     #     @data = @mints_user.create_importer(data)
     def create_importer(data)
-        return @client.raw("post", "/config/importers", nil, data_transform(data))
+        @client.raw("post", "/config/importers", nil, data_transform(data))
     end
 
     # === Update importer.
@@ -158,7 +158,7 @@ module Importers
     #     }
     #     @data = @mints_user.update_importer(4, data)
     def update_importer(id, data)
-        return @client.raw("put", "/config/importers/#{id}", nil, data_transform(data))
+        @client.raw("put", "/config/importers/#{id}", nil, data_transform(data))
     end
 
     # === Delete importer.
@@ -170,7 +170,7 @@ module Importers
     # ==== Example
     #     @data = @mints_user.delete_importer(4)
     def delete_importer(id)
-        return @client.raw("delete", "/config/importers/#{id}")
+        @client.raw("delete", "/config/importers/#{id}")
     end
     
     # === Get importers pusher key.
@@ -179,6 +179,6 @@ module Importers
     # ==== Example
     #     @data = @mints_user.get_importers_pusher_key
     def get_importers_pusher_key
-        return @client.raw("get", "/config/pusher_key")
+        @client.raw("get", "/config/pusher_key")
     end
 end

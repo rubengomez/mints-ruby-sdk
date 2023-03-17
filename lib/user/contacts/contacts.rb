@@ -16,6 +16,6 @@ module Contacts
     #     }
     #     @data = @mints_user.change_password_no_auth(data)
     def change_password_no_auth(data)
-        return @client.raw("post", "/contacts/change-password-no-auth", nil, data_transform(data))
+        @client.raw("post", "/contacts/change-password-no-auth", nil, data_transform(data))
     end
 end

@@ -18,7 +18,7 @@ module Marketing
     #       }
     #       @data = @mints_user.get_automations(options)
     def get_automations(options = nil)
-        return @client.raw("get", "/marketing/automation", options)
+        @client.raw("get", "/marketing/automation", options)
     end
 
     # === Get automation.
@@ -37,7 +37,7 @@ module Marketing
     #     }
     #     @data = @mints_user.get_automation(1, options)
     def get_automation(id, options = nil)
-        return @client.raw("get", "/marketing/automation/#{id}", options)
+        @client.raw("get", "/marketing/automation/#{id}", options)
     end
 
     # === Create automation.
@@ -52,7 +52,7 @@ module Marketing
     #     }
     #     @data = @mints_user.create_automation(data)
     def create_automation(data)
-        return @client.raw("post", "/marketing/automation/", nil, data_transform(data))
+        @client.raw("post", "/marketing/automation/", nil, data_transform(data))
     end
 
     # === Update automation.
@@ -63,7 +63,7 @@ module Marketing
     # data:: (Hash) -- Data to be submitted.
     #
     def update_automation(id, data) #FIXME: Method doesn't work.
-        return @client.raw("put", "/marketing/automation/#{id}", nil, data_transform(data))
+        @client.raw("put", "/marketing/automation/#{id}", nil, data_transform(data))
     end
 
     # === Delete automation.
@@ -75,7 +75,7 @@ module Marketing
     # ==== Example
     #     @data = @mints_user.delete_automation(5)
     def delete_automation(id)
-        return @client.raw("delete", "/marketing/automation/#{id}")
+        @client.raw("delete", "/marketing/automation/#{id}")
     end
 
     # === Get automation executions.
@@ -87,7 +87,7 @@ module Marketing
     # ==== Example
     #     @data = @mints_user.get_automation_executions(1)
     def get_automation_executions(id)
-        return @client.raw("get", "/marketing/automation/#{id}/executions")
+        @client.raw("get", "/marketing/automation/#{id}/executions")
     end
     
     # === Reset automation.
@@ -99,7 +99,7 @@ module Marketing
     # ==== Example
     #     @data = @mints_user.reset_automation(1)
     def reset_automation(id)
-        return @client.raw("post", "/marketing/automation/#{id}/reset")
+        @client.raw("post", "/marketing/automation/#{id}/reset")
     end
     
     # === Duplicate automation.
@@ -115,6 +115,6 @@ module Marketing
     #     }
     #     @data = @mints_user.duplicate_automation(1, data.to_json)
     def duplicate_automation(id, data)
-        return @client.raw("post", "/marketing/automation/#{id}/duplicate", nil, data)
+        @client.raw("post", "/marketing/automation/#{id}/duplicate", nil, data)
     end
 end

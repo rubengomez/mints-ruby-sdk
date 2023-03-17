@@ -1,6 +1,6 @@
 require 'yaml'
 require_relative './client.rb'
-require_relative './mints_helper.rb'
+require_relative './mints/helpers/mints_helper.rb'
 
 module Mints
   ##
@@ -125,7 +125,7 @@ module Mints
     # ==== Example
     #     @data = @mints_pub.register_visit_timer("60da2325d29acc7e55684472", 4)
     def register_visit_timer(visit, time)
-      return @client.raw("get", "/register-visit-timer?visit=#{visit}&time=#{time}")
+      @client.raw("get", "/register-visit-timer?visit=#{visit}&time=#{time}")
     end
 
     ### V1/CONTENT ###
@@ -140,7 +140,7 @@ module Mints
     # ==== Example
     #     @data = @mints_pub.get_asset_info("asset_slug")
     def get_asset_info(slug)
-      return @client.raw("get", "/content/asset-info/#{slug}")
+      @client.raw("get", "/content/asset-info/#{slug}")
     end
 
     ##
@@ -183,7 +183,7 @@ module Mints
     # ==== Second Example
     #     @data = @mints_pub.get_story("story_slug", options.to_json)
     def get_story(slug, options = nil)
-      return @client.raw("get", "/content/stories/#{slug}", options)
+      @client.raw("get", "/content/stories/#{slug}", options)
     end
 
     ##
@@ -226,7 +226,7 @@ module Mints
     # ==== Second Example
     #     @data = @mints_pub.get_story_version("story_slug", options.to_json)
     def get_story_version(slug, options = nil)
-      return @client.raw("get", "/content/story-versions/#{slug}", options)
+      @client.raw("get", "/content/story-versions/#{slug}", options)
     end
 
     ##
@@ -236,7 +236,7 @@ module Mints
     # ==== Example
     #     @data = @mints_pub.get_forms
     def get_forms(options = nil)
-      return @client.raw("get", "/content/forms", options)
+      @client.raw("get", "/content/forms", options)
     end
 
     ##
@@ -249,7 +249,7 @@ module Mints
     # ==== Example
     #     @data = @mints_pub.get_form("form_slug")
     def get_form(slug, options = nil)
-      return @client.raw("get", "/content/forms/#{slug}", options)
+      @client.raw("get", "/content/forms/#{slug}", options)
     end
 
     ##
@@ -270,7 +270,7 @@ module Mints
     #     }
     #     @data = @mints_pub.submit_form(data)
     def submit_form(data)
-      return @client.raw("post", "/content/forms/submit", nil, data_transform(data))
+      @client.raw("post", "/content/forms/submit", nil, data_transform(data))
     end
 
     ##
@@ -293,7 +293,7 @@ module Mints
     #     }
     #     @data = @mints_pub.get_content_instances(options)
     def get_content_instances(options)
-      return @client.raw("get", "/content/content-instances", options)
+      @client.raw("get", "/content/content-instances", options)
     end
 
     ##
@@ -306,7 +306,7 @@ module Mints
     # ==== Example
     #     @data = @mints_pub.get_content_instance("content_instance_slug")
     def get_content_instance(slug)
-      return @client.raw("get", "/content/content-instances/#{slug}")
+      @client.raw("get", "/content/content-instances/#{slug}")
     end
 
     #Note: This method is commented for future use
@@ -317,7 +317,7 @@ module Mints
     # ==== Parameters
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::Pub-label-Resource+collections+options+] shown above can be used as parameter.
     # def get_content_pages(options = nil)
-      #return @client.raw("get", "/content/content-pages", options)
+      #@client.raw("get", "/content/content-pages", options)
     #end
 
     ##
@@ -330,7 +330,7 @@ module Mints
     # ==== Example
     #     @data = @mints_pub.get_content_page("test-page")
     def get_content_page(slug, options = nil)
-      return @client.raw("get", "/content/content-pages/#{slug}", options)
+      @client.raw("get", "/content/content-pages/#{slug}", options)
     end
 
     ##
@@ -343,7 +343,7 @@ module Mints
     # ==== Example
     #     @data = @mints_pub.get_content_page("test-page")
     def get_content_bundle(slug, options = nil)
-      return @client.raw("get", "/content/content-pages/#{slug}", options)
+      @client.raw("get", "/content/content-pages/#{slug}", options)
     end
 
     ### V1/ECOMMERCE ###
@@ -409,7 +409,7 @@ module Mints
     #     }
     #     @data = @mints_pub.get_product("lego-set", options)
     def get_product(slug, options = nil)
-      return @client.raw("get", "/ecommerce/products/#{slug}", options)
+      @client.raw("get", "/ecommerce/products/#{slug}", options)
     end
 
     ### V1/CONFIG ###
@@ -435,7 +435,7 @@ module Mints
     #     }
     #     @data = @mints_pub.get_public_folders(options)
     def get_public_folders(options)
-      return @client.raw("get", "/config/public-folders", options)
+      @client.raw("get", "/config/public-folders", options)
     end
 
     ##
@@ -459,7 +459,7 @@ module Mints
     #     }
     #     @data = @mints_pub.get_public_folder('yellow', options)
     def get_public_folder(slug, options)
-      return @client.raw("get", "/config/public-folders/#{slug}", options)
+      @client.raw("get", "/config/public-folders/#{slug}", options)
     end
 
     ##
@@ -478,7 +478,7 @@ module Mints
     #     }
     #     @data = @mints_pub.get_tags(options)
     def get_tags(options = nil)
-      return @client.raw("get", "/config/tags", options)
+      @client.raw("get", "/config/tags", options)
     end
 
     ##
@@ -498,7 +498,7 @@ module Mints
     #     }
     #     @data = @mints_pub.get_tag("velit-0", options)
     def get_tag(slug, options = nil)
-      return @client.raw("get", "/config/tags/#{slug}", options)
+      @client.raw("get", "/config/tags/#{slug}", options)
     end
 
     ##
@@ -544,7 +544,7 @@ module Mints
     #     }
     #     @data = @mints_pub.get_taxonomy("taxonomy_slug", options)
     def get_taxonomy(slug, options = nil)
-      return @client.raw("get", "/config/taxonomies/#{slug}", options)
+      @client.raw("get", "/config/taxonomies/#{slug}", options)
     end
 
     ##
@@ -554,7 +554,7 @@ module Mints
     # ==== Example
     #     @data = @mints_pub.get_attributes
     def get_attributes
-      return @client.raw("get", "/config/attributes")
+      @client.raw("get", "/config/attributes")
     end
 
     def send_user_magic_link(email_or_phone, template_slug, redirect_url = '', life_time = 1440, max_visits = nil, driver = 'email')
@@ -570,7 +570,7 @@ module Mints
       else
         data['email'] = email_or_phone
       end
-      return @client.raw("post", "/users/magic-link", nil, { data: data }.to_json, '/api/v1')
+      @client.raw("post", "/users/magic-link", nil, { data: data }.to_json, '/api/v1')
     end
 
     private

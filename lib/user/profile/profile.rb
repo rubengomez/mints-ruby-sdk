@@ -6,7 +6,7 @@ module Profile
     # ==== Example
     #     @data = @mints_user.me
     def me(options = nil)
-        return @client.raw("get", "/profile/me", options)
+        @client.raw("get", "/profile/me", options)
     end
 
     ##
@@ -20,7 +20,7 @@ module Profile
     # ==== Example
     #     @data = @mints_user.get_preferences
     def get_preferences
-        return @client.raw("get", "/profile/preferences")
+        @client.raw("get", "/profile/preferences")
     end
     
     ##
@@ -36,7 +36,7 @@ module Profile
     #     }
     #     @data = @mints_user.create_preferences(data)
     def create_preferences(data)
-        return @client.raw("post", "/profile/preferences", nil, data_transform(data))
+        @client.raw("post", "/profile/preferences", nil, data_transform(data))
     end
 
     ##
@@ -49,7 +49,7 @@ module Profile
     # ==== Example
     #     @data = @mints_user.get_preferences_by_setting_key("time_zone")
     def get_preferences_by_setting_key(setting_key)
-        return @client.raw("get", "/profile/preferences/#{setting_key}")
+        @client.raw("get", "/profile/preferences/#{setting_key}")
     end
 
     ##
@@ -62,7 +62,7 @@ module Profile
     # ==== Example
     #     @data = @mints_user.get_notifications
     def get_notifications
-        return @client.raw("get", "/profile/notifications")
+        @client.raw("get", "/profile/notifications")
     end
 
     # === Get paginated notifications.
@@ -71,7 +71,7 @@ module Profile
     # ==== Example
     #     @data = @mints_user.get_paginated_notifications
     def get_paginated_notifications
-        return @client.raw("get", "/profile/notificationsp")
+        @client.raw("get", "/profile/notificationsp")
     end
 
     # === Read notifications.
@@ -89,7 +89,7 @@ module Profile
     def read_notifications(data)
         #TODO: Inform NotificationController.read method has been modified
         #TODO: Method in controller didnt return data
-        return @client.raw("post", "/profile/notifications/read", nil, data_transform(data))
+        @client.raw("post", "/profile/notifications/read", nil, data_transform(data))
     end
     
     # === Delete notifications.
@@ -106,6 +106,6 @@ module Profile
     def delete_notifications(data)
         #TODO: Inform NotificationController.delete method has been modified
         #TODO: Method in controller didnt return data
-        return @client.raw("post", "/profile/notifications/delete", nil, data_transform(data))
+        @client.raw("post", "/profile/notifications/delete", nil, data_transform(data))
     end
 end

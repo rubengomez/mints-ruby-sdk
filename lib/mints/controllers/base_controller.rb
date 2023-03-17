@@ -1,63 +1,21 @@
+require_relative "./concerns/mints_clients.rb"
+require_relative "../helpers/contact_auth_helper.rb"
+
 module Mints
   class BaseController < ActionController::Base
-    before_action :set_contact_token
-    before_action :set_mints_pub_client
+    # Concerns
+    include MintsClients
+
+    # Helpers
+    include ContactAuthHelper
+
     before_action :register_visit
-    before_action :set_mints_contact_client
 
-    def mints_contact_signed_in?
-        # Check status in mints
-        response = @mints_contact.status
-        status = response['success'] ? response['success'] : false
-        unless status
-          # if mints response is negative delete the session cookie
-          cookies.delete(:mints_contact_session_token)
-        end
-        return status
+    # Override default values for mints clients concern
+    def define_mints_clients
+      %w[ contact pub ]
     end
 
-    ##
-    # === Mints Contact Login.
-    # Starts a contact session in mints.cloud and set a session cookie
-    def mints_contact_login(email, password)
-        # Login in mints
-        response = @mints_contact.login(email, password)
-        # Get session token from response
-        session_token = response['session_token']
-        id_token = response['contact']['contact_token'] ? response['contact']['contact_token'] : response['contact']['id_token']
-        # Set a permanent cookie with the session token
-        cookies.permanent[:mints_contact_session_token] = { value: session_token, secure: true, httponly: true }
-        cookies.permanent[:mints_contact_id] = { value: id_token, secure: true, httponly: true }
-        @contact_token = id_token
-    end
-
-    ##
-    # === Mints Contact Magic Link Login.
-    # Starts a contact session in mints.cloud and set a session cookie
-    def mints_contact_magic_link_login(token)
-      # Login in mints
-      response = @mints_contact.login(email, password)
-      # Get session token from response
-      session_token = response['session_token']
-      id_token = response['contact']['contact_token'] ? response['contact']['contact_token'] : response['contact']['id_token']
-      # Set a permanent cookie with the session token
-      cookies.permanent[:mints_contact_session_token] = { value: session_token, secure: true, httponly: true }
-      cookies.permanent[:mints_contact_id] = { value: id_token, secure: true, httponly: true }
-      @contact_token = id_token
-  end
-
-    ##
-    # === Mints Contact Logout.
-    # Destroy session from mints.cloud and delete local session cookie
-    def mints_contact_logout
-        # Logout from mints
-        @mints_contact.logout
-        # Delete local cookie
-        cookies.delete(:mints_contact_session_token)
-        cookies.delete(:mints_contact_id)
-        @contact_token = nil
-    end
-    
     private
 
     ##
@@ -76,63 +34,19 @@ module Mints
         puts "REQUEST IP ADDRESS: #{request['ip_address']}"
         puts "REQUEST REMOTE IP: #{request['remote_ip']}"
       end
+
       response = @mints_pub.register_visit(request)
-      if @debug
-        puts "RESPONSE IN REGISTER VISIT: #{response}"
-      end
-      @contact_token = response['contact_token'] ? response['contact_token'] : response['user_token']
+
+      puts "RESPONSE IN REGISTER VISIT: #{response}" if @debug
+
+      @contact_token = response['contact_token'] || response['user_token']
       @visit_id = response['visit_id']
-      if @debug
-        puts "VISIT ID: #{@visit_id}"
-      end
+
+      puts "VISIT ID: #{@visit_id}" if @debug
+
       cookies.permanent[:mints_contact_id] = { value: @contact_token, secure: true, httponly: true }
       cookies.permanent[:mints_visit_id] = { value: @visit_id, secure: true, httponly: true }
     end
 
-    ##
-    # === Set mints pub.
-    # Initialize the public client and set the contact token
-    def set_mints_pub_client
-      if File.exists?("#{Rails.root}/mints_config.yml.erb")
-        template = ERB.new File.new("#{Rails.root}/mints_config.yml.erb").read
-        config = YAML.load template.result(binding)
-        @host = config["mints"]["host"]
-        @api_key = config["mints"]["api_key"]
-        @debug = config["sdk"]["debug"] ? config["sdk"]["debug"] : false
-      else
-        raise 'MintsBadCredentialsError'
-      end
-      # Initialize mints pub client, credentials taken from mints_config.yml.erb file
-      @visit_id = cookies[:mints_visit_id] ? cookies[:mints_visit_id] : nil
-      @mints_pub = Mints::Pub.new(@host, @api_key, @contact_token, @visit_id, @debug)
-      # Set contact token from cookie
-      @mints_pub.client.session_token = @contact_token
-    end
-
-    ##
-    # === Set contact token.
-    # Set contact token variable from the mints_contact_id cookie value
-    def set_contact_token
-      @contact_token = cookies[:mints_contact_id]
-    end
-
-    ##
-    # === Set mints contact client.
-    # Initialize the public client and set the contact token
-    def set_mints_contact_client
-      if File.exists?("#{Rails.root}/mints_config.yml.erb")
-        template = ERB.new File.new("#{Rails.root}/mints_config.yml.erb").read
-        config = YAML.load template.result(binding)
-        @host = config["mints"]["host"]
-        @api_key = config["mints"]["api_key"]
-        @debug = config["sdk"]["debug"] ? config["sdk"]["debug"] : false
-      else
-        raise 'MintsBadCredentialsError'
-      end
-      # Initialize mints clontact client
-      session_token = cookies[:mints_contact_session_token] ? cookies[:mints_contact_session_token] : nil
-      contact_token_id = cookies[:mints_contact_id] ? cookies[:mints_contact_id] : nil
-      @mints_contact = Mints::Contact.new(@host, @api_key, session_token, contact_token_id, @debug)
-    end
   end
 end

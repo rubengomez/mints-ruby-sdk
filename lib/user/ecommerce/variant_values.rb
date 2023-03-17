@@ -16,7 +16,7 @@ module VariantValues
     #     options = { "sort": "-id"}
     #     @data = @mints_user.get_variant_values(options)
     def get_variant_values(options = nil)
-        return @client.raw("get", "/ecommerce/variant-values", options)
+        @client.raw("get", "/ecommerce/variant-values", options)
     end
     
     # === Get variant value.
@@ -33,7 +33,7 @@ module VariantValues
     #     options = { "fields": "id"}
     #     @data = @mints_user.get_variant_value(5, options)
     def get_variant_value(id, options = nil)
-        return @client.raw("get", "/ecommerce/variant-values/#{id}", options)
+        @client.raw("get", "/ecommerce/variant-values/#{id}", options)
     end
 
     # === Create variant value.
@@ -51,7 +51,7 @@ module VariantValues
     #     }
     #     @data = @mints_user.create_variant_value(data)
     def create_variant_value(data)
-        return @client.raw("post", "/ecommerce/variant-values", nil, data_transform(data))
+        @client.raw("post", "/ecommerce/variant-values", nil, data_transform(data))
     end
 
     # === Update variant value.
@@ -67,6 +67,6 @@ module VariantValues
     #     }
     #     @data = @mints_user.update_variant_value(22, data)
     def update_variant_value(id, data)
-        return @client.raw("put", "/ecommerce/variant-values/#{id}", nil, data_transform(data))
+        @client.raw("put", "/ecommerce/variant-values/#{id}", nil, data_transform(data))
     end
 end

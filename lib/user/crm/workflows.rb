@@ -16,7 +16,7 @@ module Workflows
     #     options = { "sort": "title", "fields": "title" }
     #     @data = @mints_user.get_workflows(options)
     def get_workflows(options = nil)
-        return @client.raw("get", "/crm/workflows", options)
+        @client.raw("get", "/crm/workflows", options)
     end
 
     # === Get workflow.
@@ -33,7 +33,7 @@ module Workflows
     #     options = { "fields": "id, title" }
     #     @data = @mints_user.get_workflow(1, options)
     def get_workflow(id, options = nil)
-        return @client.raw("get", "/crm/workflows/#{id}", options)
+        @client.raw("get", "/crm/workflows/#{id}", options)
     end
 
     # === Create workflow.
@@ -49,7 +49,7 @@ module Workflows
     #     }
     #     @data = @mints_user.create_workflow(data.to_json)
     def create_workflow(data)
-        return @client.raw("post", "/crm/workflows/", nil, data)
+        @client.raw("post", "/crm/workflows/", nil, data)
     end
 
     # === Update workflow.
@@ -65,6 +65,6 @@ module Workflows
     #     }
     #     @data = @mints_user.update_workflow(7, data)
     def update_workflow(id, data)
-        return @client.raw("put", "/crm/workflows/#{id}", nil, correct_json(data))
+        @client.raw("put", "/crm/workflows/#{id}", nil, correct_json(data))
     end
 end

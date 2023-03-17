@@ -9,7 +9,7 @@ module Contacts
     # ==== Example
     #     @data = @mints_user.get_contacts_support_data
     def get_contacts_support_data
-        return @client.raw("get", "/crm/contacts/support-data")
+        @client.raw("get", "/crm/contacts/support-data")
     end
     
     ##
@@ -22,7 +22,7 @@ module Contacts
     # ==== Example
     #     @data = @mints_user.get_online_activity(5)
     def get_online_activity(id)
-        return @client.raw("get", "/crm/contacts/#{id}/online-activity")
+        @client.raw("get", "/crm/contacts/#{id}/online-activity")
     end
 
     ##
@@ -71,7 +71,7 @@ module Contacts
     #     }
     #     @data = @mints_user.get_contact(5, options)
     def get_contact(id, options = nil)
-        return @client.raw("get", "/crm/contacts/#{id}", options)
+        @client.raw("get", "/crm/contacts/#{id}", options)
     end
 
     ##
@@ -90,7 +90,7 @@ module Contacts
     #     }
     #     @data = @mints_user.create_contact(data)
     def create_contact(data, options = nil)
-        return @client.raw("post", "/crm/contacts", options, data_transform(data))
+        @client.raw("post", "/crm/contacts", options, data_transform(data))
     end
 
     ##
@@ -108,7 +108,7 @@ module Contacts
     #     }
     #     @data = @mints_user.update_contact(65, data)
     def update_contact(id, data, options = nil)
-        return @client.raw("put", "/crm/contacts/#{id}", options, data_transform(data))
+        @client.raw("put", "/crm/contacts/#{id}", options, data_transform(data))
     end
 
     ##
@@ -121,7 +121,7 @@ module Contacts
     # ==== Example
     #     @data = @mints_user.get_contact_deal(5)
     def get_contact_deal(contact_id)
-        return @client.raw("get", "/crm/contacts/#{contact_id}/deals")
+        @client.raw("get", "/crm/contacts/#{contact_id}/deals")
     end
 
     ##
@@ -138,7 +138,7 @@ module Contacts
     #     }
     #     @data = @mints_user.create_contact_deal(5, data.to_json)
     def create_contact_deal(contact_id, data)
-        return @client.raw("post", "/crm/contacts/#{contact_id}/deals", nil, data)
+        @client.raw("post", "/crm/contacts/#{contact_id}/deals", nil, data)
     end
 
     ##
@@ -152,7 +152,7 @@ module Contacts
     # ==== Example
     #     @data = @mints_user.delete_contact_deal(5, 100)
     def delete_contact_deal(contact_id, deal_id)
-        return @client.raw("delete", "/crm/contacts/#{contact_id}/deals/#{deal_id}")
+        @client.raw("delete", "/crm/contacts/#{contact_id}/deals/#{deal_id}")
     end
 
     ##
@@ -167,7 +167,7 @@ module Contacts
     # ==== Example
     #     @data = @mints_user.get_contact_user(66)
     def get_contact_user(contact_id)
-        return @client.raw("get", "/crm/contacts/#{contact_id}/users")
+        @client.raw("get", "/crm/contacts/#{contact_id}/users")
     end
 
     ##
@@ -184,7 +184,7 @@ module Contacts
     #     }
     #     @data = @mints_user.create_contact_user(66, data.to_json)
     def create_contact_user(contact_id, data)
-        return @client.raw("post", "/crm/contacts/#{contact_id}/users", nil, data)
+        @client.raw("post", "/crm/contacts/#{contact_id}/users", nil, data)
     end
 
     ##
@@ -198,7 +198,7 @@ module Contacts
     # ==== Example
     #     @data = @mints_user.delete_contact_user(153, 9)
     def delete_contact_user(contact_id, id)
-        return @client.raw("delete", "/crm/contacts/#{contact_id}/users/#{id}")
+        @client.raw("delete", "/crm/contacts/#{contact_id}/users/#{id}")
     end
 
     ##
@@ -211,7 +211,7 @@ module Contacts
     # ==== Example
     #     @data = @mints_user.get_contact_segments(1)
     def get_contact_segments(contact_id)
-        return @client.raw("get", "/crm/contacts/#{contact_id}/segments")
+        @client.raw("get", "/crm/contacts/#{contact_id}/segments")
     end
 
     ##
@@ -224,7 +224,7 @@ module Contacts
     # ==== Example
     #     @data = @mints_user.get_contact_submissions(146)
     def get_contact_submissions(contact_id)
-        return @client.raw("get", "/crm/contacts/#{contact_id}/submissions")
+        @client.raw("get", "/crm/contacts/#{contact_id}/submissions")
     end
 
     ##
@@ -237,7 +237,7 @@ module Contacts
     # ==== Example
     #     @data = @mints_user.get_contact_tags(1)
     def get_contact_tags(contact_id)
-        return @client.raw("get", "/crm/contacts/#{contact_id}/tags")
+        @client.raw("get", "/crm/contacts/#{contact_id}/tags")
     end
 
     ##
@@ -250,7 +250,7 @@ module Contacts
     # ==== Example
     #     @data = @mints_user.get_contact_magic_links(150)
     def get_contact_magic_links(contact_id)
-        return @client.raw("get", "/crm/contacts/#{contact_id}/magic-links")
+        @client.raw("get", "/crm/contacts/#{contact_id}/magic-links")
     end
 
     ##
@@ -267,7 +267,7 @@ module Contacts
     #     }
     #     @data = @mints_user.merge_contacts(151, data)
     def merge_contacts(id, data)
-        return @client.raw("post", "/crm/contacts/#{id}/merge", nil, data_transform(data))
+        @client.raw("post", "/crm/contacts/#{id}/merge", nil, data_transform(data))
     end
 
     ##
@@ -287,7 +287,7 @@ module Contacts
     #     }
     #     @data = @mints_user.send_magic_links(data)
     def send_magic_links(data)
-        return @client.raw("post", "/crm/contacts/send-magic-link", nil, data_transform(data))
+        @client.raw("post", "/crm/contacts/send-magic-link", nil, data_transform(data))
     end
 
     ##
@@ -307,6 +307,6 @@ module Contacts
     #     }
     #     @data = @mints_user.delete_contacts(data)
     def delete_contacts(data) #TODO: ContactController.delete need a success output
-        return @client.raw("delete", "/crm/contacts/delete", nil, data_transform(data))
+        @client.raw("delete", "/crm/contacts/delete", nil, data_transform(data))
     end
 end

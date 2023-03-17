@@ -16,7 +16,7 @@ module ObjectActivities
     #     options = { "fields": "object_type" }
     #     @data = @mints_user.get_object_activities(options)
     def get_object_activities(options = nil)
-        return @client.raw("get", "/helpers/object-activities", options)
+        @client.raw("get", "/helpers/object-activities", options)
     end
 
     # === Get object activity.
@@ -33,7 +33,7 @@ module ObjectActivities
     #     options = { "fields": "activity_type" }
     #     @data = @mints_user.get_object_activity(1, options)
     def get_object_activity(id, options = nil)
-        return @client.raw("get", "/helpers/object-activities/#{id}", options)
+        @client.raw("get", "/helpers/object-activities/#{id}", options)
     end
 
     # === Create object activity.
@@ -50,7 +50,7 @@ module ObjectActivities
     #     }
     #     @data = @mints_user.create_object_activity(data)
     def create_object_activity(data)
-        return @client.raw("post", "/helpers/object-activities", nil, data_transform(data))
+        @client.raw("post", "/helpers/object-activities", nil, data_transform(data))
     end
     
     # === Update object activity.
@@ -66,7 +66,7 @@ module ObjectActivities
     #     }
     #     @data = @mints_user.update_object_activity(573, data)
     def update_object_activity(id, data)
-        return @client.raw("put", "/helpers/object-activities/#{id}", nil, data_transform(data))
+        @client.raw("put", "/helpers/object-activities/#{id}", nil, data_transform(data))
     end
 
     # === Delete object activity.
@@ -78,6 +78,6 @@ module ObjectActivities
     # ==== Example
     #     @data = @mints_user.delete_object_activity(573)
     def delete_object_activity(id)
-        return @client.raw("delete", "/helpers/object-activities/#{id}")
+        @client.raw("delete", "/helpers/object-activities/#{id}")
     end
 end

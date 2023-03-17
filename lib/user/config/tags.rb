@@ -9,7 +9,7 @@ module Tags
     # ==== Example
     #     @data = @mints_user.get_tags
     def get_tags
-        return @client.raw("get", "/config/tags")
+        @client.raw("get", "/config/tags")
     end
 
     # === Get tag.
@@ -21,7 +21,7 @@ module Tags
     # ==== Example
     #     @data = @mints_user.get_tag(1)
     def get_tag(id)
-        return @client.raw("get", "/config/tags/#{id}")
+        @client.raw("get", "/config/tags/#{id}")
     end
 
     # === Create tag.
@@ -37,7 +37,7 @@ module Tags
     #     }
     #     @data = @mints_user.create_tag(data.to_json)
     def create_tag(data)
-        return @client.raw("post", "/config/tags", nil, data)
+        @client.raw("post", "/config/tags", nil, data)
     end
 
     # === Update tag.
@@ -58,6 +58,6 @@ module Tags
     #     @data = @mints_user.update_tag(54, data.to_json)
     def update_tag(id, data)
         #TODO: Inform TagController.update method has been modified
-        return @client.raw("put", "/config/tags/#{id}", nil, data)
+        @client.raw("put", "/config/tags/#{id}", nil, data)
     end
 end

@@ -22,25 +22,30 @@ module Mints
       end
 
       def raw(action, url, options = nil, data = nil, base_url = nil, compatibility_options = {}, only_tracking = false)
-        if compatibility_options === nil
-          compatibility_options = {}
-        end
-        base_url = @base_url if !base_url
+        compatibility_options = {} if compatibility_options.nil?
+
+        base_url = @base_url unless base_url
         uri = ""
-        if (options && options.class == Hash)
-          if (options[:jfilters] && options[:jfilters].class == Hash)
-            options[:jfilters] = Base64.encode64(JSON.generate(options[:jfilters]))
+
+        if options&.class == Hash
+          need_encoding = %w[ jfilters afilters rfilters ]
+          found_options_with_encoding = options.keys.select {|key| need_encoding.include? key.to_s.downcase}
+
+          found_options_with_encoding.each do |key|
+            options[key] = CGI::escape(Base64.encode64(options[key].to_json))
           end
+
           uri = Addressable::URI.new
           uri.query_values = options
         end
 
         full_url = "#{@host}#{base_url}#{url}#{uri}"
         response = nil
-        if action === 'get'
 
-          template = ERB.new File.new("#{Rails.root}/mints_config.yml.erb").read
-          config = YAML.load template.result(binding)
+        template = ERB.new File.new("#{Rails.root}/mints_config.yml.erb").read
+        config = YAML.safe_load template.result(binding)
+
+        if action === 'get'
           url_need_cache = false
           result_from_cache = false
           time = 0
@@ -74,7 +79,7 @@ module Mints
             end
           end
 
-          if !url_need_cache
+          unless url_need_cache
             response = self.send("#{@scope}_#{action}", "#{full_url}", nil, compatibility_options)
           end
 
@@ -89,25 +94,23 @@ module Mints
           response = self.send("#{@scope}_#{action}", "#{full_url}", data, compatibility_options)
         end
 
+        verify_response_status(response, config['sdk']['ignore_http_errors'])
+
         begin
           if result_from_cache
             if @debug
               puts "Method: #{action} \nURL: #{url} \nOptions: #{options.to_json} \nOnly tracking: #{only_tracking} \nResponse from: REDIS"
-              if (data)
-                puts "Data: #{data.to_json}"
-              end
+              puts "Data: #{data.to_json}" if data
             end
+
             return JSON.parse(response)
           else
-            if (response.response.code == "404")
-              raise 'NotFoundError'
-            end
+
             if @debug
               puts "Method: #{action} \nURL: #{url} \nOptions: #{options.to_json} \nOnly tracking: #{only_tracking} \nResponse from: CALI"
-              if (data)
-                puts "Data: #{data.to_json}"
-              end
+              puts "Data: #{data.to_json}" if data
             end
+
             return JSON.parse(response.body)
           end
         rescue
@@ -123,7 +126,7 @@ module Mints
         name_len = name_spplited.size
         # the action always be the first element
         action = name_spplited.first
-        raise 'NoActionError' unless ['get', 'create', 'post', 'update', 'put', 'delete', 'destroy'].include?(action)
+        raise 'NoActionError' unless %w[get create post update put delete destroy verify_response_status].include?(action)
         # the object always be the last element
         object = separator == "__" ? name_spplited.last.gsub("_","-") : name_spplited.last
         # get intermediate url elements
@@ -210,7 +213,7 @@ module Mints
         end
       end
 
-      ##### HTTTP CLIENTS ######
+      ##### HTTP CLIENTS ######
       # Simple HTTP GET
       def http_get(url, headers = nil)
         # if @debug
@@ -220,7 +223,7 @@ module Mints
         #   puts headers
         #   puts "Method: get"
         # end
-        return headers ? HTTParty.get(url, :headers => headers) : HTTParty.get(url)
+        headers ? HTTParty.get(url, :headers => headers) : HTTParty.get(url)
       end
 
       # Simple HTTP POST
@@ -234,7 +237,7 @@ module Mints
         #   puts data
         #   puts "Method: post"
         # end
-        return headers ? HTTParty.post(url, :headers=> headers, :body => data) : HTTParty.post(url, :body => data)
+        headers ? HTTParty.post(url, :headers=> headers, :body => data) : HTTParty.post(url, :body => data)
       end
 
       # Simple HTTP PUT
@@ -248,7 +251,7 @@ module Mints
         #   puts data
         #   puts "Method: put"
         # end
-        return headers ? HTTParty.put(url, :headers=> headers, :body => data) : HTTParty.put(url, :body => data)
+        headers ? HTTParty.put(url, :headers=> headers, :body => data) : HTTParty.put(url, :body => data)
       end
 
       # Simple HTTP DELETE
@@ -262,7 +265,7 @@ module Mints
         #   puts data
         #   puts "Method: delete"
         # end
-        return headers ? HTTParty.delete(url, :headers=> headers, :body => data) : HTTParty.delete(url, :body => data)
+        headers ? HTTParty.delete(url, :headers=> headers, :body => data) : HTTParty.delete(url, :body => data)
       end
 
       # Start contact context
@@ -274,12 +277,14 @@ module Mints
         }
         h["Content-Type"] = "application/json" unless compatibility_options['no_content_type']
         h["Authorization"] = "Bearer #{@session_token}" if @session_token
+
         if headers
           headers.each do |k,v|
             h[k] = v
           end
         end
-        return self.http_get(url, h)
+
+        self.http_get(url, h)
       end
 
       def contact_post(url, data, compatibility_options)
@@ -288,9 +293,11 @@ module Mints
           "Accept" => "application/json",
           "ContactToken" => @contact_token_id
         }
+
         headers["Content-Type"] = "application/json" unless compatibility_options['no_content_type']
         headers["Authorization"] = "Bearer #{@session_token}" if @session_token
-        return self.http_post(url, headers, data)
+
+        self.http_post(url, headers, data)
       end
 
       def contact_put(url, data, compatibility_options)
@@ -301,7 +308,8 @@ module Mints
         }
         headers["Content-Type"] = "application/json" unless compatibility_options['no_content_type']
         headers["Authorization"] = "Bearer #{@session_token}" if @session_token
-        return self.http_put(url, headers, data)
+
+        self.http_put(url, headers, data)
       end
 
       # Start User context
@@ -317,7 +325,8 @@ module Mints
             h[k] = v
           end
         end
-        return self.http_get(url, h)
+
+        self.http_get(url, h)
       end
 
       def user_post(url, data, compatibility_options)
@@ -327,7 +336,8 @@ module Mints
         }
         headers["Content-Type"] = "application/json" unless compatibility_options['no_content_type']
         headers["Authorization"] = "Bearer #{@session_token}" if @session_token
-        return self.http_post(url, headers, data)
+
+        self.http_post(url, headers, data)
       end
 
       def user_put(url, data, compatibility_options)
@@ -337,7 +347,8 @@ module Mints
         }
         headers["Content-Type"] = "application/json" unless compatibility_options['no_content_type']
         headers["Authorization"] = "Bearer #{@session_token}" if @session_token
-        return self.http_put(url, headers, data)
+
+        self.http_put(url, headers, data)
       end
 
       def user_delete(url, data, compatibility_options)
@@ -347,7 +358,8 @@ module Mints
         }
         headers["Content-Type"] = "application/json" unless compatibility_options['no_content_type']
         headers["Authorization"] = "Bearer #{@session_token}" if @session_token
-        return self.http_delete(url, headers, data)
+
+        self.http_delete(url, headers, data)
       end
       # End User Context
 
@@ -364,6 +376,7 @@ module Mints
             h[k] = v
           end
         end
+
         self.http_get(url, h)
       end
 
@@ -373,12 +386,14 @@ module Mints
           "ApiKey" => @api_key
         }
         h["Content-Type"] = "application/json" unless compatibility_options['no_content_type']
-        h["ContactToken"] = @session_token if @session_token
+        h["ContactToken"] = @contact_token_id if @contact_token_id
+
         if headers
           headers.each do |k,v|
             h[k] = v
           end
         end
+
         self.http_post(url, h, data)
       end
 
@@ -394,7 +409,30 @@ module Mints
             h[k] = v
           end
         end
+
         self.http_put(url, h, data)
       end
+
+      def verify_response_status(response, ignore_http_errors)
+        # Verify if the response is cached
+        unless response.kind_of? String
+          # Raise an error if response code is not 2xx
+          http_status = response&.response&.code&.to_i || 500
+          is_success = (http_status >= 200 and http_status < 300)
+
+          if !is_success and !ignore_http_errors
+            title = "Request failed with status #{http_status}"
+            detail = response&.response&.message || 'Unknown error'
+
+            puts "Error detected: #{http_status}" if @debug
+            error_class = Errors::DynamicError.new(self, title, detail, http_status, response&.parsed_response)
+
+            raise error_class if @debug
+
+            raise error_class.error
+          end
+        end
+      end
+
   end
 end

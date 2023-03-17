@@ -31,7 +31,7 @@ module Content
     # ==== Example
     #     @data = @mints_user.get_public_images_url
     def get_public_images_url
-        return @client.raw("get", "/content/public-images-url")
+        @client.raw("get", "/content/public-images-url")
     end
 
     ##
@@ -44,7 +44,7 @@ module Content
     # ==== Example
     #     @data = @mints_user.get_authors
     def get_authors
-        return @client.raw("get", "/content/authors")
+        @client.raw("get", "/content/authors")
     end
 
 
@@ -57,7 +57,7 @@ module Content
     # ==== Example
     #     @data = @mints_user.get_author(1)
     def get_author(id)
-        return @client.raw("get", "/content/authors/#{id}")
+        @client.raw("get", "/content/authors/#{id}")
     end
 
     # === Create author.
@@ -73,7 +73,7 @@ module Content
     #     }
     #     @data = @mints_user.create_author(data.to_json)
     def create_author(data)
-        return @client.raw("post", "/content/authors", nil, data)
+        @client.raw("post", "/content/authors", nil, data)
     end
 
     # === Update author.
@@ -87,7 +87,7 @@ module Content
     #     
     def update_author(id, data)
         #FIXME: Author controller doesnt receive data
-        return @client.raw("put", "/content/authors/#{id}", nil, data)
+        @client.raw("put", "/content/authors/#{id}", nil, data)
     end
 
     ##
@@ -107,7 +107,7 @@ module Content
     #     options = { "fields": "title" }
     #     @data = @mints_user.get_keywords(options)
     def get_keywords(options = nil)
-        return @client.raw("get", "/content/keywords", options)
+        @client.raw("get", "/content/keywords", options)
     end
     
     # === Get keyword.
@@ -117,7 +117,7 @@ module Content
     # id:: (Integer) -- Keyword id.
     #
     def get_keyword(id)
-        return @client.raw("get", "/content/keywords/#{id}")
+        @client.raw("get", "/content/keywords/#{id}")
     end
 
     # === Create keyword.
@@ -132,7 +132,7 @@ module Content
     #     }
     #     @data = @mints_user.create_keyword(data.to_json)
     def create_keyword(data)
-        return @client.raw("post", "/content/keywords", nil, data)
+        @client.raw("post", "/content/keywords", nil, data)
     end
 
     # === Update keyword.
@@ -146,7 +146,7 @@ module Content
     #     
     def update_keyword(id, data)
         #FIXME: Keyword controller doesnt receive data
-        return @client.raw("put", "/content/keywords/#{id}", nil, data)
+        @client.raw("put", "/content/keywords/#{id}", nil, data)
     end
 
     ##
@@ -166,7 +166,7 @@ module Content
     #     options = { "fields": "title" }
     #     @data = @mints_user.get_stages(options)
     def get_stages(options = nil)
-        return @client.raw("get", "/content/stages", options)
+        @client.raw("get", "/content/stages", options)
     end
 
     # === Get stage.
@@ -178,7 +178,7 @@ module Content
     # ==== Example
     #     @data = @mints_user.get_stage(1)
     def get_stage(id)
-        return @client.raw("get", "/content/stages/#{id}")
+        @client.raw("get", "/content/stages/#{id}")
     end
 
     # === Create stage.
@@ -203,7 +203,7 @@ module Content
     #     }
     #     @data = @mints_user.create_stage(data.to_json)
     def create_stage(data)
-        return @client.raw("post", "/content/stages", nil, data)
+        @client.raw("post", "/content/stages", nil, data)
     end
 
     # === Update stage.
@@ -232,6 +232,6 @@ module Content
     #     @data = @mints_user.update_stage(3, data.to_json)
     def update_stage(id, data)
         #TODO: Inform StageController.update method has been modified
-        return @client.raw("put", "/content/stages/#{id}", nil, data)
+        @client.raw("put", "/content/stages/#{id}", nil, data)
     end
 end

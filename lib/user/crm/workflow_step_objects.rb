@@ -16,7 +16,7 @@ module WorkflowStepObjects
     #     options = { "fields": "id" }
     #     @data = @mints_user.get_step_objects(options)
     def get_step_objects(options = nil)
-        return @client.raw("get", "/crm/step-objects", options)
+        @client.raw("get", "/crm/step-objects", options)
     end
 
     # === Get workflow step object.
@@ -33,7 +33,7 @@ module WorkflowStepObjects
     #     options = { "fields": "id, step_id" }
     #     @data = @mints_user.get_step_object(1, options)
     def get_step_object(id, options = nil)
-        return @client.raw("get", "/crm/step-objects/#{id}", options)
+        @client.raw("get", "/crm/step-objects/#{id}", options)
     end
 
     # === Create workflow step object.
@@ -50,7 +50,7 @@ module WorkflowStepObjects
     #     }
     #     @data = @mints_user.create_step_object(data)
     def create_step_object(data)
-        return @client.raw("post", "/crm/step-objects/", nil, data_transform(data))
+        @client.raw("post", "/crm/step-objects/", nil, data_transform(data))
     end
 
     # === Update workflow step object.
@@ -66,7 +66,7 @@ module WorkflowStepObjects
     #     }
     #     @data = @mints_user.update_step_object(128, data.to_json)
     def update_step_object(id, data)
-        return @client.raw("put", "/crm/step-objects/#{id}", nil, data)
+        @client.raw("put", "/crm/step-objects/#{id}", nil, data)
     end
 
     # === Get workflow step object by object type.
@@ -84,6 +84,6 @@ module WorkflowStepObjects
     #     options = { "fields": "id, object_id" }
     #     @data = @mints_user.get_step_object_by_object_type("deals", 1, options)
     def get_step_object_by_object_type(objectType, objectId, options = nil)
-        return @client.raw("get", "/crm/step-objects/#{objectType}/#{objectId}", options)
+        @client.raw("get", "/crm/step-objects/#{objectType}/#{objectId}", options)
     end
 end

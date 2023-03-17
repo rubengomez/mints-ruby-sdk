@@ -1,5 +1,5 @@
 require_relative './client.rb'
-require_relative './mints_helper.rb'
+require_relative './mints/helpers/mints_helper.rb'
 require_relative './user/crm/crm.rb'
 require_relative './user/content/content.rb'
 require_relative './user/marketing/marketing.rb'

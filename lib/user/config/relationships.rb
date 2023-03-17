@@ -15,7 +15,7 @@ module Relationships
     #     }
     #     @data = @mints_user.get_relationships_available_for(options)
     def get_relationships_available_for(options)
-        return @client.raw("get", "/config/relationships/available-for", options)
+        @client.raw("get", "/config/relationships/available-for", options)
     end
     
     # === Attach relationship.
@@ -27,7 +27,7 @@ module Relationships
     # ==== Example
     #     
     def attach_relationship(data) #FIXME: Method doesn't work, RelationshipManager cannot access to id attribute.
-        return @client.raw("post", "/config/relationships/attach", nil, data_transform(data))
+        @client.raw("post", "/config/relationships/attach", nil, data_transform(data))
     end
 
     # === Detach relationship.
@@ -39,7 +39,7 @@ module Relationships
     # ==== Example
     #     
     def detach_relationship(data) #FIXME: Method doesn't work, RelationshipManager cannot access to id attribute.
-        return @client.raw("post", "/config/relationships/detach", nil, data_transform(data))
+        @client.raw("post", "/config/relationships/detach", nil, data_transform(data))
     end
     
     # === Relationship has objects.
@@ -51,7 +51,7 @@ module Relationships
     # ==== Example
     #     @data = @mints_user.relationship_has_objects(1)
     def relationship_has_objects(id)
-        return @client.raw("get", "/config/relationships/#{id}/hasObjects")
+        @client.raw("get", "/config/relationships/#{id}/hasObjects")
     end
     
     # === Get relationships.
@@ -67,7 +67,7 @@ module Relationships
     #     options = { "fields": "id" }
     #     @data = @mints_user.get_relationships(options)
     def get_relationships(options = nil)
-        return @client.raw("get", "/config/relationships", options)
+        @client.raw("get", "/config/relationships", options)
     end
 
     # === Get relationship.
@@ -84,7 +84,7 @@ module Relationships
     #     options = { "fields": "id" }
     #     @data = @mints_user.get_relationship(1, options)
     def get_relationship(id, options = nil)
-        return @client.raw("get", "/config/relationships/#{id}", options)
+        @client.raw("get", "/config/relationships/#{id}", options)
     end
 
     # === Create relationship.
@@ -102,7 +102,7 @@ module Relationships
     #     }
     #     @data = @mints_user.create_relationship(data)
     def create_relationship(data)
-        return @client.raw("post", "/config/relationships", nil, data_transform(data))
+        @client.raw("post", "/config/relationships", nil, data_transform(data))
     end
 
     # === Update relationship.
@@ -121,7 +121,7 @@ module Relationships
     #     }
     #     @data = @mints_user.update_relationship(5, data)
     def update_relationship(id, data)
-        return @client.raw("put", "/config/relationships/#{id}", nil, data_transform(data))
+        @client.raw("put", "/config/relationships/#{id}", nil, data_transform(data))
     end
 
     # === Delete relationship.
@@ -133,6 +133,6 @@ module Relationships
     # ==== Example
     #     @data = @mints_user.delete_relationship(5)
     def delete_relationship(id)
-        return @client.raw("delete", "/config/relationships/#{id}")
+        @client.raw("delete", "/config/relationships/#{id}")
     end
 end

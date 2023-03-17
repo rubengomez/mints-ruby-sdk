@@ -12,7 +12,7 @@ module ContentTemplates
     # ==== Example
     #     @data = @mints_user.get_content_template_instances(1)
     def get_content_template_instances(templateId)
-        return @client.raw("get", "/content/templates/#{templateId}/instances")
+        @client.raw("get", "/content/templates/#{templateId}/instances")
     end
 
     # === Duplicate content template.
@@ -24,7 +24,7 @@ module ContentTemplates
     # ==== Example
     #     @data = @mints_user.get_content_template(1)
     def duplicate_content_template(id)
-        return @client.raw("post", "/content/templates/#{id}/duplicate/")
+        @client.raw("post", "/content/templates/#{id}/duplicate/")
     end
 
     # === Get content templates.
@@ -40,7 +40,7 @@ module ContentTemplates
     #     options = { "sort": "title" }
     #     @data = @mints_user.get_content_templates(options)
     def get_content_templates(options = nil)
-        return @client.raw("get", "/content/templates", options)
+        @client.raw("get", "/content/templates", options)
     end
 
     # === Get content template.
@@ -52,7 +52,7 @@ module ContentTemplates
     # ==== Example
     #     @data = @mints_user.get_content_template(1)
     def get_content_template(id)
-        return @client.raw("get", "/content/templates/#{id}")
+        @client.raw("get", "/content/templates/#{id}")
     end
 
     # === Create content template.
@@ -72,7 +72,7 @@ module ContentTemplates
     #     @data = @mints_user.create_content_template(data.to_json)
     def create_content_template(data)
         #TODO: Inform ContentTemplateController.store method has been modified
-        return @client.raw("post", "/content/templates", nil, data)
+        @client.raw("post", "/content/templates", nil, data)
     end
 
     # === Update content template.
@@ -93,7 +93,7 @@ module ContentTemplates
     #     @data = @mints_user.update_content_template(7, data.to_json)
     def update_content_template(id, data)
          #TODO: Inform ContentTemplateController.update method has been modified
-        return @client.raw("put", "/content/templates/#{id}", nil, data)
+        @client.raw("put", "/content/templates/#{id}", nil, data)
     end
 
     # === Delete content template.
@@ -106,6 +106,6 @@ module ContentTemplates
     #     @data = @mints_user.delete_content_template(1)
     def delete_content_template(id)
         #TODO: Inform ContentTemplateController.destroy method has been modified
-        return @client.raw("delete", "/content/templates/#{id}")
+        @client.raw("delete", "/content/templates/#{id}")
     end
 end

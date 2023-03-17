@@ -9,7 +9,7 @@ module Attributes
     # ==== Example
     #     @data = @mints_user.get_attributes_data_types
     def get_attributes_data_types
-        return @client.raw("get", "/config/attributes/data-types")
+        @client.raw("get", "/config/attributes/data-types")
     end
 
     # === Get sub attributes.
@@ -21,7 +21,7 @@ module Attributes
     # ==== Example
     #     
     def get_sub_attributes(options) #TODO: Test, this method has been added recently
-        return @client.raw("get", "/config/attributes/sub-attributes", options)
+        @client.raw("get", "/config/attributes/sub-attributes", options)
     end
     
     # === Get attributes.
@@ -30,7 +30,7 @@ module Attributes
     # ==== Example
     #     @data = @mints_user.get_attributes
     def get_attributes
-        return @client.raw("get", "/config/attributes")
+        @client.raw("get", "/config/attributes")
     end
     
     # === Get attribute.
@@ -42,7 +42,7 @@ module Attributes
     # ==== Example
     #     @data = @mints_user.get_attribute(1)
     def get_attribute(id)
-        return @client.raw("get", "/config/attributes/#{id}")
+        @client.raw("get", "/config/attributes/#{id}")
     end
 
     # === Create attribute.
@@ -61,7 +61,7 @@ module Attributes
     #     }
     #     @data = @mints_user.create_attribute(data)
     def create_attribute(data)
-        return @client.raw("post", "/config/attributes", nil, data_transform(data))
+        @client.raw("post", "/config/attributes", nil, data_transform(data))
     end
 
     # === Update attribute.
@@ -81,6 +81,6 @@ module Attributes
     #     }
     #     @data = @mints_user.update_attribute(292, data)
     def update_attribute(id, data)
-        return @client.raw("put", "/config/attributes/#{id}", nil, data_transform(data))
+        @client.raw("put", "/config/attributes/#{id}", nil, data_transform(data))
     end
 end

@@ -40,7 +40,7 @@ module StoryVersions
     #     }
     #     @data = @mints_user.get_story_version(1, options)
     def get_story_version(id, options = nil)
-        return @client.raw("get", "/content/story-versions/#{id}", options)
+        @client.raw("get", "/content/story-versions/#{id}", options)
     end
 
     # === Create story version.
@@ -57,7 +57,7 @@ module StoryVersions
     #     }
     #     @data = @mints_user.create_story_version(data)
     def create_story_version(data, options = nil)
-        return @client.raw("post", "/content/story-versions", options, data_transform(data))
+        @client.raw("post", "/content/story-versions", options, data_transform(data))
     end
 
     # === Update story version.
@@ -74,7 +74,7 @@ module StoryVersions
     #     }
     #     @data = @mints_user.update_story_version(5, data)
     def update_story_version(id, data, options = nil)
-        return @client.raw("put", "/content/story-versions/#{id}", options, data_transform(data))
+        @client.raw("put", "/content/story-versions/#{id}", options, data_transform(data))
     end
 
     # === Delete story version.
@@ -86,7 +86,7 @@ module StoryVersions
     # ==== Example
     #     @data = @mints_user.delete_story_version(6)
     def delete_story_version(id)
-        return @client.raw("delete", "/content/story-versions/#{id}")
+        @client.raw("delete", "/content/story-versions/#{id}")
     end
 
     # === Duplicate story version.
@@ -102,7 +102,7 @@ module StoryVersions
     #     }
     #     @data = @mints_user.duplicate_story_version(1, data.to_json)
     def duplicate_story_version(id, data)
-        return @client.raw("post", "/content/story-versions/#{id}/duplicate", nil, data)
+        @client.raw("post", "/content/story-versions/#{id}/duplicate", nil, data)
     end
 
     # === Publish story version.
@@ -119,6 +119,6 @@ module StoryVersions
     #     }
     #     @data = @mints_user.publish_story_version(1, data.to_json)
     def publish_story_version(id, data)
-        return @client.raw("put", "/content/story-versions/#{id}/publish", nil, data)
+        @client.raw("put", "/content/story-versions/#{id}/publish", nil, data)
     end
 end

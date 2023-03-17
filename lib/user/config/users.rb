@@ -10,7 +10,7 @@ module Users
     # ==== Example
     #     @data = @mints_user.can_users_coach
     def can_users_coach
-        return @client.raw("get", "/config/users/can_coach")
+        @client.raw("get", "/config/users/can_coach")
     end
 
     # === Get users.
@@ -19,7 +19,7 @@ module Users
     # ==== Example
     #     @data = @mints_user.get_users
     def get_users
-        return @client.raw("get", "/config/users")
+        @client.raw("get", "/config/users")
     end
 
     # === Get user.
@@ -31,7 +31,7 @@ module Users
     # ==== Example
     #     @data = @mints_user.get_user(8)
     def get_user(id)
-        return @client.raw("get", "/config/users/#{id}")
+        @client.raw("get", "/config/users/#{id}")
     end
     
     # === Create user.
@@ -51,7 +51,7 @@ module Users
     #     }
     #     @data = @mints_user.create_user(data)
     def create_user(data)
-        return @client.raw("post", "/config/users", nil, data_transform(data))
+        @client.raw("post", "/config/users", nil, data_transform(data))
     end
 
     # === Update user.
@@ -71,6 +71,6 @@ module Users
     #     }
     #     @data = @mints_user.update_user(14, data)
     def update_user(id, data)
-        return @client.raw("put", "/config/users/#{id}", nil, data_transform(data))
+        @client.raw("put", "/config/users/#{id}", nil, data_transform(data))
     end
 end

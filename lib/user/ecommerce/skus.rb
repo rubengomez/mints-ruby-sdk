@@ -18,7 +18,7 @@ module Skus
     #     }
     #     @data = @mints_user.get_skus(options)
     def get_skus(options = nil)
-        return @client.raw("get", "/ecommerce/skus", options)
+        @client.raw("get", "/ecommerce/skus", options)
     end
     
     # === Get sku.
@@ -37,7 +37,7 @@ module Skus
     #     }
     #     @data = @mints_user.get_sku(1, options)
     def get_sku(id, options = nil)
-        return @client.raw("get", "/ecommerce/skus/#{id}", options)
+        @client.raw("get", "/ecommerce/skus/#{id}", options)
     end
 
     # === Create sku.
@@ -55,7 +55,7 @@ module Skus
     #     }
     #     @data = @mints_user.create_sku(data)
     def create_sku(data)
-        return @client.raw("post", "/ecommerce/skus", nil, data_transform(data))
+        @client.raw("post", "/ecommerce/skus", nil, data_transform(data))
     end
     
     # === Update sku.
@@ -71,7 +71,7 @@ module Skus
     #     }
     #     @data = @mints_user.update_sku(531, data)
     def update_sku(id, data)
-        return @client.raw("put", "/ecommerce/skus/#{id}", nil, data_transform(data))
+        @client.raw("put", "/ecommerce/skus/#{id}", nil, data_transform(data))
     end
     
     # === Delete sku.
@@ -83,6 +83,6 @@ module Skus
     # ==== Example
     #     @data = @mints_user.delete_sku(531)
     def delete_sku(id)
-        return @client.raw("delete", "/ecommerce/skus/#{id}")
+        @client.raw("delete", "/ecommerce/skus/#{id}")
     end
 end

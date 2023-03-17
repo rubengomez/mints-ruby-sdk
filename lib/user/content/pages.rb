@@ -10,7 +10,7 @@ module Pages
     # ==== Example
     #     @data = @mints_user.get_page_groups
     def get_page_groups
-        return @client.raw("get", "/content/pages/groups")
+        @client.raw("get", "/content/pages/groups")
     end
 
     # === Get pages.
@@ -19,7 +19,7 @@ module Pages
     # ==== Example
     #     @data = @mints_user.get_pages
     def get_pages(options = nil)
-        return @client.raw("get", "/content/pages", options)
+        @client.raw("get", "/content/pages", options)
     end
 
     # === Get bundles.
@@ -28,7 +28,7 @@ module Pages
     # ==== Example
     #     @data = @mints_user.get_pages
     def get_bundles(options = nil)
-        return @client.raw("get", "/content/pages", options)
+        @client.raw("get", "/content/pages", options)
     end
 
     # === Get page.
@@ -40,7 +40,7 @@ module Pages
     # ==== Example
     #     @data = @mints_user.get_page(1)
     def get_page(id)
-        return @client.raw("get", "/content/pages/#{id}")
+        @client.raw("get", "/content/pages/#{id}")
     end
 
     # === Create page.
@@ -57,7 +57,7 @@ module Pages
     #     }
     #     @data = @mints_user.create_page(data)
     def create_page(data)
-        return @client.raw("post", "/content/pages", nil, data_transform(data))
+        @client.raw("post", "/content/pages", nil, data_transform(data))
     end
 
     # === Update page.
@@ -73,7 +73,7 @@ module Pages
     #     }
     #     @data = @mints_user.update_page(5, data.to_json)
     def update_page(id, data)
-        return @client.raw("put", "/content/pages/#{id}", nil, data)
+        @client.raw("put", "/content/pages/#{id}", nil, data)
     end
 
     # === Delete page.
@@ -85,6 +85,6 @@ module Pages
     # ==== Example
     #     @mints_user.@mints_user.delete_page(3)
     def delete_page(id)
-        return @client.raw("delete", "/content/pages/#{id}")
+        @client.raw("delete", "/content/pages/#{id}")
     end
 end
