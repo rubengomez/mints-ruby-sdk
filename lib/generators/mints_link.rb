@@ -44,14 +44,14 @@ class MintsLink
     result.n === 1
   end
 
-  def get_visits(filter, page = 1, pageSize = 1000)
+  def get_visits(filter, page = 1, page_size = 1000)
     collection = @sl_visits
-    collection.find(filter).sort( {_id: 1}).skip(page * pageSize - pageSize).limit(pageSize)
+    collection.find(filter).sort( {_id: 1}).skip(page * page_size - page_size).limit(page_size)
   end
 
   private
   def random_string(length = 6)
-    rand(32**length).to_s(32)
+    rand((32 ** length).to_i).to_s(32)
   end
 
   def generate_indexes

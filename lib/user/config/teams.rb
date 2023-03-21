@@ -1,70 +1,69 @@
 module Teams
-    ##
-    # == Teams
-    #
-    
-    # === Get team types.
-    # Get a collection of team types.
-    #
-    # ==== Example
-    #     @data = @mints_user.get_team_types
-    def get_team_types
-        @client.raw("get", "/config/teams/team-types")
-    end
-    
-    # === Get teams.
-    # Get a collection of teams.
-    #
-    # ==== Example
-    #     @data = @mints_user.get_teams
-    def get_teams
-        @client.raw("get", "/config/teams")
-    end
-    
-    # === Get team.
-    # Get a team info.
-    #
-    # ==== Parameters
-    # id:: (Integer) -- Team id.
-    # options:: (Hash) -- List of Resource Collection Options shown above can be used as parameter.
-    #
-    # ==== Example
-    #     @data = @mints_user.get_team(1)
-    def get_team(id)
-        @client.raw("get", "/config/teams/#{id}")
-    end
+  ##
+  # == Teams
+  #
+  # === Get team types.
+  # Get a collection of team types.
+  #
+  # ==== Example
+  #     @data = @mints_user.get_team_types
+  def get_team_types
+    @client.raw('get', '/config/teams/team-types')
+  end
 
-    # === Create team.
-    # Create a team with data.
-    #
-    # ==== Parameters
-    # data:: (Hash) -- Data to be submitted.
-    #
-    # ==== Example
-    #     data = {
-    #       "title": "New Team",
-    #       "team_type_enum": 1
-    #     }
-    #     @data = @mints_user.create_team(data)
-    def create_team(data)
-        @client.raw("post", "/config/teams", nil, data_transform(data))
-    end
-    
-    # === Update team.
-    # Update a team info.
-    #
-    # ==== Parameters
-    # id:: (Integer) -- Team id.
-    # data:: (Hash) -- Data to be submitted.
-    #
-    # ==== Example
-    #     data = {
-    #       "title": "New Team Modified",
-    #       "team_type_enum": 1,
-    #       "members": []
-    #     }
-    #     @data = @mints_user.update_team(5, data)
-    def update_team(id, data)
-        @client.raw("put", "/config/teams/#{id}", nil, data_transform(data))
-    end
+  # === Get teams.
+  # Get a collection of teams.
+  #
+  # ==== Example
+  #     @data = @mints_user.get_teams
+  def get_teams
+    @client.raw('get', '/config/teams')
+  end
+
+  # === Get team.
+  # Get a team info.
+  #
+  # ==== Parameters
+  # id:: (Integer) -- Team id.
+  # options:: (Hash) -- List of Resource Collection Options shown above can be used as parameter.
+  #
+  # ==== Example
+  #     @data = @mints_user.get_team(1)
+  def get_team(id)
+    @client.raw('get', "/config/teams/#{id}")
+  end
+
+  # === Create team.
+  # Create a team with data.
+  #
+  # ==== Parameters
+  # data:: (Hash) -- Data to be submitted.
+  #
+  # ==== Example
+  #     data = {
+  #       title: 'New Team',
+  #       team_type_enum: 1
+  #     }
+  #     @data = @mints_user.create_team(data)
+  def create_team(data)
+    @client.raw('post', '/config/teams', nil, data_transform(data))
+  end
+
+  # === Update team.
+  # Update a team info.
+  #
+  # ==== Parameters
+  # id:: (Integer) -- Team id.
+  # data:: (Hash) -- Data to be submitted.
+  #
+  # ==== Example
+  #     data = {
+  #       title: 'New Team Modified',
+  #       team_type_enum: 1,
+  #       members: []
+  #     }
+  #     @data = @mints_user.update_team(5, data)
+  def update_team(id, data)
+    @client.raw('put', "/config/teams/#{id}", nil, data_transform(data))
+  end
 end

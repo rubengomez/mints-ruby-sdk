@@ -56,7 +56,7 @@ module Mints
         email: email,
         password: password,
       }
-      response = @client.raw("post", "/users/login", nil, data.to_json, '/api/v1', {'no_content_type': true})
+      response = @client.raw('post', "/users/login", nil, data.to_json, '/api/v1', {'no_content_type': true})
       if response.key? "api_token"
         @client.session_token = response["api_token"]
       end
@@ -64,7 +64,7 @@ module Mints
     end
 
     def magic_link_login(token)
-      response = @client.raw("get", "/users/magic-link-login/#{token}", nil, nil, '/api/v1')
+      response = @client.raw('get', "/users/magic-link-login/#{token}", nil, nil, '/api/v1')
       return response
     end
 
@@ -76,7 +76,7 @@ module Mints
         redirectUrl: redirectUrl,
         lifeTime: lifeTime
       }
-      response = @client.raw("post", "/users/magic-link", nil, { data: data }, '/api/v1')
+      response = @client.raw('post', "/users/magic-link", nil, { data: data }, '/api/v1')
       return response
     end
 

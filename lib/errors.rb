@@ -75,7 +75,7 @@ module Mints
 
     class ResourceNotFoundException < ServiceError; end
 
-    class MethodNotAllowed < ServiceError; end
+    class MethodNotAllowedException < ServiceError; end
 
     class ValidationException < ServiceError
 

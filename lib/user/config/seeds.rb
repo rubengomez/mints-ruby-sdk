@@ -11,7 +11,7 @@ module Seeds
     def apply_seeds(data, async = false)
         url = "/config/seeds"
         url = "#{url}?async" if async
-        @client.raw("post", url, nil, data)
+        @client.raw('post', url, nil, data)
     end
 
     # === Get seed processes.
@@ -26,11 +26,11 @@ module Seeds
     #
     # ==== Second Example
     #     options = {
-    #       "fields": "id"
+    #       fields: "id"
     #     }
     #     @data = @mints_user.get_seed_processes(options)
     def get_seed_processes(options = nil)
-        @client.raw("post", "/config/seed-processes", options)
+        @client.raw('post', "/config/seed-processes", options)
     end
 
     # === Get seed process.
@@ -45,10 +45,10 @@ module Seeds
     #
     # ==== Second Example
     #     options = {
-    #       "fields": "id, title"
+    #       fields: 'id, title'
     #     }
     #     @data = @mints_user.get_seed_process(1, options)
     def get_seed_process(id, options = nil)
-        @client.raw("get", "/config/seed-processes/#{id}", options)
+        @client.raw('get', "/config/seed-processes/#{id}", options)
     end
 end

@@ -1,21 +1,21 @@
-require_relative './companies.rb'
-require_relative './contacts.rb'
-require_relative './deals.rb'
-require_relative './favorites.rb'
-require_relative './segments.rb'
-require_relative './users.rb'
-require_relative './workflow_step_objects.rb'
-require_relative './workflow_steps.rb'
-require_relative './workflows.rb'
+require_relative './companies'
+require_relative './contacts'
+require_relative './deals'
+require_relative './favorites'
+require_relative './segments'
+require_relative './users'
+require_relative './workflow_step_objects'
+require_relative './workflow_steps'
+require_relative './workflows'
 
 module CRM
-    include Companies
-    include Contacts
-    include Deals
-    include Favorites
-    include Segments
-    include Users
-    include WorkflowStepObjects
-    include WorkFlowSteps
-    include Workflows
+  include Companies
+  include Contacts
+  include Deals
+  include Favorites
+  include Segments
+  include Users
+  include WorkflowStepObjects
+  include WorkFlowSteps
+  include Workflows
 end

@@ -29,7 +29,7 @@ module Mints
 
         if options&.class == Hash
           need_encoding = %w[ jfilters afilters rfilters ]
-          found_options_with_encoding = options.keys.select {|key| need_encoding.include? key.to_s.downcase}
+          found_options_with_encoding = options.keys.select {|key| need_encoding.include?(key.to_s.downcase) and options[key]&.class == Hash}
 
           found_options_with_encoding.each do |key|
             options[key] = CGI::escape(Base64.encode64(options[key].to_json))
@@ -146,7 +146,7 @@ module Mints
 
         slug = nil
         uri = Addressable::URI.new
-        if action == "get"
+        if action == 'get'
           if args.first.class == Hash
             uri.query_values = args.first
           elsif args.first.class == String or Integer
@@ -155,7 +155,7 @@ module Mints
           end
           url = self.get_url(route, object, uri, slug)
           response = self.send("#{@scope}_#{action}", url, nil, compatibility_options)
-        elsif action == "post" or action == "create"
+        elsif action == 'post' or action == "create"
           if args[1].class == Hash
             uri.query_values = args[1]
           end
@@ -163,7 +163,7 @@ module Mints
           action = 'post'
           data = args[0]
           response = self.send("#{@scope}_#{action}", url, {data: data}, compatibility_options)
-        elsif action == "put" or action == "update"
+        elsif action == 'put' or action == "update"
            if args.first.class == String or Integer
             slug = args.first
             uri.query_values = args[2]
