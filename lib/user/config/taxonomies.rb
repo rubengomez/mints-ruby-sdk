@@ -16,7 +16,7 @@ module Taxonomies
     #     }
     #     @data = @mints_user.sync_taxonomies_for_object(data)
     def sync_taxonomies_for_object(data)
-        @client.raw("put", "/config/taxonomies/sync_taxonomies_for_object", nil, data_transform(data))
+        @client.raw('put', "/config/taxonomies/sync_taxonomies_for_object", nil, data_transform(data))
     end
 
     # === Get taxonomies for object.
@@ -32,7 +32,7 @@ module Taxonomies
     #     }
     #     @data = @mints_user.get_taxonomies_for_object(options)
     def get_taxonomies_for_object(options)
-        @client.raw("get", "/config/taxonomies/get_taxonomies_for_object", options)
+        @client.raw('get', "/config/taxonomies/get_taxonomies_for_object", options)
     end
     
     # === Get taxonomies support data.
@@ -41,12 +41,12 @@ module Taxonomies
     # ==== Example
     #     @data = @mints_user.get_taxonomies_support_data
     def get_taxonomies_support_data
-        @client.raw("get", "/config/taxonomies/support-data")
+        @client.raw('get', "/config/taxonomies/support-data")
     end
     
     #FIXME: Method doesnt exist in TaxonomyController.getUISupportData
     #def get_ui_taxonomy(id)
-    #  @client.raw("get", "/config/taxonomies/ui-taxonomies/#{id}")
+    #  @client.raw('get', "/config/taxonomies/ui-taxonomies/#{id}")
     #end
     
     # === Get taxonomies.
@@ -60,14 +60,14 @@ module Taxonomies
     #     @data = @mints_user.get_taxonomies
     #
     # ==== Second Example
-    #     options = { "fields": "title" }
+    #     options = { fields: "title" }
     #     @data = @mints_user.get_taxonomies(options)
     #
     # ==== Third Example
-    #     options = { "fields": "title" }
+    #     options = { fields: "title" }
     #     @data = @mints_user.get_taxonomies(options, false)
     def get_taxonomies(options = nil, use_post = true)
-        return get_query_results("/config/taxonomies", options, use_post)
+        get_query_results("/config/taxonomies", options, use_post)
     end
 
     # === Get taxonomy.
@@ -81,10 +81,10 @@ module Taxonomies
     #     @data = @mints_user.get_taxonomy(1)
     #
     # ==== Second Example
-    #     options = { "fields": "title" }
+    #     options = { fields: "title" }
     #     @data = @mints_user.get_taxonomy(1, options)
     def get_taxonomy(id, options = nil)
-        @client.raw("get", "/config/taxonomies/#{id}", options)
+        @client.raw('get', "/config/taxonomies/#{id}", options)
     end
 
     # === Create taxonomy.
@@ -95,13 +95,13 @@ module Taxonomies
     #
     # ==== Example
     #     data = {
-    #       "title": "New Taxonomy",
-    #       "slug": "new-taxonomy",
+    #       title: "New Taxonomy",
+    #       slug: "new-taxonomy",
     #       "object_type": "contacts"
     #     }
     #     @data = @mints_user.create_taxonomy(data)
     def create_taxonomy(data, options = nil)
-        @client.raw("post", "/config/taxonomies", options, data_transform(data))
+        @client.raw('post', "/config/taxonomies", options, data_transform(data))
     end
     
     # === Update taxonomy.
@@ -113,12 +113,12 @@ module Taxonomies
     #
     # ==== Example
     #     data = {
-    #       "title": "New Taxomony Modified",
-    #       "slug": "new-taxonomy",
+    #       title: "New Taxomony Modified",
+    #       slug: "new-taxonomy",
     #       "object_type": "contacts"
     #     }
     #     @data = @mints_user.update_taxonomy(104, data)
     def update_taxonomy(id, data, options = nil)
-        @client.raw("put", "/config/taxonomies/#{id}", options, data_transform(data))
+        @client.raw('put', "/config/taxonomies/#{id}", options, data_transform(data))
     end
 end

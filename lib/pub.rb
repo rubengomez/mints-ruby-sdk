@@ -27,7 +27,7 @@ module Mints
   # * +tags+ - [_Boolean_] If present, tags will be returned for each record in the results. _Example:_
   #     { "tags": true }
   # * +fields+ - [_String_] Specify the fields that you want to be returned. If empty, all fields are returned. The object index can also be used to specify specific fields from relations. _Example:_
-  #     { "fields": "id, title, slug" }
+  #     { fields: "id, title, slug" }
   #     { "fields[products]": "id, title, slug" }
   #
   # == Resource collections options
@@ -44,7 +44,7 @@ module Mints
   #         {
   #           "type":"attribute",
   #           "operator":"==",
-  #           "slug":"title",
+  #           slug:"title",
   #           "value":"Action movies"
   #         }
   #       ],
@@ -54,11 +54,11 @@ module Mints
   # * +catfilters+ - [_String_] filter by categories. _Example:_
   #     { "catfilters": "categoryName" }
   # * +fields+ - [_String_] Specify the fields that you want to be returned. If empty, all fields are returned. The object index can also be used to specify specific fields from relations. _Example:_
-  #     { "fields": "id, title, slug" }
+  #     { fields: "id, title, slug" }
   #     { "fields[products]": "id, title, slug" }
   # * +sort+ - [_String_] The name of the field to perform the sort. Prefix the value with a minus sign - for ascending order. _Example:_
-  #     { "sort": "title" }
-  #     { "sort": "-title" }
+  #     { sort: "title" }
+  #     { sort: "-title" }
   # * +include+ - [_String_] Specify additional information to be included in the results from the objects relations. _Example:_
   #     { "include": "events" }
   # * +attributes+ - [_Boolean_] If present, attributes will be returned for each record in the results. _Example:_
@@ -110,7 +110,7 @@ module Mints
         user_agent: user_agent || request.user_agent,
         url: url || request.fullpath
       }
-      response = @client.raw("post", "/register-visit", nil, data.to_json)
+      response = @client.raw('post', "/register-visit", nil, data.to_json)
       return response
     end
 
@@ -125,7 +125,7 @@ module Mints
     # ==== Example
     #     @data = @mints_pub.register_visit_timer("60da2325d29acc7e55684472", 4)
     def register_visit_timer(visit, time)
-      @client.raw("get", "/register-visit-timer?visit=#{visit}&time=#{time}")
+      @client.raw('get', "/register-visit-timer?visit=#{visit}&time=#{time}")
     end
 
     ### V1/CONTENT ###
@@ -140,7 +140,7 @@ module Mints
     # ==== Example
     #     @data = @mints_pub.get_asset_info("asset_slug")
     def get_asset_info(slug)
-      @client.raw("get", "/content/asset-info/#{slug}")
+      @client.raw('get', "/content/asset-info/#{slug}")
     end
 
     ##
@@ -156,17 +156,17 @@ module Mints
     #
     # ==== Second Example
     #     options = {
-    #       "fields": "id, slug"
+    #       fields: 'id, slug'
     #     }
     #     @data = @mints_pub.get_stories(options)
     #
     # ==== Third Example
     #     options = {
-    #       "fields": "id, slug"
+    #       fields: 'id, slug'
     #     }
     #     @data = @mints_pub.get_stories(options, false)
     def get_stories(options = nil, use_post = true)
-      return get_query_results("/content/stories", options, use_post)
+      get_query_results('/content/stories', options, use_post)
     end
 
     ##
@@ -183,7 +183,7 @@ module Mints
     # ==== Second Example
     #     @data = @mints_pub.get_story("story_slug", options.to_json)
     def get_story(slug, options = nil)
-      @client.raw("get", "/content/stories/#{slug}", options)
+      @client.raw('get', "/content/stories/#{slug}", options)
     end
 
     ##
@@ -199,17 +199,17 @@ module Mints
     #
     # ==== Second Example
     #     options = {
-    #       "fields": "id, title"
+    #       fields: 'id, title'
     #     }
     #     @data = @mints_pub.get_story_versions(options)
     #
     # ==== Third Example
     #     options = {
-    #       "fields": "id, title"
+    #       fields: 'id, title'
     #     }
     #     @data = @mints_pub.get_story_versions(options, false)
     def get_story_versions(options = nil, use_post = true)
-      return get_query_results("/content/story-versions", options, use_post)
+      get_query_results("/content/story-versions", options, use_post)
     end
 
     ##
@@ -226,7 +226,7 @@ module Mints
     # ==== Second Example
     #     @data = @mints_pub.get_story_version("story_slug", options.to_json)
     def get_story_version(slug, options = nil)
-      @client.raw("get", "/content/story-versions/#{slug}", options)
+      @client.raw('get', "/content/story-versions/#{slug}", options)
     end
 
     ##
@@ -236,7 +236,7 @@ module Mints
     # ==== Example
     #     @data = @mints_pub.get_forms
     def get_forms(options = nil)
-      @client.raw("get", "/content/forms", options)
+      @client.raw('get', '/content/forms', options)
     end
 
     ##
@@ -249,7 +249,7 @@ module Mints
     # ==== Example
     #     @data = @mints_pub.get_form("form_slug")
     def get_form(slug, options = nil)
-      @client.raw("get", "/content/forms/#{slug}", options)
+      @client.raw('get', "/content/forms/#{slug}", options)
     end
 
     ##
@@ -270,7 +270,7 @@ module Mints
     #     }
     #     @data = @mints_pub.submit_form(data)
     def submit_form(data)
-      @client.raw("post", "/content/forms/submit", nil, data_transform(data))
+      @client.raw('post', "/content/forms/submit", nil, data_transform(data))
     end
 
     ##
@@ -289,11 +289,11 @@ module Mints
     # ==== Second Example
     #     options = {
     #       "template": "content_instance_template_slug",
-    #       "sort": "-id"
+    #       sort: "-id"
     #     }
     #     @data = @mints_pub.get_content_instances(options)
-    def get_content_instances(options)
-      @client.raw("get", "/content/content-instances", options)
+    def get_content_instances(options = nil)
+      @client.raw('get', "/content/content-instances", options)
     end
 
     ##
@@ -306,19 +306,18 @@ module Mints
     # ==== Example
     #     @data = @mints_pub.get_content_instance("content_instance_slug")
     def get_content_instance(slug)
-      @client.raw("get", "/content/content-instances/#{slug}")
+      @client.raw('get', "/content/content-instances/#{slug}")
     end
 
-    #Note: This method is commented for future use
     ##
     # === Get Content Pages.
     # Get all content pages.
     #
     # ==== Parameters
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::Pub-label-Resource+collections+options+] shown above can be used as parameter.
-    # def get_content_pages(options = nil)
-      #@client.raw("get", "/content/content-pages", options)
-    #end
+    def get_content_bundles(options = nil)
+      @client.raw('get', "/content/content-bundles", options)
+    end
 
     ##
     # === Get Content Page.
@@ -330,7 +329,8 @@ module Mints
     # ==== Example
     #     @data = @mints_pub.get_content_page("test-page")
     def get_content_page(slug, options = nil)
-      @client.raw("get", "/content/content-pages/#{slug}", options)
+      warn '[DEPRECATED] The get_content_page method is deprecated and will be removed in the future, use get_content_bundle instead'
+      @client.raw('get', "/content/content-pages/#{slug}", options)
     end
 
     ##
@@ -341,9 +341,9 @@ module Mints
     # slug:: (String) -- It's the string identifier generated by Mints.
     #
     # ==== Example
-    #     @data = @mints_pub.get_content_page("test-page")
+    #     @data = @mints_pub.get_content_bundle("test-page")
     def get_content_bundle(slug, options = nil)
-      @client.raw("get", "/content/content-pages/#{slug}", options)
+      @client.raw('get', "/content/content-bundles/#{slug}", options)
     end
 
     ### V1/ECOMMERCE ###
@@ -360,14 +360,14 @@ module Mints
     #     @data = @mints_pub.get_locations
     #
     # ==== Second Example
-    #     options = { "fields": "title" }
+    #     options = { fields: "title" }
     #     @data = @mints_pub.get_locations(options)
     #
     # ==== Third Example
-    #     options = { "fields": "title" }
+    #     options = { fields: "title" }
     #     @data = @mints_pub.get_locations(options, false)
     def get_locations(options = nil, use_post = true)
-      return get_query_results("/ecommerce/locations", options, use_post)
+      get_query_results("/ecommerce/locations", options, use_post)
     end
 
     ##
@@ -382,14 +382,14 @@ module Mints
     #     @data = @mints_pub.get_products
     #
     # ==== Second Example
-    #     options = { "fields": "title" }
+    #     options = { fields: "title" }
     #     @data = @mints_pub.get_products(options)
     #
     # ==== Third Example
-    #     options = { "fields": "title" }
+    #     options = { fields: "title" }
     #     @data = @mints_pub.get_products(options, false)
     def get_products(options = nil, use_post = true)
-      return get_query_results("/ecommerce/products", options, use_post)
+      get_query_results("/ecommerce/products", options, use_post)
     end
 
     ##
@@ -405,11 +405,11 @@ module Mints
     #
     # ==== Second Example
     #     options = {
-    #       "fields": "id, slug"
+    #       fields: 'id, slug'
     #     }
     #     @data = @mints_pub.get_product("lego-set", options)
     def get_product(slug, options = nil)
-      @client.raw("get", "/ecommerce/products/#{slug}", options)
+      @client.raw('get', "/ecommerce/products/#{slug}", options)
     end
 
     ### V1/CONFIG ###
@@ -430,12 +430,12 @@ module Mints
     # ==== Second Example
     #     options = {
     #       "object_type": "products",
-    #       "fields": "id",
-    #       "sort": "-id"
+    #       fields: "id",
+    #       sort: "-id"
     #     }
     #     @data = @mints_pub.get_public_folders(options)
-    def get_public_folders(options)
-      @client.raw("get", "/config/public-folders", options)
+    def get_public_folders(options = nil)
+      @client.raw('get', "/config/public-folders", options)
     end
 
     ##
@@ -455,11 +455,11 @@ module Mints
     # ==== Second Example
     #     options = {
     #       "object_type": "products",
-    #       "fields": "id, title"
+    #       fields: 'id, title'
     #     }
     #     @data = @mints_pub.get_public_folder('yellow', options)
     def get_public_folder(slug, options)
-      @client.raw("get", "/config/public-folders/#{slug}", options)
+      @client.raw('get', "/config/public-folders/#{slug}", options)
     end
 
     ##
@@ -474,11 +474,11 @@ module Mints
     #
     # ==== Second Example
     #     options = {
-    #       "fields": "id, tag"
+    #       fields: "id, tag"
     #     }
     #     @data = @mints_pub.get_tags(options)
     def get_tags(options = nil)
-      @client.raw("get", "/config/tags", options)
+      @client.raw('get', "/config/tags", options)
     end
 
     ##
@@ -494,11 +494,11 @@ module Mints
     #
     # ==== Second Example
     #     options = {
-    #       "fields": "id, tag"
+    #       fields: "id, tag"
     #     }
     #     @data = @mints_pub.get_tag("velit-0", options)
     def get_tag(slug, options = nil)
-      @client.raw("get", "/config/tags/#{slug}", options)
+      @client.raw('get', "/config/tags/#{slug}", options)
     end
 
     ##
@@ -514,17 +514,17 @@ module Mints
     #
     # ==== Second Example
     #     options = {
-    #       "fields": "id, title"
+    #       fields: 'id, title'
     #     }
     #     @data = @mints_pub.get_taxonomies(options)
     #
     # ==== Third Example
     #     options = {
-    #       "fields": "id, title"
+    #       fields: 'id, title'
     #     }
     #     @data = @mints_pub.get_taxonomies(options, false)
     def get_taxonomies(options = nil, use_post = true)
-      return get_query_results("/config/taxonomies", options, use_post)
+      get_query_results("/config/taxonomies", options, use_post)
     end
 
     ##
@@ -540,11 +540,11 @@ module Mints
     #
     # ==== Second Example
     #     options = {
-    #       "fields": "title"
+    #       fields: "title"
     #     }
     #     @data = @mints_pub.get_taxonomy("taxonomy_slug", options)
     def get_taxonomy(slug, options = nil)
-      @client.raw("get", "/config/taxonomies/#{slug}", options)
+      @client.raw('get', "/config/taxonomies/#{slug}", options)
     end
 
     ##
@@ -554,7 +554,7 @@ module Mints
     # ==== Example
     #     @data = @mints_pub.get_attributes
     def get_attributes
-      @client.raw("get", "/config/attributes")
+      @client.raw('get', "/config/attributes")
     end
 
     def send_user_magic_link(email_or_phone, template_slug, redirect_url = '', life_time = 1440, max_visits = nil, driver = 'email')
@@ -570,7 +570,7 @@ module Mints
       else
         data['email'] = email_or_phone
       end
-      @client.raw("post", "/users/magic-link", nil, { data: data }.to_json, '/api/v1')
+      @client.raw('post', "/users/magic-link", nil, { data: data }.to_json, '/api/v1')
     end
 
     private

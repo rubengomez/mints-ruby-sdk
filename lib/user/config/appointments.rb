@@ -14,11 +14,11 @@ module Appointments
     #
     # ==== Second Example
     #     options = {
-    #       "fields": "id"
+    #       fields: "id"
     #     }
     #     @data = @mints_user.get_appointments(options)
     def get_appointments(options = nil)
-        @client.raw("get", "/config/appointments", options)
+        @client.raw('get', "/config/appointments", options)
     end
     
     # === Get appointment.
@@ -33,11 +33,11 @@ module Appointments
     #
     # ==== Second Example
     #     options = {
-    #       "fields": "id"
+    #       fields: "id"
     #     }
     #     @data = @mints_user.get_appointment(1, options)
     def get_appointment(id, options = nil)
-        @client.raw("get", "/config/appointments/#{id}", options)
+        @client.raw('get', "/config/appointments/#{id}", options)
     end
     
     # === Create appointment.
@@ -50,14 +50,14 @@ module Appointments
     #     data = {
     #       "object_type": "contacts",
     #       "object_id": 1,
-    #       "title": "New Appointment",
+    #       title: "New Appointment",
     #       "start": "2021-09-06T20:29:16+00:00",
     #       "end": "2022-09-06T20:29:16+00:00",
     #       "attendee_id": 1
     #     }
     #     @data = @mints_user.create_appointment(data)
     def create_appointment(data)
-        @client.raw("post", "/config/appointments", nil, data_transform(data))
+        @client.raw('post', "/config/appointments", nil, data_transform(data))
     end
 
     # === Update appointment.
@@ -73,7 +73,7 @@ module Appointments
     #     }
     #     @data = @mints_user.update_appointment(1, data)
     def update_appointment(id, data)
-        @client.raw("put", "/config/appointments/#{id}", nil, data_transform(data))
+        @client.raw('put', "/config/appointments/#{id}", nil, data_transform(data))
     end
     
     # === Delete appointment.
@@ -85,7 +85,7 @@ module Appointments
     # ==== Example
     #     @data = @mints_user.delete_appointment(1)
     def delete_appointment(id)
-        @client.raw("delete", "/config/appointments/#{id}")
+        @client.raw('delete', "/config/appointments/#{id}")
     end
 
     # === Scheduled appointments.
@@ -103,7 +103,7 @@ module Appointments
     #     }
     #     @data = @mints_user.scheduled_appointments(data)
     def scheduled_appointments(data)
-        @client.raw("post", "/config/appointments/scheduled-appointments", nil, data_transform(data))
+        @client.raw('post', "/config/appointments/scheduled-appointments", nil, data_transform(data))
     end
     
     # === Reschedule appointment.
@@ -120,7 +120,7 @@ module Appointments
     #     }
     #     @data = @mints_user.reschedule_appointment(data)
     def reschedule_appointment(data)
-        @client.raw("post", "/config/appointments/reschedule-appointment", nil, data_transform(data))
+        @client.raw('post', "/config/appointments/reschedule-appointment", nil, data_transform(data))
     end
     
     # === Attach invitee.
@@ -136,7 +136,7 @@ module Appointments
     #     }
     #     @data = @mints_user.attach_invitee(data)
     def attach_invitee(data)
-        @client.raw("post", "/config/appointments/attach-invitee", nil, data_transform(data))
+        @client.raw('post', "/config/appointments/attach-invitee", nil, data_transform(data))
     end
 
     # === Attach follower.
@@ -152,7 +152,7 @@ module Appointments
     #     }
     #     @data = @mints_user.attach_follower(data)
     def attach_follower(data)
-        @client.raw("post", "/config/appointments/attach-follower", nil, data_transform(data))
+        @client.raw('post', "/config/appointments/attach-follower", nil, data_transform(data))
     end
     
     # === Detach invitee.
@@ -168,7 +168,7 @@ module Appointments
     #     }
     #     @data = @mints_user.detach_invitee(data)
     def detach_invitee(data)
-        @client.raw("post", "/config/appointments/detach-invitee", nil, data_transform(data))
+        @client.raw('post', "/config/appointments/detach-invitee", nil, data_transform(data))
     end
 
     # === Detach follower.
@@ -184,7 +184,7 @@ module Appointments
     #     }
     #     @data = @mints_user.detach_follower(data)
     def detach_follower(data)
-        @client.raw("post", "/config/appointments/detach-follower", nil, data_transform(data))
+        @client.raw('post', "/config/appointments/detach-follower", nil, data_transform(data))
     end
     
     # === Sync invitee.
@@ -200,7 +200,7 @@ module Appointments
     #     }
     #     @data = @mints_user.sync_invitee(data)
     def sync_invitee(data)
-        @client.raw("post", "/config/appointments/sync-invitee", nil, data_transform(data))
+        @client.raw('post', "/config/appointments/sync-invitee", nil, data_transform(data))
     end
     
     # === Sync follower.
@@ -216,6 +216,6 @@ module Appointments
     #     }
     #     @data = @mints_user.sync_follower(data)
     def sync_follower(data)
-        @client.raw("post", "/config/appointments/sync-follower", nil, data_transform(data))
+        @client.raw('post', "/config/appointments/sync-follower", nil, data_transform(data))
     end
 end

@@ -12,7 +12,7 @@ module SystemSettings
     #     }
     #     @data = @mints_user.get_settings_by_keys(options)
     def get_settings_by_keys(options)
-        @client.raw("get", "/config/settings/by-keys", options)
+        @client.raw('get', "/config/settings/by-keys", options)
     end
     
     # === Get settings.
@@ -21,7 +21,7 @@ module SystemSettings
     # ====  Example
     #     @data = @mints_user.get_settings
     def get_settings
-        @client.raw("get", "/config/settings")
+        @client.raw('get', "/config/settings")
     end      
 
     # === Create setting.
@@ -32,11 +32,11 @@ module SystemSettings
     #
     # ==== Example
     #     data = {
-    #       "title": "new_settings"
+    #       title: "new_settings"
     #     }
     #     @data = @mints_user.create_setting(data)
     def create_setting(data)
-        @client.raw("post", "/config/settings", nil, data_transform(data))
+        @client.raw('post', "/config/settings", nil, data_transform(data))
     end
 
     # === Clear tag.
@@ -48,6 +48,6 @@ module SystemSettings
     # ==== Example
     #     @data = @mints_user.clear_tag(1)
     def clear_tag(tag)
-        @client.raw("get", "/config/settings/tags/#{tag}/clear")
+        @client.raw('get', "/config/settings/tags/#{tag}/clear")
     end
 end

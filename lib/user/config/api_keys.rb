@@ -13,10 +13,10 @@ module ApiKeys
     #     @data = @mints_user.get_api_keys
     #
     # ==== Second Example
-    #     options = { "fields": "id" }
+    #     options = { fields: "id" }
     #     @data = @mints_user.get_api_keys(options)
     def get_api_keys(options = nil)
-        @client.raw("get", "/config/api-keys", options)
+        @client.raw('get', "/config/api-keys", options)
     end
 
     # === Get api key.
@@ -30,10 +30,10 @@ module ApiKeys
     #     @data = @mints_user.get_api_key(2)
     #
     # ==== Second Example
-    #     options = { "fields": "id" }
+    #     options = { fields: "id" }
     #     @data = @mints_user.get_api_key(2, options)
     def get_api_key(id, options = nil)
-        @client.raw("get", "/config/api-keys/#{id}", options)
+        @client.raw('get', "/config/api-keys/#{id}", options)
     end
 
     # === Create api key.
@@ -44,11 +44,11 @@ module ApiKeys
     #
     # ==== Example
     #     data = {
-    #       "description": "New Api Key Description"
+    #       description: "New Api Key Description"
     #     }
     #     @data = @mints_user.create_api_key(data)
     def create_api_key(data)
-        @client.raw("post", "/config/api-keys", nil, data_transform(data))
+        @client.raw('post', "/config/api-keys", nil, data_transform(data))
     end
 
     # === Delete api key.
@@ -60,6 +60,6 @@ module ApiKeys
     # ==== Example
     #     @data = @mints_user.delete_api_key(2)
     def delete_api_key(id)
-        @client.raw("delete", "/config/api-keys/#{id}")
+        @client.raw('delete', "/config/api-keys/#{id}")
     end
 end

@@ -10,9 +10,9 @@ module MintsHelper
     #
     def get_query_results(url, options = nil, use_post = true)
         if use_post
-            @client.raw("post", "#{url}/query", options)
+            @client.raw('post', "#{url}/query", options)
         else
-            @client.raw("get", url, options)
+            @client.raw('get', url, options)
         end
     end
 

@@ -1,29 +1,29 @@
-require_relative './item_prices.rb'
-require_relative './locations.rb'
-require_relative './order_items_groups.rb'
-require_relative './order_statuses.rb'
-require_relative './orders.rb'
-require_relative './price_lists.rb'
-require_relative './product_templates.rb'
-require_relative './product_variations.rb'
-require_relative './products.rb'
-require_relative './skus.rb'
-require_relative './taxes.rb'
-require_relative './variant_options.rb'
-require_relative './variant_values.rb'
+require_relative './item_prices'
+require_relative './locations'
+require_relative './order_items_groups'
+require_relative './order_statuses'
+require_relative './orders'
+require_relative './price_lists'
+require_relative './product_templates'
+require_relative './product_variations'
+require_relative './products'
+require_relative './skus'
+require_relative './taxes'
+require_relative './variant_options'
+require_relative './variant_values'
 
 module Ecommerce
-    include ItemPrices
-    include Locations
-    include OrderItemsGroups
-    include OrderStatuses
-    include Orders
-    include PriceList
-    include ProductTemplates
-    include ProductVariations
-    include Products
-    include Skus
-    include Taxes
-    include VariantOptions
-    include VariantValues
+  include ItemPrices
+  include Locations
+  include OrderItemsGroups
+  include OrderStatuses
+  include Orders
+  include PriceList
+  include ProductTemplates
+  include ProductVariations
+  include Products
+  include Skus
+  include Taxes
+  include VariantOptions
+  include VariantValues
 end
