@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Pages
   ##
   # == Content Pages
@@ -50,7 +52,7 @@ module Pages
   # data:: (Hash) -- Data to be submitted.
   #
   # ==== Example
-  #     data = { 
+  #     data = {
   #       title: "New Page",
   #       slug: "new-page-slug",
   #       description: "New page description"
@@ -68,7 +70,7 @@ module Pages
   # data:: (Hash) -- Data to be submitted.
   #
   # ==== Example
-  #     data = { 
+  #     data = {
   #       title: "New Page Modified"
   #     }
   #     @data = @mints_user.update_page(5, data.to_json)

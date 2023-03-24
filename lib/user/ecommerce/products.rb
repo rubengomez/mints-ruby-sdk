@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Products
   ##
   # == Product
@@ -112,7 +114,7 @@ module Products
   #     }
   #     @data = @mints_user.get_products(options, false)
   def get_products(options = nil, use_post = true)
-    get_query_results("/ecommerce/products", options, use_post)
+    get_query_results('/ecommerce/products', options, use_post)
   end
 
   # === Get product.

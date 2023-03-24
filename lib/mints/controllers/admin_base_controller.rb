@@ -1,5 +1,7 @@
-require_relative "./concerns/mints_clients.rb"
-require_relative "../helpers/user_auth_helper.rb"
+# frozen_string_literal: true
+
+require_relative './concerns/mints_clients'
+require_relative '../helpers/user_auth_helper'
 
 module Mints
   class AdminBaseController < ActionController::Base
@@ -9,7 +11,7 @@ module Mints
 
     # Override default values for mints clients concern
     def define_mints_clients
-      %w[ user service_account ]
+      %w[user service_account]
     end
   end
 end

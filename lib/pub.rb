@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'yaml'
-require_relative './client.rb'
-require_relative './mints/helpers/mints_helper.rb'
+require_relative './client'
+require_relative './mints/helpers/mints_helper'
 
 module Mints
   ##
@@ -22,8 +24,8 @@ module Mints
   #     { "include": "events" }
   # * +attributes+ - [_Boolean_] If present, attributes will be returned for each record in the results. _Example:_
   #     { "attributes": true }
-  # * +categories+ - [_Boolean_] If present, categories will be returned for each record in the results. _Example:_
-  #     { "categories": true }
+  # * +taxonomies+ - [_Boolean_] If present, taxonomies will be returned for each record in the results. _Example:_
+  #     { "taxonomies": true }
   # * +tags+ - [_Boolean_] If present, tags will be returned for each record in the results. _Example:_
   #     { "tags": true }
   # * +fields+ - [_String_] Specify the fields that you want to be returned. If empty, all fields are returned. The object index can also be used to specify specific fields from relations. _Example:_
@@ -32,7 +34,7 @@ module Mints
   #
   # == Resource collections options
   # * +search+ - [_String_] If present, it will search for records matching the search string. _Example:_
-  #     { "search": "searchstring" }
+  #     { "search": "search string" }
   # * +scopes+ - [_String_] If present, it will apply the specified Model's scopes. _Example:_
   #     { "scopes": "approved, recent" }
   # * +filters+ - [_String_] This is a powerful parameter that allows the data to be filtered by any of its fields. Currently only exact matches are supported. _Example:_
@@ -51,27 +53,15 @@ module Mints
   #       "operator":"or"
   #     }
   #     options = { "jfilters": jfilter }
-  # * +catfilters+ - [_String_] filter by categories. _Example:_
-  #     { "catfilters": "categoryName" }
-  # * +fields+ - [_String_] Specify the fields that you want to be returned. If empty, all fields are returned. The object index can also be used to specify specific fields from relations. _Example:_
-  #     { fields: "id, title, slug" }
-  #     { "fields[products]": "id, title, slug" }
   # * +sort+ - [_String_] The name of the field to perform the sort. Prefix the value with a minus sign - for ascending order. _Example:_
   #     { sort: "title" }
   #     { sort: "-title" }
-  # * +include+ - [_String_] Specify additional information to be included in the results from the objects relations. _Example:_
-  #     { "include": "events" }
-  # * +attributes+ - [_Boolean_] If present, attributes will be returned for each record in the results. _Example:_
-  #     { "attributes": true }
-  # * +categories+ - [_Boolean_] If present, categories will be returned for each record in the results. _Example:_
-  #     { "categories": true }
-  # * +taxonomies+ - [_Boolean_] If present, taxonomies will be returned for each record in the results. _Example:_
-  #     { "taxonomies": true }
-  # * +tags+ - [_Boolean_] If present, tags will be returned for each record in the results. _Example:_
-  #     { "tags": true }
 
   class Pub
     attr_reader :client
+
+    include MintsHelper
+
     ##
     # === Initialize.
     # Class constructor.
@@ -110,8 +100,8 @@ module Mints
         user_agent: user_agent || request.user_agent,
         url: url || request.fullpath
       }
-      response = @client.raw('post', "/register-visit", nil, data.to_json)
-      return response
+
+      @client.raw('post', '/register-visit', nil, data.to_json)
     end
 
     ##
@@ -155,9 +145,7 @@ module Mints
     #     @data = @mints_pub.get_stories
     #
     # ==== Second Example
-    #     options = {
-    #       fields: 'id, slug'
-    #     }
+    #     options = { fields: 'id, slug' }
     #     @data = @mints_pub.get_stories(options)
     #
     # ==== Third Example
@@ -209,7 +197,7 @@ module Mints
     #     }
     #     @data = @mints_pub.get_story_versions(options, false)
     def get_story_versions(options = nil, use_post = true)
-      get_query_results("/content/story-versions", options, use_post)
+      get_query_results('/content/story-versions', options, use_post)
     end
 
     ##
@@ -270,7 +258,7 @@ module Mints
     #     }
     #     @data = @mints_pub.submit_form(data)
     def submit_form(data)
-      @client.raw('post', "/content/forms/submit", nil, data_transform(data))
+      @client.raw('post', '/content/forms/submit', nil, data_transform(data))
     end
 
     ##
@@ -293,7 +281,7 @@ module Mints
     #     }
     #     @data = @mints_pub.get_content_instances(options)
     def get_content_instances(options = nil)
-      @client.raw('get', "/content/content-instances", options)
+      @client.raw('get', '/content/content-instances', options)
     end
 
     ##
@@ -316,7 +304,7 @@ module Mints
     # ==== Parameters
     # options:: (Hash) -- List of {Resource collection Options}[#class-Mints::Pub-label-Resource+collections+options+] shown above can be used as parameter.
     def get_content_bundles(options = nil)
-      @client.raw('get', "/content/content-bundles", options)
+      @client.raw('get', '/content/content-bundles', options)
     end
 
     ##
@@ -367,7 +355,7 @@ module Mints
     #     options = { fields: "title" }
     #     @data = @mints_pub.get_locations(options, false)
     def get_locations(options = nil, use_post = true)
-      get_query_results("/ecommerce/locations", options, use_post)
+      get_query_results('/ecommerce/locations', options, use_post)
     end
 
     ##
@@ -389,7 +377,7 @@ module Mints
     #     options = { fields: "title" }
     #     @data = @mints_pub.get_products(options, false)
     def get_products(options = nil, use_post = true)
-      get_query_results("/ecommerce/products", options, use_post)
+      get_query_results('/ecommerce/products', options, use_post)
     end
 
     ##
@@ -423,19 +411,19 @@ module Mints
     #
     # ==== First Example
     #     options = {
-    #       "object_type": "products"
+    #       object_type: "products"
     #     }
     #     @data = @mints_pub.get_public_folders(options)
     #
     # ==== Second Example
     #     options = {
-    #       "object_type": "products",
+    #       object_type: "products",
     #       fields: "id",
     #       sort: "-id"
     #     }
     #     @data = @mints_pub.get_public_folders(options)
     def get_public_folders(options = nil)
-      @client.raw('get', "/config/public-folders", options)
+      @client.raw('get', '/config/public-folders', options)
     end
 
     ##
@@ -448,13 +436,13 @@ module Mints
     #
     # ==== First Example
     #     options = {
-    #       "object_type": "products"
+    #       object_type: "products"
     #     }
     #     @data = @mints_pub.get_public_folder('yellow', options)
     #
     # ==== Second Example
     #     options = {
-    #       "object_type": "products",
+    #       object_type: "products",
     #       fields: 'id, title'
     #     }
     #     @data = @mints_pub.get_public_folder('yellow', options)
@@ -478,7 +466,7 @@ module Mints
     #     }
     #     @data = @mints_pub.get_tags(options)
     def get_tags(options = nil)
-      @client.raw('get', "/config/tags", options)
+      @client.raw('get', '/config/tags', options)
     end
 
     ##
@@ -496,7 +484,7 @@ module Mints
     #     options = {
     #       fields: "id, tag"
     #     }
-    #     @data = @mints_pub.get_tag("velit-0", options)
+    #     @data = @mints_pub.get_tag("tag-example", options)
     def get_tag(slug, options = nil)
       @client.raw('get', "/config/tags/#{slug}", options)
     end
@@ -524,7 +512,7 @@ module Mints
     #     }
     #     @data = @mints_pub.get_taxonomies(options, false)
     def get_taxonomies(options = nil, use_post = true)
-      get_query_results("/config/taxonomies", options, use_post)
+      get_query_results('/config/taxonomies', options, use_post)
     end
 
     ##
@@ -536,13 +524,13 @@ module Mints
     # options:: (Hash) -- List of {Single Resource Options}[#class-Mints::Pub-label-Single+resource+options] shown above can be used as parameter.
     #
     # ==== First Example
-    #     @data = @mints_pub.get_taxonomy("taxonomy_slug")
+    #     @data = @mints_pub.get_taxonomy('taxonomy_slug')
     #
     # ==== Second Example
     #     options = {
-    #       fields: "title"
+    #       fields: 'title'
     #     }
-    #     @data = @mints_pub.get_taxonomy("taxonomy_slug", options)
+    #     @data = @mints_pub.get_taxonomy('taxonomy_slug', options)
     def get_taxonomy(slug, options = nil)
       @client.raw('get', "/config/taxonomies/#{slug}", options)
     end
@@ -554,7 +542,7 @@ module Mints
     # ==== Example
     #     @data = @mints_pub.get_attributes
     def get_attributes
-      @client.raw('get', "/config/attributes")
+      @client.raw('get', '/config/attributes')
     end
 
     def send_user_magic_link(email_or_phone, template_slug, redirect_url = '', life_time = 1440, max_visits = nil, driver = 'email')
@@ -565,16 +553,10 @@ module Mints
         redirectUrl: redirect_url,
         templateId: template_slug
       }
-      if driver === 'sms' or driver === 'whatsapp'
-        data['phone'] = email_or_phone
-      else
-        data['email'] = email_or_phone
-      end
-      @client.raw('post', "/users/magic-link", nil, { data: data }.to_json, '/api/v1')
+
+      key = %w[sms whatsapp].include? driver ? 'phone' : 'email'
+      data[key] = email_or_phone
+      @client.raw('post', '/users/magic-link', nil, { data: data }.to_json, '/api/v1')
     end
-
-    private
-
-    include MintsHelper
   end
 end

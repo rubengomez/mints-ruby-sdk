@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UserAuthHelper
 
   def mints_user_signed_in?
@@ -34,8 +36,8 @@ module UserAuthHelper
     response = @mints_user.magic_link_login(hash)
     if response['data']
       # Set a cookie with the session token
-      cookies[:mints_user_session_token] = { value: response['data']['api_token'], secure: true, httponly: true,  expires: 1.day }
-      redirect_to response['data']['redirect_url'] ? response['data']['redirect_url'] : '/'
+      cookies[:mints_user_session_token] = { value: response['data']['api_token'], secure: true, httponly: true, expires: 1.day }
+      redirect_to response['data']['redirect_url'] || '/'
     else
       redirect_to '/'
     end

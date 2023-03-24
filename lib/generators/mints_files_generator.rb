@@ -1,15 +1,18 @@
+# frozen_string_literal: true
+
 class MintsFilesGenerator < Rails::Generators::Base
-    source_root(File.expand_path(File.dirname(__FILE__)))
-    include Rails::Generators::Actions
-    def create_mints_files
-      copy_file 'mints_config.yml.erb', 'mints_config.yml.erb'
-      copy_file 'mints_user_controller.rb', './app/controllers/api/mints_user_controller.rb'
-      copy_file 'mints_contact_controller.rb', './app/controllers/api/v1/mints_contact_controller.rb'
-      copy_file 'mints_public_controller.rb', './app/controllers/api/v1/mints_public_controller.rb'
-      copy_file 'mints_assets_controller.rb', './app/controllers/mints_assets_controller.rb'
-      copy_file 'short_link_controller.rb', './app/controllers/short_link_controller.rb'
-      copy_file 'mints_link.rb', './config/initializers/mints_link.rb'
-      route <<-eos
+  source_root(File.expand_path(File.dirname(__FILE__)))
+  include Rails::Generators::Actions
+
+  def create_mints_files
+    copy_file 'mints_config.yml.erb', 'mints_config.yml.erb'
+    copy_file 'mints_user_controller.rb', './app/controllers/api/mints_user_controller.rb'
+    copy_file 'mints_contact_controller.rb', './app/controllers/api/v1/mints_contact_controller.rb'
+    copy_file 'mints_public_controller.rb', './app/controllers/api/v1/mints_public_controller.rb'
+    copy_file 'mints_assets_controller.rb', './app/controllers/mints_assets_controller.rb'
+    copy_file 'short_link_controller.rb', './app/controllers/short_link_controller.rb'
+    copy_file 'mints_link.rb', './config/initializers/mints_link.rb'
+    route <<-eos
         # Mints auto-generated routes (proxy to send request to mints.cloud)
         match '/public-assets/*path' => 'mints_assets#index', via: [:get, :post, :put, :patch, :delete]
         namespace :api, defaults: { format: :json } do
@@ -24,6 +27,6 @@ class MintsFilesGenerator < Rails::Generators::Base
         get '/sl/visits', to: 'short_link#visits'
         post '/sl/generate', to: 'short_link#generate'
         get '/sl/:code', to: 'short_link#redirect'
-      eos
-    end
+    eos
+  end
 end

@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class MintsLink
   def initialize
     @host = ENV['MONGO_HOST'] || '127.0.0.1'
     @database = ENV['MONGO_DATABASE'] || 'mints'
     @port = ENV['MONGO_PORT'] || '27017'
-    @client = Mongo::Client.new([ "#{@host}:#{@port}" ], :database => @database)
+    @client = Mongo::Client.new(["#{@host}:#{@port}"], :database => @database)
     @short_links = @client[:short_links]
     @sl_visits = @client[:sl_visits]
     generate_indexes
@@ -27,7 +29,7 @@ class MintsLink
 
   def get_url(code)
     collection = @short_links
-    record = collection.find( { 'code' => code } ).first
+    record = collection.find({ 'code' => code }).first
     record["url"]
   end
 
@@ -46,16 +48,17 @@ class MintsLink
 
   def get_visits(filter, page = 1, page_size = 1000)
     collection = @sl_visits
-    collection.find(filter).sort( {_id: 1}).skip(page * page_size - page_size).limit(page_size)
+    collection.find(filter).sort({ _id: 1 }).skip(page * page_size - page_size).limit(page_size)
   end
 
   private
+
   def random_string(length = 6)
     rand((32 ** length).to_i).to_s(32)
   end
 
   def generate_indexes
     collection = @short_links
-    collection.indexes.create_one({ code: 1 }, {unique: true })
+    collection.indexes.create_one({ code: 1 }, { unique: true })
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Orders
   ##
   # == Orders
@@ -208,7 +210,8 @@ module Orders
   #
   def update_order_item_from_order_item_group(order_item_id, group_id, data)
     # TODO: Research use
-    @client.raw('put', "/ecommerce/order-items/update/#{order_item_id}/order-items-groups/#{group_id}", nil, data_transform(data))
+    url = "/ecommerce/order-items/update/#{order_item_id}/order-items-groups/#{group_id}"
+    @client.raw('put', url, nil, data_transform(data))
   end
 
   # === Get order items.

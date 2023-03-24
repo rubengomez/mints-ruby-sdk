@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Assets
   ##
   # == Assets
@@ -20,7 +22,7 @@ module Assets
   #     options = { fields: 'id, title' }
   #     @data = @mints_user.get_assets(options, true)
   def get_assets(options = nil, use_post = true)
-    get_query_results("/content/assets", options, use_post)
+    get_query_results('/content/assets', options, use_post)
   end
 
   # === Get asset.
@@ -207,7 +209,6 @@ module Assets
     @client.raw('post', '/content/assets/upload', nil, data)
   end
 
-
   ##
   # == Sizes
   #
@@ -262,7 +263,6 @@ module Assets
   def create_asset_size(data)
     @client.raw('post', '/content/assets/sizes', nil, data)
   end
-
 
   ##
   # == Variations

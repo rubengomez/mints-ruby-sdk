@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative './item_prices'
 require_relative './locations'
 require_relative './order_items_groups'

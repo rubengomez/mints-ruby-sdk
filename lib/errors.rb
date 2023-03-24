@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Mints
 
   module Errors
@@ -85,7 +87,7 @@ module Mints
 
       def errors_hash
         {
-          errors: response.keys.reduce([]) {|carry, error_key| carry + response[error_key]}
+          errors: response.keys.reduce([]) { |carry, error_key| carry + response[error_key] }
         }
       end
 

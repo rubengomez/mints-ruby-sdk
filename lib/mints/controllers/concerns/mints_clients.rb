@@ -1,4 +1,6 @@
-require_relative "./read_config_file.rb"
+# frozen_string_literal: true
+
+require_relative "./read_config_file"
 
 module MintsClients
   extend ActiveSupport::Concern
@@ -11,7 +13,7 @@ module MintsClients
   # Define the clients that will have
   # Override in the controller if you dont wanna all clients
   def define_mints_clients
-    %w[ contact user pub service_account ]
+    %w[contact user pub service_account]
   end
 
   private

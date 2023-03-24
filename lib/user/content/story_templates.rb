@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module StoryTemplates
   ##
   # == Story Template
@@ -21,7 +23,7 @@ module StoryTemplates
   # ==== Example
   #     @data = @mints_user.get_story_templates_support_data
   def get_story_templates_support_data
-    @client.raw('get', "/content/story-templates/support-data")
+    @client.raw('get', '/content/story-templates/support-data')
   end
 
   # === Get story templates.
@@ -54,7 +56,7 @@ module StoryTemplates
   #
   # ==== Second Example
   #     options = {
-  #       fields: "title"
+  #       fields: 'title'
   #     }
   #     @data = @mints_user.get_story_template(1, options)
   def get_story_template(id, options = nil)
@@ -74,7 +76,7 @@ module StoryTemplates
   #     }
   #     @data = @mints_user.create_story_template(data)
   def create_story_template(data)
-    @client.raw('post', "/content/story-templates", nil, data_transform(data))
+    @client.raw('post', '/content/story-templates', nil, data_transform(data))
   end
 
   # === Update story template.

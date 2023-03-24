@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module StoryVersions
   # === Get story versions.
   # Get a collection of story versions.

@@ -1,0 +1,51 @@
+AllCops:
+  NewCops: enable
+Naming/AccessorMethodName:
+  Description: Check the naming of accessor methods for get_/set_.
+  StyleGuide: '#accessor_mutator_method_names'
+  Enabled: false
+  VersionAdded: '0.50'
+
+# TODO: Enable these fixes when proper code documentation is to be done
+Style/Documentation:
+  Description: 'Document classes and non-namespace modules.'
+  Enabled: false
+  VersionAdded: '0.9'
+  AllowedConstants: [ ]
+  Exclude:
+    - 'spec/**/*'
+    - 'test/**/*'
+
+# TODO: Remove in other sdk version and fix corrections to avoid breaking changes
+Layout/LineLength:
+  Description: 'Checks that line length does not exceed the configured limit.'
+  StyleGuide: '#max-line-length'
+  Enabled: false
+  VersionAdded: '0.25'
+  VersionChanged: '1.4'
+  Max: 150
+  # To make it possible to copy or click on URIs in the code, we allow lines
+  # containing a URI to be longer than Max.
+  AllowHeredoc: true
+  AllowURI: true
+  URISchemes:
+    - http
+    - https
+  # The IgnoreCopDirectives option causes the LineLength rule to ignore cop
+  # directives like '# rubocop: enable ...' when calculating a line's length.
+  IgnoreCopDirectives: true
+  # The AllowedPatterns option is a list of !ruby/regexp and/or string
+  # elements. Strings will be converted to Regexp objects. A line that matches
+  # any regular expression listed in this option will be ignored by LineLength.
+  AllowedPatterns: [ ]
+
+# TODO: Remove in other sdk version and fix corrections to avoid breaking changes
+Metrics/ParameterLists:
+  Description: 'Avoid parameter lists longer than three or four parameters.'
+  StyleGuide: '#too-many-params'
+  Enabled: true
+  VersionAdded: '0.25'
+  VersionChanged: '1.5'
+  Max: 8
+  CountKeywordArgs: true
+  MaxOptionalParameters: 6

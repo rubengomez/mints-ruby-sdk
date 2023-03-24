@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ReadConfigFile
   extend ActiveSupport::Concern
 
@@ -16,7 +18,7 @@ module ReadConfigFile
       @redis_config = config['redis_cache']
       @use_cache = config['redis_cache']['use_cache']
 
-      if config['redis_cache']['use_cache']
+      if @use_cache
         @redis_server = Redis.new(
           host: config['redis_cache']['redis_host'],
           port: config['redis_cache']['redis_port'] || 6379,

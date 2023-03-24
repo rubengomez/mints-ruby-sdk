@@ -1,6 +1,8 @@
-require_relative "./concerns/mints_clients.rb"
-require_relative "../helpers/user_auth_helper.rb"
-require_relative "../helpers/contact_auth_helper.rb"
+# frozen_string_literal: true
+
+require_relative './concerns/mints_clients'
+require_relative '../helpers/user_auth_helper'
+require_relative '../helpers/contact_auth_helper'
 
 module Mints
   class BaseApiController < ActionController::Base
@@ -12,7 +14,7 @@ module Mints
     include UserAuthHelper
 
     def define_mints_clients
-      %w[ contact pub ]
+      %w[contact pub]
     end
 
     ##

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative './companies'
 require_relative './contacts'
 require_relative './deals'

@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 class ShortLinkController < Mints::BaseController
   skip_before_action :verify_authenticity_token
+
   def redirect
     code = params[:code]
     mints_link = MintsLink.new
@@ -36,6 +39,6 @@ class ShortLinkController < Mints::BaseController
     end
     mints_link = MintsLink.new
     visits = mints_link.get_visits(filter, page, page_size)
-    render json: { data: {visits: visits }}
+    render json: { data: { visits: visits } }
   end
 end

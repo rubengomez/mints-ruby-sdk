@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'redis'
 require 'reverse_proxy/controller'
 require 'reverse_proxy/client'
@@ -17,18 +19,18 @@ module ProxyControllersMethods
   #
   def index(controller_type = nil)
     headers = {
-      'host' => "#{@host.gsub('http://', '').gsub('https://', '')}",
-      'ApiKey' => "#{@api_key}",
-      'Content-Type'=> 'application/json',
-      'Accept'=> 'application/json'
+      'host' => @host.gsub('http://', '').gsub('https://', ''),
+      'ApiKey' => @api_key.to_s,
+      'Content-Type' => 'application/json',
+      'Accept' => 'application/json'
     }
 
     if %w[contact user].include? controller_type
       session_token = cookies["mints_#{controller_type}_session_token".to_sym]
-      headers["Authorization"] = session_token ? "Bearer #{session_token}" : request.headers["Authorization"]
+      headers['Authorization'] = session_token ? "Bearer #{session_token}" : request.headers['Authorization']
     end
 
-    headers['ContactToken'] = cookies[:mints_contact_id] if controller_type === 'contact' and cookies[:mints_contact_id]
+    headers['ContactToken'] = cookies[:mints_contact_id] if controller_type == 'contact' && cookies[:mints_contact_id]
 
     full_url = request.original_url
     url_need_cache, time = url_need_cache?(full_url)
@@ -44,7 +46,7 @@ module ProxyControllersMethods
       cached_response = @redis_server.get(full_url)
 
       if cached_response
-        puts "RESPONSE FROM CACHE" if @debug
+        puts 'RESPONSE FROM CACHE' if @debug
         return render json: cached_response
       end
 
@@ -67,21 +69,19 @@ module ProxyControllersMethods
     time = 0
     methods_with_cache = %w[GET]
 
-    if methods_with_cache.include? request.method
-      if @use_cache
-        @redis_config['groups'].each do |group|
-          group['urls'].each do |url|
+    if methods_with_cache.include? request.method && @use_cache
+      @redis_config['groups'].each do |group|
+        group['urls'].each do |url|
 
-            if full_url.match url
-              time = group['time']
-              url_need_cache = true
-              break
-            end
-
+          if full_url.match url
+            time = group['time']
+            url_need_cache = true
+            break
           end
 
-          break if url_need_cache
         end
+
+        break if url_need_cache
       end
     end
 
@@ -100,14 +100,14 @@ module ProxyControllersMethods
   # ==== Return
   # Returns the response given by CXF or Redis
 
-  def send_mints_request(full_url, headers, cache_result = false, time = 30)
-    puts "RESPONSE FROM MINTS.CLOUD" if @debug
+  def send_mints_request(full_url, headers, cache_result = false, time: 30)
+    puts 'RESPONSE FROM MINTS.CLOUD' if @debug
 
-    reverse_proxy "#{@host}", headers: headers, verify_ssl: false do |config|
+    reverse_proxy @host, headers: headers, verify_ssl: false do |config|
 
       if cache_result
         # Request succeeded!
-        config.on_response do |code, response|
+        config.on_response do |_status_code, response|
           @redis_server.setex(
             full_url,
             time || 30,
@@ -117,9 +117,9 @@ module ProxyControllersMethods
       end
 
       # Request failed!
-      config.on_missing do |code, response|
+      config.on_missing do |status_code, _response|
         # We got a 404!
-        raise ActionController::RoutingError.new('Not Found') if code == 404
+        raise ActionController::RoutingError.new('Not Found') if status_code == 404
       end
     end
   end
