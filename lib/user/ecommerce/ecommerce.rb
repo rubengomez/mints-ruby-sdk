@@ -13,6 +13,7 @@ require_relative './skus'
 require_relative './taxes'
 require_relative './variant_options'
 require_relative './variant_values'
+require_relative './vouchers'
 
 module Ecommerce
   include ItemPrices
@@ -28,4 +29,5 @@ module Ecommerce
   include Taxes
   include VariantOptions
   include VariantValues
+  include Vouchers
 end

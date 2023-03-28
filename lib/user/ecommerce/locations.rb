@@ -31,8 +31,8 @@ module Locations
   #
   # ==== Example
   #     @data = @mints_user.get_location(2)
-  def get_location(id)
-    @client.raw('get', "/ecommerce/locations/#{id}")
+  def get_location(id, options = nil)
+    @client.raw('get', "/ecommerce/locations/#{id}", options)
   end
 
   # === Create location.
