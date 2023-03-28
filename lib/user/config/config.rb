@@ -1,65 +1,33 @@
-require_relative './api_keys.rb'
-require_relative './appointments.rb'
-require_relative './attribute_groups.rb'
-require_relative './attributes.rb'
-require_relative './calendars.rb'
-require_relative './importers.rb'
-require_relative './public_folders.rb'
-require_relative './relationships.rb'
-require_relative './roles.rb'
-require_relative './seeds.rb'
-require_relative './system_settings.rb'
-require_relative './tags.rb'
-require_relative './taxonomies.rb'
-require_relative './teams.rb'
-require_relative './users.rb'
+# frozen_string_literal: true
+
+require_relative './api_keys'
+require_relative './appointments'
+require_relative './attribute_groups'
+require_relative './attributes'
+require_relative './calendars'
+require_relative './public_folders'
+require_relative './relationships'
+require_relative './roles'
+require_relative './seeds'
+require_relative './system_settings'
+require_relative './tags'
+require_relative './taxonomies'
+require_relative './teams'
+require_relative './users'
 
 module Config
-    include ApiKeys
-    include Appointments
-    include AttributeGroups
-    include Attributes
-    include Calendars
-    include Importers
-    include PublicFolders
-    include Relationships
-    include Roles
-    include Seeds
-    include SystemSettings
-    include Tags
-    include Taxonomies
-    include Teams
-    include Users
-
-    ##
-    # == Categories
-    #
-
-    # def sync_categories_for_object(data)
-    #  @client.raw('put', "/config/categories/sync_categories_for_object", nil, data)
-    #end
-
-    # def get_categories_for_object(options)
-    #  @client.raw('get', "/config/categories/get_categories_for_object", options)
-    #end
-    
-    # def get_categories
-    #  @client.raw('get', "/config/categories")
-    #end
-
-    # def create_category(data) #TODO: Research if 'visible' is a boolean or int. It accepts smallint
-    #  @client.raw('post', "/config/categories", nil, data)
-    #end
-
-    # def update_category(id, data)
-    #  @client.raw('put', "/config/categories/#{id}", nil, data)
-    #end
-
-    # def get_category_support_data(id)
-    #  @client.raw('get', "/config/categories/support-data/#{id}")
-    #end
-    
-    # def get_category(id)
-    #  @client.raw('get', "/config/categories/#{id}")
-    #end
+  include ApiKeys
+  include Appointments
+  include AttributeGroups
+  include Attributes
+  include Calendars
+  include PublicFolders
+  include Relationships
+  include Roles
+  include Seeds
+  include SystemSettings
+  include Tags
+  include Taxonomies
+  include Teams
+  include Users
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ProductTemplates
   ##
   # == Product Templates
@@ -33,7 +35,7 @@ module ProductTemplates
   # ==== Example
   #     @data = @mints_user.get_product_templates_support_data
   def get_product_templates_support_data
-    @client.raw('get', "/ecommerce/product-templates/support-data")
+    @client.raw('get', '/ecommerce/product-templates/support-data')
   end
 
   # === Get product templates.

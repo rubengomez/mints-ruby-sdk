@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ContentInstances
   ##
   # == Content Instances
@@ -76,7 +78,7 @@ module ContentInstances
   # data:: (Hash) -- Data to be submitted.
   #
   # ==== Example
-  #     data = { 
+  #     data = {
   #       scheduled_at: '2021-09-06T20:29:16+00:00'
   #     }
   #     @data = @mints_user.schedule_content_instance(1, data)
@@ -110,7 +112,7 @@ module ContentInstances
   #     }
   #     @data = @mints_user.create_content_instance(data)
   def create_content_instance(data)
-    @client.raw('post', '/content/instances',  nil, data_transform(data))
+    @client.raw('post', '/content/instances', nil, data_transform(data))
   end
 
   # === Update content instance.

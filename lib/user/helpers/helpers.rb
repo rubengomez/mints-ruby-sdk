@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative './object_activities'
 require_relative './object_folders'
 require_relative './user_folders'

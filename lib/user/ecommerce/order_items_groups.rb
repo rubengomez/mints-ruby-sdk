@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module OrderItemsGroups
   ##
   # == Order Items Groups
@@ -13,7 +15,8 @@ module OrderItemsGroups
   # ==== Example
   #     @data = @mints_user.get_pending_order_template_from_order_item_group(1, 1)
   def get_pending_order_template_from_order_item_group(parent_order_id, order_template_id)
-    @client.raw('get', "/ecommerce/order-items-groups/#{parent_order_id}/pending-items/order-template/#{order_template_id}")
+    url = "/ecommerce/order-items-groups/#{parent_order_id}/pending-items/order-template/#{order_template_id}"
+    @client.raw('get', url)
   end
 
   # === Get order item group support data by order id.
@@ -77,7 +80,7 @@ module OrderItemsGroups
   #     }
   #     options = { include: 'orderItems' }
   #     @data = @mints_user.create_order_item_group(data, options)
-  def create_order_item_group(data,  options = nil)
+  def create_order_item_group(data, options = nil)
     @client.raw('post', '/ecommerce/order-items-groups', options, data_transform(data))
   end
 

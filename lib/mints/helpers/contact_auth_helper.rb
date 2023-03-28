@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ContactAuthHelper
   ##
   # === Mints Contact Login.
@@ -29,7 +31,7 @@ module ContactAuthHelper
       cookies.permanent[:mints_contact_session_token] = { value: session_token, secure: true, httponly: true }
       cookies.permanent[:mints_contact_id] = { value: id_token, secure: true, httponly: true }
       @contact_token = id_token
-      redirect_to response['data']['redirect_url'] ? response['data']['redirect_url'] : '/' if redirect_in_error
+      redirect_to response['data']['redirect_url'] || '/' if redirect_in_error
     else
       redirect_to '/' if redirect_in_error
     end

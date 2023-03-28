@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Stories
   # === Duplicate story.
   # Duplicate a story.
@@ -7,9 +9,7 @@ module Stories
   # data:: (Hash) -- Data to be submitted.
   #
   # ==== Example
-  #     data = {
-  #       options: [] 
-  #     }
+  #     data = { options: [] }
   #     @data = @mints_user.duplicate_story(1, data.to_json)
   def duplicate_story(id, data)
     @client.raw('post', "/content/stories/#{id}/duplicate", nil, data)
