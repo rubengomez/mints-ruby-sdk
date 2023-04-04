@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Stories
+module PublicStories
   ##
   # === Get Stories.
   # Get a collection of stories.

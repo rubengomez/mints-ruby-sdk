@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Tags
+module PublicTags
   ##
   # === Get Tags.
   # Get a collection of tags.

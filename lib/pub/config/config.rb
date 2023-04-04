@@ -7,9 +7,9 @@ require_relative './public_folders'
 require_relative './tags'
 require_relative './taxonomies'
 
-module Config
-  include Attributes
+module PublicConfig
+  include PublicAttributes
   include PublicFolders
-  include Tags
-  include Taxonomies
+  include PublicTags
+  include PublicTaxonomies
 end

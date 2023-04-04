@@ -17,8 +17,8 @@ module WorkFlowSteps
   #       workflowId: 1
   #     }
   #     @data = @mints_user.create_workflow_step(data.to_json)
-  def create_workflow_step(data)
-    @client.raw('post', '/crm/steps', nil, data)
+  def create_workflow_step(data, options = nil)
+    @client.raw('post', '/crm/steps', options, data)
   end
 
   # === Update workflow step.
@@ -33,8 +33,8 @@ module WorkFlowSteps
   #       stepTitle: 'Step Title Modified'
   #     }
   #     @data = @mints_user.update_workflow_step(23, data)
-  def update_workflow_step(id, data)
-    @client.raw('put', "/crm/steps/#{id}", nil, data)
+  def update_workflow_step(id, data, options = nil)
+    @client.raw('put', "/crm/steps/#{id}", options, data)
   end
 
   # === Delete workflow step.

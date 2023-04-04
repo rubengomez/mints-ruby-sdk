@@ -64,9 +64,9 @@ module Mints
     attr_reader :client
 
     include MintsHelper
-    include Content
-    include Ecommerce
-    include Config
+    include PublicContent
+    include PublicEcommerce
+    include PublicConfig
 
     ##
     # === Initialize.

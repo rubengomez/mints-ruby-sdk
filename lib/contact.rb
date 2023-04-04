@@ -10,7 +10,13 @@ include ActionController::Cookies
 
 module Mints
   class Contact
+    include ContactConfig
+    include ContactContent
+    include ContactEcommerce
+    include MintsHelper
+
     attr_reader :client
+
     ##
     # === Initialize.
     # Class constructor.
@@ -71,7 +77,7 @@ module Mints
 
     ##
     # === Recover Password.
-    # Send a email that contains a token to a contact. That token will be used in reset_password to establish a new password. 
+    # Send a email that contains a token to a contact. That token will be used in reset_password to establish a new password.
     #
     # ==== Parameters
     # data:: (Hash) -- It's a data key where will be hosted the destination email.
@@ -172,10 +178,10 @@ module Mints
     #     @data = @mints_contact.me
     #
     # ==== Second Example
-    #     options = { 
+    #     options = {
     #       attributes: true,
     #       taxonomies: true
-    #     } 
+    #     }
     #     @data = @mints_contact.me(options)
     def me(options = nil)
       @client.raw('get', '/me', options, nil, @contact_v1_url)

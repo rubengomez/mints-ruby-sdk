@@ -22,7 +22,9 @@ module MintsClients
   # === Set mints clients (pub, user and contact)
   # Initialize all clients from mints
   def set_mints_clients
-    clients = define_mints_clients
+    valid_clients = %w[contact user pub service_account]
+
+    clients = define_mints_clients&.select { |client| valid_clients.include? client } || []
 
     if @debug
       puts "Clients to initialize:", clients

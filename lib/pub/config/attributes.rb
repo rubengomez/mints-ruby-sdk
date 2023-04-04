@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Attributes
+module PublicAttributes
   ##
   # === Get Attributes.
   # Get a collection of attributes.

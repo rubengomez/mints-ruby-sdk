@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Orders
+module PublicOrders
   ##
   # === Get My Shopping Cart.
   # Get a collection of items in the shopping cart.

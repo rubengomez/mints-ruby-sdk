@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Assets
+module PublicAssets
   ##
   # === Get Asset Info.
   # Get a description of an Asset.

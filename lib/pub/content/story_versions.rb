@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module StoryVersions
+module PublicStoryVersions
   ##
   # === Get Story Versions.
   # Get a collection of story version.

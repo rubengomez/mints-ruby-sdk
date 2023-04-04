@@ -35,7 +35,7 @@ module ProxyControllersMethods
     full_url = request.original_url
     url_need_cache, time = url_need_cache?(full_url)
 
-    if @debug or true
+    if @debug
       puts "URL: #{full_url}"
       puts "URL need cache: #{url_need_cache}"
       puts "URL time cache: #{time}"

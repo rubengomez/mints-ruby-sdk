@@ -6,9 +6,9 @@ require_relative './locations'
 require_relative './products'
 require_relative './orders'
 
-module Ecommerce
-  include Locations
-  include Products
-  include Orders
+module PublicEcommerce
+  include PublicLocations
+  include PublicProducts
+  include PublicOrders
 
 end

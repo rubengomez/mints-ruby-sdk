@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Products
+module PublicProducts
   ##
   # === Get Products.
   # Get a collection of products.

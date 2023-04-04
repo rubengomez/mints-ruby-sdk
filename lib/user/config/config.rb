@@ -21,7 +21,7 @@ module Config
   include AttributeGroups
   include Attributes
   include Calendars
-  include PublicFolders
+  include UserPublicFolders
   include Relationships
   include Roles
   include Seeds

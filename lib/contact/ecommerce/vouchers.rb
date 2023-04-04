@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-module Vouchers
+module ContactVouchers
   ##
-  # === Apply voucher.
+  # === Apply voucher.Contact
   # Apply voucher code to the existing order, only applies to sale orders.
   #
   # ==== Parameters

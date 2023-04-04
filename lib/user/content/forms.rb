@@ -173,8 +173,8 @@ module Forms
   #       slug: 'new-form-slug'
   #     }
   #     @data = @mints_user.create_form(data)
-  def create_form(data)
-    @client.raw('post', '/content/forms', nil, data_transform(data))
+  def create_form(data, options = nil)
+    @client.raw('post', '/content/forms', options, data_transform(data))
   end
 
   # === Update form.
@@ -190,8 +190,8 @@ module Forms
   #       slug: 'new-form-slug'
   #     }
   #     @data = @mints_user.update_form(3, data)
-  def update_form(id, data)
-    @client.raw('put', "/content/forms/#{id}", nil, data_transform(data))
+  def update_form(id, data, options = nil)
+    @client.raw('put', "/content/forms/#{id}", options, data_transform(data))
   end
 
   # === Delete form.

@@ -51,8 +51,8 @@ module Users
   #       is_coach: false
   #     }
   #     @data = @mints_user.create_user(data)
-  def create_user(data)
-    @client.raw('post', '/config/users', nil, data_transform(data))
+  def create_user(data, options = nil)
+    @client.raw('post', '/config/users', options, data_transform(data))
   end
 
   # === Update user.
@@ -71,7 +71,7 @@ module Users
   #       roles: ''
   #     }
   #     @data = @mints_user.update_user(14, data)
-  def update_user(id, data)
-    @client.raw('put', "/config/users/#{id}", nil, data_transform(data))
+  def update_user(id, data, options = nil)
+    @client.raw('put', "/config/users/#{id}", options, data_transform(data))
   end
 end

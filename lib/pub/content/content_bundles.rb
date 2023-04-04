@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ContentBundles
+module PublicContentBundles
   ##
   # === Get Content Pages.
   # Get all content pages.

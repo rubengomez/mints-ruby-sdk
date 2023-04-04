@@ -50,8 +50,8 @@ module Workflows
   #       object_type: 'deals'
   #     }
   #     @data = @mints_user.create_workflow(data.to_json)
-  def create_workflow(data)
-    @client.raw('post', '/crm/workflows/', nil, data)
+  def create_workflow(data, options = nil)
+    @client.raw('post', '/crm/workflows/', options, data)
   end
 
   # === Update workflow.
@@ -66,7 +66,7 @@ module Workflows
   #       title: 'New Workflow Modified'
   #     }
   #     @data = @mints_user.update_workflow(7, data)
-  def update_workflow(id, data)
-    @client.raw('put', "/crm/workflows/#{id}", nil, correct_json(data))
+  def update_workflow(id, data, options = nil)
+    @client.raw('put', "/crm/workflows/#{id}", options, correct_json(data))
   end
 end
