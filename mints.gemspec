@@ -2,8 +2,8 @@
 
 Gem::Specification.new do |s|
   s.name = 'mints'
-  s.version = '0.0.29'
-  s.date = '2023-03-28'
+  s.version = '0.0.30'
+  s.date = '2023-03-29'
   s.summary = 'MINTS gem allows to connect your Rails App to MINTS.CLOUD'
   s.authors = 'Ruben Gomez Garcia, Omar Mora, Luis Payan, Oscar Castillo, Fabian Garcia'
   s.homepage = 'https://github.com/rubengomez/mints-ruby-sdk'
@@ -34,7 +34,12 @@ Gem::Specification.new do |s|
     lib/mints/controllers/concerns/mints_clients.rb
     lib/mints/controllers/concerns/read_config_file.rb
   ]
-  s.files += Dir['lib/user/**/*.rb', 'lib/contact/**/*.rb', 'lib/mints/helpers/*.rb']
+  s.files += Dir[
+    'lib/pub/**/*.rb',
+    'lib/user/**/*.rb',
+    'lib/contact/**/*.rb',
+    'lib/mints/helpers/*.rb'
+  ]
   s.require_paths = %w[app lib]
   s.add_runtime_dependency 'addressable', '~> 2.7.0', '>= 2.7.0'
   s.add_runtime_dependency 'httparty', '>= 0.18', '< 0.22'

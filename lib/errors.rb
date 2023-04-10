@@ -11,7 +11,7 @@ module Mints
         '401' => 'AccessDeniedException',
         '404' => 'ResourceNotFoundException',
         '422' => 'ValidationException',
-        '405' => 'MethodNotAllowed',
+        '405' => 'MethodNotAllowedException',
         'default' => 'InternalServerException',
       }
 

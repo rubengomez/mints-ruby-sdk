@@ -43,9 +43,9 @@ module ContactAuthHelper
   def mints_contact_logout
     # Logout from mints
     @mints_contact.logout
-    # Delete local cookie
+    # Delete session token and keep the contact token id
+    # Never delete the mints_contact_id cookie to avoid the creation of ghosts
     cookies.delete(:mints_contact_session_token)
-    cookies.delete(:mints_contact_id)
     @contact_token = nil
   end
 

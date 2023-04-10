@@ -108,7 +108,6 @@ module Orders
   #
   # ==== Example
   #     @data = @mints_contact.get_my_shopping_cart
-  # FIXME: This method returns a nil data.
   def get_my_shopping_cart(options = nil)
     @client.raw('get', '/ecommerce/my-shopping-cart', options, nil, @contact_v1_url)
   end
