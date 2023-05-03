@@ -10,13 +10,13 @@ require_relative './forms'
 require_relative './stories'
 require_relative './story_versions'
 
-module Content
-  include Assets
-  include ContentBundles
-  include ContentInstanceVersions
-  include ContentInstances
-  include Forms
-  include Stories
-  include StoryVersions
+module PublicContent
+  include PublicAssets
+  include PublicContentBundles
+  include PublicContentInstanceVersions
+  include PublicContentInstances
+  include PublicForms
+  include PublicStories
+  include PublicStoryVersions
 
 end

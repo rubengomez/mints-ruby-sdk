@@ -37,61 +37,6 @@ module Content
   end
 
   ##
-  # == Authors
-  #
-
-  # === Get authors.
-  # Get authors.
-  #
-  # ==== Example
-  #     @data = @mints_user.get_authors
-  def get_authors
-    @client.raw('get', '/content/authors')
-  end
-
-  # === Get author.
-  # Get an author.
-  #
-  # ==== Parameters
-  # id:: (Integer) -- Author id.
-  #
-  # ==== Example
-  #     @data = @mints_user.get_author(1)
-  def get_author(id)
-    @client.raw('get', "/content/authors/#{id}")
-  end
-
-  # === Create author.
-  # Create an author with data.
-  #
-  # ==== Parameters
-  # data:: (Hash) -- Data to be submitted.
-  #
-  # ==== Example
-  #     data = {
-  #       title: 'Howard Phillips Lovecraft',
-  #       slug: 'howard-phillips-lovecraft'
-  #     }
-  #     @data = @mints_user.create_author(data.to_json)
-  def create_author(data)
-    @client.raw('post', '/content/authors', nil, data)
-  end
-
-  # === Update author.
-  # Update an author info.
-  #
-  # ==== Parameters
-  # id:: (Integer) -- Author id.
-  # data:: (Hash) -- Data to be submitted.
-  #
-  # ==== Example
-  #
-  def update_author(id, data)
-    # FIXME: Author controller doesnt receive data
-    @client.raw('put', "/content/authors/#{id}", nil, data)
-  end
-
-  ##
   # == Keywords
   #
 

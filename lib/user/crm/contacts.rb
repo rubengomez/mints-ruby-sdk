@@ -239,19 +239,6 @@ module Contacts
   end
 
   ##
-  # === Get contact magic links.
-  # Get magic links of a contact.
-  #
-  # ==== Parameters
-  # contact_id:: (Integer) -- Contact id.
-  #
-  # ==== Example
-  #     @data = @mints_user.get_contact_magic_links(150)
-  def get_contact_magic_links(contact_id)
-    @client.raw('get', "/crm/contacts/#{contact_id}/magic-links")
-  end
-
-  ##
   # === Create contact merge.
   # Merge contacts.
   #

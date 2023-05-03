@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Locations
+module PublicLocations
   ##
   # === Get Locations.
   # Get all locations.

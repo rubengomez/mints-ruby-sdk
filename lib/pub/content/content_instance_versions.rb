@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ContentInstanceVersions
+module PublicContentInstanceVersions
   ##
   # === Get Content Instance Versions.
   # Get a collection of content instance versions.

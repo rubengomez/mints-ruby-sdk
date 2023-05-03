@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Taxonomies
+module PublicTaxonomies
   ##
   # === Get Taxonomies.
   # Get a collection of taxonomies.

@@ -2,6 +2,6 @@
 
 require_relative './appointments'
 
-module Config
-  include Appointments
+module ContactConfig
+  include ContactAppointments
 end

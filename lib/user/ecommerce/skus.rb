@@ -56,8 +56,8 @@ module Skus
   #       product_id: 1
   #     }
   #     @data = @mints_user.create_sku(data)
-  def create_sku(data)
-    @client.raw('post', '/ecommerce/skus', nil, data_transform(data))
+  def create_sku(data, options = nil)
+    @client.raw('post', '/ecommerce/skus', options, data_transform(data))
   end
 
   # === Update sku.

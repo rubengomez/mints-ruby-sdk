@@ -75,8 +75,8 @@ module StoryTemplates
   #       slug: 'new-story-template-slug'
   #     }
   #     @data = @mints_user.create_story_template(data)
-  def create_story_template(data)
-    @client.raw('post', '/content/story-templates', nil, data_transform(data))
+  def create_story_template(data, options = nil)
+    @client.raw('post', '/content/story-templates', options, data_transform(data))
   end
 
   # === Update story template.

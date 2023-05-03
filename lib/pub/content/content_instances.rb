@@ -1,4 +1,4 @@
-module ContentInstances
+module PublicContentInstances
   ##
   # === Get Content Instances.
   # Get a collection of content instances. _Note:_ Options must be specified.

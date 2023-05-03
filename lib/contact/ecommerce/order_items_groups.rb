@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module OrderItemsGroups
+module ContactOrderItemsGroups
   ##
   # === Get Order Item Groups.
   # Get a collection of order item groups.

@@ -56,8 +56,8 @@ module Messages
   #       }
   #     }
   #     @data = @mints_user.create_message(data)
-  def create_message(data)
-    @client.raw('post', '/content/messages', nil, data_transform(data))
+  def create_message(data, options = nil)
+    @client.raw('post', '/content/messages', options, data_transform(data))
   end
 
   # === Update message.
@@ -74,8 +74,8 @@ module Messages
   #       }
   #     }
   #     @data = @mints_user.update_message(102, data)
-  def update_message(id, data)
-    @client.raw('put', "/content/messages/#{id}", nil, data_transform(data))
+  def update_message(id, data, options = nil)
+    @client.raw('put', "/content/messages/#{id}", options, data_transform(data))
   end
 
   # === Delete message.

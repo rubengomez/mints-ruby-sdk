@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Forms
+module PublicForms
   ##
   # === Get Forms.
   # Get a collection of forms.

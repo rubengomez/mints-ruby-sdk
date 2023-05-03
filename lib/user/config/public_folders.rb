@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module PublicFolders
+module UserPublicFolders
   ##
   # == Public Folders
   #

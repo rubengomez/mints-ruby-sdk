@@ -96,8 +96,8 @@ module OrderItemsGroups
   #       name: 'New Order Item Group Modified'
   #     }
   #     @data = @mints_user.update_order_item_group(147, data)
-  def update_order_item_group(id, data)
-    @client.raw('put', "/ecommerce/order-items-groups/#{id}", nil, data_transform(data))
+  def update_order_item_group(id, data, options = nil)
+    @client.raw('put', "/ecommerce/order-items-groups/#{id}", options, data_transform(data))
   end
 
   # === Delete order item group.

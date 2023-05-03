@@ -71,9 +71,12 @@ module Stories
   #       slug: "new-story",
   #       story_template_id: 1
   #     }
-  #     @data = @mints_user.create_story(data)
-  def create_story(data)
-    @client.raw('post', '/content/stories', nil, data_transform(data))
+  #
+  #     options = { fields: 'id,slug' }
+  #
+  #     @data = @mints_user.create_story(data, options)
+  def create_story(data, options = nil)
+    @client.raw('post', '/content/stories', options, data_transform(data))
   end
 
   # === Update story.
@@ -89,8 +92,8 @@ module Stories
   #       slug: 'new-story'
   #     }
   #     @data = @mints_user.update_story(5, data)
-  def update_story(id, data)
-    @client.raw('put', "/content/stories/#{id}", nil, data_transform(data))
+  def update_story(id, data, options = nil)
+    @client.raw('put', "/content/stories/#{id}", options, data_transform(data))
   end
 
   # === Delete story.

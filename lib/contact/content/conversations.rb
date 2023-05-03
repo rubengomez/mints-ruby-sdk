@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Conversations
+module ContactConversations
   ##
   # === Get Conversations.
   # Get a collection of conversations.
@@ -66,7 +66,7 @@ module Conversations
 
   ##
   # === Get Conversation Participants.
-  # Update a conversation participants.
+  # Get a conversation participants.
   #
   # ==== Parameters
   # id:: (Integer) -- Conversation id.

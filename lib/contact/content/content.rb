@@ -2,6 +2,6 @@
 
 require_relative './conversations'
 
-module Content
-  include Conversations
+module ContactContent
+  include ContactConversations
 end
