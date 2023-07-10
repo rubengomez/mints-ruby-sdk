@@ -13,6 +13,6 @@ module ContactVouchers
   #     data = { description: 'This is the transaction description', voucher_code: 'XAZWQ12MP' }
   #     @data = @mints_contact.apply_voucher(1, data)
   def apply_voucher(order_id, data)
-    @client.raw('post', "/ecommerce/orders/#{order_id}/voucher", nil, data_transform(data))
+    @client.raw('post', "/ecommerce/orders/#{order_id}/voucher", nil, data_transform(data), @contact_v1_url)
   end
 end
