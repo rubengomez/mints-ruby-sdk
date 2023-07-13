@@ -18,8 +18,11 @@ module ProxyControllersMethods
   # Returns the response returned by send_mints_request
   #
   def index(controller_type = nil)
+    host = @host.gsub('http://', '').gsub('https://', '')
+    host = host[0...-1] if host.end_with? '/'
+
     headers = {
-      'host' => @host.gsub('http://', '').gsub('https://', ''),
+      'host' => host,
       'ApiKey' => @api_key.to_s,
       'Content-Type' => 'application/json',
       'Accept' => 'application/json'
@@ -50,7 +53,7 @@ module ProxyControllersMethods
         return render json: cached_response
       end
 
-      send_mints_request(full_url, headers, true, time)
+      send_mints_request(full_url, headers, true, time: time)
     else
       send_mints_request(full_url, headers)
     end
