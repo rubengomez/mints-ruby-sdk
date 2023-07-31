@@ -3,6 +3,7 @@
 require 'yaml'
 require_relative './client'
 require_relative './mints/helpers/mints_helper'
+require_relative './mints/helpers/threads_helper'
 require_relative './pub/content/content'
 require_relative './pub/ecommerce/ecommerce'
 require_relative './pub/config/config'
@@ -67,6 +68,7 @@ module Mints
     include PublicContent
     include PublicEcommerce
     include PublicConfig
+    include ThreadsHelper
 
     ##
     # === Initialize.

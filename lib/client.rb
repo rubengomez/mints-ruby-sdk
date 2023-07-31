@@ -4,13 +4,9 @@ require 'httparty'
 require 'json'
 require 'addressable'
 require 'redis'
-require_relative './mints/controllers/concerns/read_config_file'
 
 module Mints
   class Client
-    extend ActiveSupport::Concern
-
-    include ReadConfigFile
 
     attr_reader :host
     attr_reader :api_key

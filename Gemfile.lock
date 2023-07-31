@@ -189,6 +189,7 @@ PLATFORMS
 
 DEPENDENCIES
   addressable
+  concurrent-ruby
   httparty
   json
   mongo (~> 2)
