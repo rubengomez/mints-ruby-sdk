@@ -2,8 +2,8 @@
 
 Gem::Specification.new do |s|
   s.name = 'mints'
-  s.version = '0.0.32'
-  s.date = '2023-07-10'
+  s.version = '0.0.33'
+  s.date = '2023-07-31'
   s.summary = 'MINTS gem allows to connect your Rails App to MINTS.CLOUD'
   s.authors = 'Ruben Gomez Garcia, Omar Mora, Luis Payan, Oscar Castillo, Fabian Garcia'
   s.homepage = 'https://github.com/rubengomez/mints-ruby-sdk'
@@ -46,4 +46,5 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'json', '>= 1.8.3'
   s.add_runtime_dependency 'rails-reverse-proxy', '~> 0.9.1', '>= 0.9.1'
   s.add_runtime_dependency 'redis', '~> 4.2.2', '>= 4.2.2'
+  s.add_runtime_dependency 'concurrent-ruby', '~> 1.2.2'
 end

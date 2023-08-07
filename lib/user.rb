@@ -2,6 +2,7 @@
 
 require_relative './client'
 require_relative './mints/helpers/mints_helper'
+require_relative './mints/helpers/threads_helper'
 require_relative './user/crm/crm'
 require_relative './user/content/content'
 require_relative './user/marketing/marketing'
@@ -46,6 +47,7 @@ module Mints
     include Helpers
     include Contacts
     include MintsHelper
+    include ThreadsHelper
 
     attr_reader :client
 

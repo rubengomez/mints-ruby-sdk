@@ -340,3 +340,8 @@ The current errors are:
 
 </details>
 
+<details>
+  <summary> Mints::Threads </summary>
+
+  - [Mints::MakeMultipleRequest](doc/threads/make_multiple_request.md)
+</details>
