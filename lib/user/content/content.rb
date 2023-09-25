@@ -4,6 +4,7 @@ require_relative './assets'
 require_relative './content_instances'
 require_relative './content_templates'
 require_relative './conversations'
+require_relative './conversation_templates'
 require_relative './dam'
 require_relative './forms'
 require_relative './message_templates'
@@ -18,6 +19,7 @@ module Content
   include ContentInstances
   include ContentTemplates
   include Conversations
+  include ConversationTemplates
   include DAM
   include Forms
   include MessageTemplates

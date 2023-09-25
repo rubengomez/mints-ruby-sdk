@@ -46,7 +46,14 @@ module MintsClients
     visit_id = cookies[:mints_visit_id]
     contact_token_id = cookies[:mints_contact_id]
 
-    @mints_pub = Mints::Pub.new(@host, @api_key, contact_token_id, visit_id, @debug)
+    @mints_pub = Mints::Pub.new(
+      @host,
+      @api_key,
+      contact_token_id,
+      visit_id,
+      @debug,
+      mints_sdk_timeouts_config
+    )
   end
 
   ##
@@ -56,7 +63,14 @@ module MintsClients
     # Initialize mints contact client
     contact_session_token = cookies[:mints_contact_session_token]
     contact_token_id = cookies[:mints_contact_id]
-    @mints_contact = Mints::Contact.new(@host, @api_key, contact_session_token, contact_token_id, @debug)
+    @mints_contact = Mints::Contact.new(
+      @host,
+      @api_key,
+      contact_session_token,
+      contact_token_id,
+      @debug,
+      mints_sdk_timeouts_config
+    )
   end
 
   ##
@@ -65,7 +79,13 @@ module MintsClients
   def set_mints_user_client
     # Initialize mints user client
     user_session_token = cookies[:mints_user_session_token]
-    @mints_user = Mints::User.new(@host, @api_key, user_session_token, @debug)
+    @mints_user = Mints::User.new(
+      @host,
+      @api_key,
+      user_session_token,
+      @debug,
+      mints_sdk_timeouts_config
+    )
   end
 
   ##
@@ -73,6 +93,12 @@ module MintsClients
   # Initialize the service account client
   def set_mints_service_account_client
     # Initialize service account client
-    @mints_service_account = Mints::User.new(@host, @api_key, @api_key, @debug)
+    @mints_service_account = Mints::User.new(
+      @host,
+      @api_key,
+      @api_key,
+      @debug,
+      mints_sdk_timeouts_config
+    )
   end
 end

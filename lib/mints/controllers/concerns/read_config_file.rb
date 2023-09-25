@@ -9,12 +9,12 @@ module ReadConfigFile
 
   def set_config_variables
     if File.exists?("#{Rails.root}/mints_config.yml.erb")
-
       template = ERB.new File.new("#{Rails.root}/mints_config.yml.erb").read
       config = YAML.safe_load template.result(binding)
-      @host = config["mints"]["host"]
-      @api_key = config["mints"]["api_key"]
-      @debug = !!config["sdk"]["debug"]
+
+      @host = config['mints']['host']
+      @api_key = config['mints']['api_key']
+      @debug = !!config['sdk']['debug']
       @redis_config = config['redis_cache']
       @use_cache = config['redis_cache']['use_cache']
 

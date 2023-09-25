@@ -36,22 +36,6 @@ module Products
     @client.raw('delete', "/ecommerce/products/#{id}")
   end
 
-  # === Publish product.
-  # Publish a product.
-  #
-  # ==== Parameters
-  # id:: (Integer) -- Product id.
-  # data:: (Hash) -- Data to be submitted.
-  #
-  # ==== Example
-  #     data = {
-  #       title: 'New Publish'
-  #     }
-  #     @data = @mints_user.publish_product(2, data)
-  def publish_product(id, data)
-    @client.raw('put', "/ecommerce/products/#{id}/publish", nil, data_transform(data))
-  end
-
   # === Schedule product.
   # Schedule a product.
   #

@@ -174,35 +174,4 @@ module Conversations
     @client.raw('post', "/content/conversations/#{id}/detach-contact", nil, data_transform(data))
   end
 
-  # === Attach form in conversation.
-  # Attach a form in a conversation.
-  #
-  # ==== Parameters
-  # id:: (Integer) -- Conversation id.
-  # data:: (Hash) -- Data to be submitted.
-  #
-  # ==== Example
-  #     data = {
-  #       form_id: 2
-  #     }
-  #     @data = @mints_user.attach_form_in_conversation(1, data)
-  def attach_form_in_conversation(id, data)
-    @client.raw('post', "/content/conversations/#{id}/attach-form", nil, data_transform(data))
-  end
-
-  # === Detach form in conversation.
-  # Detach a form in a conversation.
-  #
-  # ==== Parameters
-  # id:: (Integer) -- Contact id.
-  # data:: (Hash) -- Data to be submitted.
-  #
-  # ==== Example
-  #     data = {
-  #       form_id: 2
-  #     }
-  #     @data = @mints_user.detach_form_in_conversation(1, data)
-  def detach_form_in_conversation(id, data)
-    @client.raw('post', "/content/conversations/#{id}/detach-form", nil, data_transform(data))
-  end
 end
