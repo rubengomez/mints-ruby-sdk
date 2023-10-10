@@ -4,9 +4,11 @@ require 'httparty'
 require 'json'
 require 'addressable'
 require 'redis'
+require_relative './mints/controllers/concerns/read_config_file'
 
 module Mints
   class Client
+    extend ActiveSupport::Concern
 
     attr_reader :host
     attr_reader :api_key
@@ -15,13 +17,31 @@ module Mints
     attr_accessor :session_token
     attr_accessor :contact_token_id
 
-    def initialize(host, api_key, scope = nil, session_token = nil, contact_token_id = nil, visit_id = nil, debug = false)
+    def initialize(
+      host,
+      api_key,
+      scope = nil,
+      session_token = nil,
+      contact_token_id = nil,
+      visit_id = nil,
+      debug = false,
+      timeouts = {}
+    )
+
       @host = host
       @api_key = api_key
       @session_token = session_token
       @contact_token_id = contact_token_id
       @visit_id = visit_id
       @debug = debug
+
+      config = read_config_file('sdk') || {}
+
+      @default_http_timeout = timeouts.fetch(:default, config.fetch('default_http_timeout', 30))
+      @get_http_timeout = timeouts.fetch(:get, config.fetch('get_http_timeout', @default_http_timeout))
+      @post_http_timeout = timeouts.fetch(:post, config.fetch('post_http_timeout', @default_http_timeout))
+      @put_http_timeout = timeouts.fetch(:put, config.fetch('put_http_timeout', @default_http_timeout))
+      @delete_http_timeout = timeouts.fetch(:delete, config.fetch('delete_http_timeout', @default_http_timeout))
 
       self.set_scope(scope)
     end
@@ -222,22 +242,22 @@ module Mints
     ##### HTTP CLIENTS ######
     # Simple HTTP GET
     def http_get(url, headers = nil)
-      HTTParty.get(url, headers: headers)
+      HTTParty.get(url, headers: headers, timeout: @get_http_timeout)
     end
 
     # Simple HTTP POST
     def http_post(url, headers = nil, data = nil)
-      HTTParty.post(url, headers: headers, body: data)
+      HTTParty.post(url, headers: headers, body: data, timeout: @post_http_timeout)
     end
 
     # Simple HTTP PUT
     def http_put(url, headers = nil, data = nil)
-      HTTParty.put(url, headers: headers, body: data)
+      HTTParty.put(url, headers: headers, body: data, timeout: @put_http_timeout)
     end
 
     # Simple HTTP DELETE
     def http_delete(url, headers = nil, data = nil)
-      HTTParty.delete(url, headers: headers, body: data)
+      HTTParty.delete(url, headers: headers, body: data, timeout: @delete_http_timeout)
     end
 
     # Start contact context
@@ -332,5 +352,41 @@ module Mints
       end
     end
 
+    # Timeouts methods
+
+    def timeout
+      {
+        default: @default_http_timeout,
+        get: @get_http_timeout,
+        post: @post_http_timeout,
+        put: @put_http_timeout,
+        delete: @delete_http_timeout
+      }
+    end
+
+    def timeout=(t)
+      if t.kind_of? Hash
+        t = t.with_indifferent_access
+        @default_http_timeout = t[:default] if t[:default]
+        @get_http_timeout = t[:get] if t[:get]
+        @post_http_timeout = t[:post] if t[:post]
+        @put_http_timeout = t[:put] if t[:put]
+        @delete_http_timeout = t[:delete] if t[:delete]
+      elsif t.kind_of? Integer
+        @default_http_timeout = t
+        @get_http_timeout = t
+        @post_http_timeout = t
+        @put_http_timeout = t
+        @delete_http_timeout = t
+      end
+    end
+
+    def read_config_file(config_key = nil)
+      template = ERB.new File.new("#{Rails.root}/mints_config.yml.erb").read
+      config = YAML.safe_load template.result(binding)
+      config_key ? config[config_key] : config
+    rescue StandardError
+      nil
+    end
   end
 end

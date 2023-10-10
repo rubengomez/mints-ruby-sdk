@@ -135,6 +135,14 @@ it to the groups array and set the cache time.
       - urls:
           - group_of_urls
         time: time_that_will_be_applied_to_urls_in_seconds
+  sdk:
+    debug: false
+    # Timeout is specified in seconds
+    default_http_timeout: 30 # Allows setting a default timeout for all HTTP calls.
+    get_http_timeout: 30 # Allows setting a default timeout for all GET calls.
+    post_http_timeout: 30 # Allows setting a default timeout for all POST calls.
+    put_http_timeout: 30 # Allows setting a default timeout for all PUT calls.
+    delete_http_timeout: 30 # Allows setting a default timeout for all DELETE calls.
 ```
 
 To enable sdk debugging you can change the variable debug.
@@ -156,6 +164,7 @@ functionality, we recommend the use of the template).
 ## Override default clients
 
 If you want other clients for admin/base controller, you need to specify them with the "define_mints_clients" method
+
 Example:
 
 ```ruby
@@ -164,6 +173,28 @@ Example:
 class AdminController < Mints::AdminBaseController
   def define_mints_clients
     %w[contact user pub service_account]
+  end
+end
+```
+
+## Override default timeouts
+
+If you want specific timeouts per instance, you can define mints_sdk_timeouts_config
+
+Example:
+
+```ruby
+# admin_controller.rb
+
+class AdminController < Mints::AdminBaseController
+  def mints_sdk_timeouts_config
+    {
+      default: 30,
+      get: 50,
+      post: 40,
+      put: 30,
+      delete: 10
+    }
   end
 end
 ```
@@ -244,7 +275,6 @@ The current errors are:
 - Mints::Pub::Ecommerce
   - [Mints::Pub::Ecommerce::Locations](doc/pub/ecommerce/locations.md)
   - [Mints::Pub::Ecommerce::Orders](doc/pub/ecommerce/orders.md)
-  - [Mints::Pub::Ecommerce::Products](doc/pub/ecommerce/products.md)
 
 </details>
 

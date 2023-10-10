@@ -14,6 +14,12 @@ redis_cache:
       time: time_that_will_be_applied_to_urls_in_seconds
 sdk:
     debug: false
+    # Timeout is specified in seconds
+    default_http_timeout: 30 # Allows setting a default timeout for all HTTP calls.
+    get_http_timeout: 30 # Allows setting a default timeout for all GET calls.
+    post_http_timeout: 30 # Allows setting a default timeout for all POST calls.
+    put_http_timeout: 30 # Allows setting a default timeout for all PUT calls.
+    delete_http_timeout: 30 # Allows setting a default timeout for all DELETE calls.
 cookies_iframe:
   activated: boolean_value_to_enable_and_disable_cookies_iframe
   expire_time: expire_time_of_cookies_iframe_in_hours

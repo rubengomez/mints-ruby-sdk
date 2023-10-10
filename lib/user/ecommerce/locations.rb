@@ -62,9 +62,9 @@ module Locations
   #     data = {
   #       title: 'New Location Modified'
   #     }
-  #     @data = @mints_user.update_location(5, data.to_json)
+  #     @data = @mints_user.update_location(5, data)
   def update_location(id, data, options = nil)
-    @client.raw('put', "/ecommerce/locations/#{id}", options, data)
+    @client.raw('put', "/ecommerce/locations/#{id}", options, data_transform(data))
   end
 
   # === Delete location.

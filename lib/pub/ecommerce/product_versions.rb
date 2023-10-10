@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module PublicProducts
+module PublicProductVersions
   ##
   # === Get Products.
   # Get a collection of products.
@@ -10,17 +10,17 @@ module PublicProducts
   # use_post:: (Boolean) -- Variable to determine if the request is by 'post' or 'get' functions.
   #
   # ==== First Example
-  #     @data = @mints_pub.get_products
+  #     @data = @mints_pub.get_product_versions
   #
   # ==== Second Example
   #     options = { fields: "title" }
-  #     @data = @mints_pub.get_products(options)
+  #     @data = @mints_pub.get_product_versions(options)
   #
   # ==== Third Example
   #     options = { fields: "title" }
-  #     @data = @mints_pub.get_products(options, false)
-  def get_products(options = nil, use_post = true)
-    get_query_results('/ecommerce/products', options, use_post)
+  #     @data = @mints_pub.get_product_versions(options, false)
+  def get_product_versions(options = nil, use_post = true)
+    get_query_results('/ecommerce/product-versions', options, use_post)
   end
 
   ##
@@ -32,14 +32,14 @@ module PublicProducts
   # options:: (Hash) -- List of {Single Resource Options}[#class-Mints::Pub-label-Single+resource+options] shown above can be used as parameter.
   #
   # ==== First Example
-  #     @data = @mints_pub.get_product("product_slug")
+  #     @data = @mints_pub.get_product_version("product_slug")
   #
   # ==== Second Example
   #     options = {
   #       fields: 'id, slug'
   #     }
-  #     @data = @mints_pub.get_product("lego-set", options)
-  def get_product(slug, options = nil)
-    @client.raw('get', "/ecommerce/products/#{slug}", options)
+  #     @data = @mints_pub.get_product_version("lego-set", options)
+  def get_product_version(slug, options = nil)
+    @client.raw('get', "/ecommerce/product-versions/#{slug}", options)
   end
 end
