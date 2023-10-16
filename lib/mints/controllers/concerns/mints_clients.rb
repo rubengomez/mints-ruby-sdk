@@ -51,8 +51,7 @@ module MintsClients
       @api_key,
       contact_token_id,
       visit_id,
-      @debug,
-      mints_sdk_timeouts_config
+      @debug
     )
   end
 
@@ -68,8 +67,7 @@ module MintsClients
       @api_key,
       contact_session_token,
       contact_token_id,
-      @debug,
-      mints_sdk_timeouts_config
+      @debug
     )
   end
 
@@ -83,8 +81,7 @@ module MintsClients
       @host,
       @api_key,
       user_session_token,
-      @debug,
-      mints_sdk_timeouts_config
+      @debug
     )
   end
 
@@ -97,8 +94,7 @@ module MintsClients
       @host,
       @api_key,
       @api_key,
-      @debug,
-      mints_sdk_timeouts_config
+      @debug
     )
   end
 end
