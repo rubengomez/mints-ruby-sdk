@@ -12,6 +12,7 @@ module Mints
         '404' => 'ResourceNotFoundException',
         '422' => 'ValidationException',
         '405' => 'MethodNotAllowedException',
+        'undefined_id' => 'UndefinedIdException',
         'default' => 'InternalServerException',
       }
 
@@ -79,6 +80,8 @@ module Mints
 
     class MethodNotAllowedException < ServiceError; end
 
+    class UndefinedIdException < ServiceError; end
+
     class ValidationException < ServiceError
 
       def to_h
@@ -87,7 +90,13 @@ module Mints
 
       def errors_hash
         {
-          errors: response.keys.reduce([]) { |carry, error_key| carry + response[error_key] }
+          errors: if response.is_a? Hash
+                    response.keys.reduce([]) do |carry, error_key|
+                      carry + (response[error_key].is_a?(Array) ? response[error_key] : [response[error_key]] )
+                    end
+                  else
+                    response
+                  end
         }
       end
 

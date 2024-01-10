@@ -2,8 +2,8 @@
 
 Gem::Specification.new do |s|
   s.name = 'mints'
-  s.version = '0.0.35'
-  s.date = '2023-10-16'
+  s.version = '0.0.36'
+  s.date = '2024-03-22'
   s.summary = 'MINTS gem allows to connect your Rails App to MINTS.CLOUD'
   s.authors = 'Ruben Gomez Garcia, Omar Mora, Luis Payan, Oscar Castillo, Fabian Garcia'
   s.homepage = 'https://github.com/rubengomez/mints-ruby-sdk'
@@ -48,3 +48,4 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'redis', '~> 4.2.2', '>= 4.2.2'
   s.add_runtime_dependency 'concurrent-ruby', '~> 1.2.2'
 end
+

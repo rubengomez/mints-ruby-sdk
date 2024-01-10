@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require_relative './assets'
+require_relative './adaptive_objects'
+require_relative './adaptive_object_templates'
 require_relative './content_instances'
 require_relative './content_templates'
 require_relative './conversations'
@@ -16,6 +18,8 @@ require_relative './story_templates'
 
 module Content
   include Assets
+  include AdaptiveObjects
+  include AdaptiveObjectTemplates
   include ContentInstances
   include ContentTemplates
   include Conversations
