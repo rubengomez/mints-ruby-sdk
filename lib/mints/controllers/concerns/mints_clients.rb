@@ -51,7 +51,8 @@ module MintsClients
       @api_key,
       contact_token_id,
       visit_id,
-      @debug
+      @debug,
+      mode: @sdk_mode
     )
   end
 
@@ -67,7 +68,8 @@ module MintsClients
       @api_key,
       contact_session_token,
       contact_token_id,
-      @debug
+      @debug,
+      mode: @sdk_mode
     )
   end
 
@@ -81,7 +83,8 @@ module MintsClients
       @host,
       @api_key,
       user_session_token,
-      @debug
+      @debug,
+      mode: @sdk_mode
     )
   end
 
@@ -94,7 +97,8 @@ module MintsClients
       @host,
       @api_key,
       @api_key,
-      @debug
+      @debug,
+      mode: @sdk_mode
     )
   end
 end

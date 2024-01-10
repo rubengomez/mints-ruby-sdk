@@ -30,7 +30,15 @@ module Mints
     #
     # ==== Return
     # Returns a Contact object
-    def initialize(host, api_key, session_token = nil, contact_token_id = nil, debug = false, timeouts = {})
+    def initialize(
+      host,
+      api_key,
+      session_token = nil,
+      contact_token_id = nil,
+      debug = false,
+      timeouts = {},
+      mode: 'development'
+    )
       @contact_v1_url = '/api/contact/v1'
       @client = Mints::Client.new(
         host,
@@ -40,7 +48,8 @@ module Mints
         contact_token_id,
         nil,
         debug,
-        timeouts
+        timeouts,
+        mode
       )
     end
 

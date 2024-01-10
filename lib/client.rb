@@ -5,17 +5,15 @@ require 'json'
 require 'addressable'
 require 'redis'
 require_relative './mints/controllers/concerns/read_config_file'
+require_relative './mints/helpers/testing_mode_helper'
 
 module Mints
   class Client
     extend ActiveSupport::Concern
+    include TestingModeHelper
 
-    attr_reader :host
-    attr_reader :api_key
-    attr_reader :scope
-    attr_reader :base_url
-    attr_accessor :session_token
-    attr_accessor :contact_token_id
+    attr_reader :host, :mode, :api_key, :scope, :base_url
+    attr_accessor :session_token, :contact_token_id
 
     def initialize(
       host,
@@ -25,7 +23,8 @@ module Mints
       contact_token_id = nil,
       visit_id = nil,
       debug = false,
-      timeouts = {}
+      timeouts = {},
+      mode = 'development'
     )
 
       @host = host
@@ -43,6 +42,8 @@ module Mints
       @put_http_timeout = timeouts.fetch(:put, config.fetch('put_http_timeout', @default_http_timeout))
       @delete_http_timeout = timeouts.fetch(:delete, config.fetch('delete_http_timeout', @default_http_timeout))
 
+      @mode = config.fetch('mode', mode)
+
       self.set_scope(scope)
     end
 
@@ -51,6 +52,24 @@ module Mints
 
       base_url = @base_url unless base_url
       uri = ''
+
+      # get the first method called in this instance, example: get_deal(1)
+      method_called = caller[0][/`.*'/][1..-2]
+
+      # this can't be "!url.last.to_i" because we have methods like .me
+      if is_singular?(method_called) && (url.last == '/' || url.include?('//') || url.include?('nil'))
+      error_class = Errors::DynamicError.new(
+        self,
+          'Unprocessed entity',
+          "Id must be a valid integer number, given URL: #{url}",
+          'undefined_id',
+          nil
+        )
+
+        raise error_class if @debug
+
+        raise error_class.error
+      end
 
       if options&.class == Hash
         need_encoding = %w[jfilters afilters rfilters]
@@ -70,76 +89,96 @@ module Mints
       template = ERB.new File.new("#{Rails.root}/mints_config.yml.erb").read
       config = YAML.safe_load template.result(binding)
       result_from_cache = false
+      result_test_responses = false
 
-      if action === 'get'
-        url_need_cache = false
-
-        if config['redis_cache']['use_cache']
-          config['redis_cache']['groups'].each do |group|
-            group['urls'].each do |url|
-              if full_url.match url
-                time = group['time']
-                url_need_cache = true
-                @redis_server = Redis.new(
-                  host: config['redis_cache']['redis_host'],
-                  port: config['redis_cache']['redis_port'] ? config['redis_cache']['redis_port'] : 6379,
-                  db: config['redis_cache']['redis_db'] ? config['redis_cache']['redis_db'] : 1
-                )
-                redis_response = @redis_server.get(full_url)
-
-                if redis_response
-                  response = redis_response
-                  result_from_cache = true
-
-                  if only_tracking
-                    # headers = { 'Only-Tracking' => 'true' }
-                    #when is already in redis notify to California to register the object usage
-                    #cali_response = self.send("#{@scope}_#{action}", full_url, headers, compatibility_options)
-                  end
-                else
-                  response = self.send("#{@scope}_#{action}", full_url, nil, compatibility_options)
-                  @redis_server.setex(full_url, time, response)
-                end
-                break
-              end
-            end
-
-            break if url_need_cache
-          end
-        end
-
-        unless url_need_cache
-          response = self.send("#{@scope}_#{action}", full_url, nil, compatibility_options)
-        end
-
-      elsif action === 'create' or action === 'post'
-        action = 'post'
-        response = self.send("#{@scope}_#{action}", full_url, data, compatibility_options)
-      elsif action === 'put' or action === 'patch' or action === 'update'
-        action = 'put'
-        response = self.send("#{@scope}_#{action}", full_url, data, compatibility_options)
-      elsif action === 'delete' or action === 'destroy'
-        action = 'delete'
-        response = self.send("#{@scope}_#{action}", full_url, data, compatibility_options)
+      if %w[test testing].include? @mode
+        response = get_json_test_response(url: "#{@host}#{base_url}#{url}", action: action, options: options || {})
+        result_test_responses = !!response
       end
 
-      verify_response_status(response, config['sdk']['ignore_http_errors'])
+      unless response
+        if action === 'get'
+          url_need_cache = false
+
+          if config['redis_cache']['use_cache']
+            config['redis_cache']['groups'].each do |group|
+              group['urls'].each do |url|
+                if full_url.match url
+                  time = group['time']
+                  url_need_cache = true
+                  @redis_server = Redis.new(
+                    host: config['redis_cache']['redis_host'],
+                    port: config.dig('redis_cache', 'redis_port') || 6379,
+                    db: config.dig('redis_cache', 'redis_db') || 1
+                  )
+                  response = @redis_server.get(full_url)
+
+                  if response
+                    result_from_cache = true
+
+                    if only_tracking
+                      # headers = { 'Only-Tracking' => 'true' }
+                      #when is already in redis notify to California to register the object usage
+                      #cali_response = self.send("#{@scope}_#{action}", full_url, headers, compatibility_options)
+                    end
+                  else
+                    response = self.send("#{@scope}_#{action}", full_url, nil, compatibility_options)
+                    @redis_server.setex(full_url, time, response)
+                  end
+                  break
+                end
+              end
+
+              break if url_need_cache
+            end
+          end
+
+          unless url_need_cache
+            response = self.send("#{@scope}_#{action}", full_url, nil, compatibility_options)
+          end
+
+        elsif action === 'create' or action === 'post'
+          action = 'post'
+          response = self.send("#{@scope}_#{action}", full_url, data, compatibility_options)
+        elsif action === 'put' or action === 'patch' or action === 'update'
+          action = 'put'
+          response = self.send("#{@scope}_#{action}", full_url, data, compatibility_options)
+        elsif action === 'delete' or action === 'destroy'
+          action = 'delete'
+          response = self.send("#{@scope}_#{action}", full_url, data, compatibility_options)
+        end
+      end
+
+      if %w[test testing].include?(@mode) && !result_test_responses
+        update_json_test_responses(
+          url: "#{@host}#{base_url}#{url}",
+          options: options,
+          action: action,
+          response: result_from_cache ? response : response&.body
+        )
+      end
+
+      verify_response_status(response, config['sdk']['ignore_http_errors']) unless result_test_responses
 
       begin
+        if @debug
+          response_from = if result_from_cache
+                            'REDIS'
+                          elsif result_test_responses
+                            'JSON FILE'
+                          else
+                            'CALI'
+                          end
+
+          puts "Method: #{action} \nURL: #{url} \nOptions: #{options&.to_json} \nOnly tracking: #{only_tracking} \nResponse from: #{response_from}"
+          puts "Data: #{data.to_json}" if data
+        end
+
         if result_from_cache
-          if @debug
-            puts "Method: #{action} \nURL: #{url} \nOptions: #{options&.to_json} \nOnly tracking: #{only_tracking} \nResponse from: REDIS"
-            puts "Data: #{data.to_json}" if data
-          end
-
           return JSON.parse(response)
+        elsif result_test_responses
+          return response['response']
         else
-
-          if @debug
-            puts "Method: #{action} \nURL: #{url} \nOptions: #{options&.to_json} \nOnly tracking: #{only_tracking} \nResponse from: CALI"
-            puts "Data: #{data.to_json}" if data
-          end
-
           return JSON.parse(response&.body)
         end
       rescue
@@ -155,7 +194,20 @@ module Mints
       name_len = name_splitted.size
       # the action always be the first element
       action = name_splitted.first
-      raise 'NoActionError' unless %w[get create post update put delete destroy verify_response_status].include?(action)
+      valid_actions = %w[
+        get
+        create
+        post
+        update
+        put
+        delete
+        destroy
+        verify_response_status
+      ]
+
+      unless valid_actions.include?(action)
+        raise 'NoActionError'
+      end
       # the object always be the last element
       object = separator == '__' ? name_splitted.last.gsub('_', '-') : name_splitted.last
       # get intermediate url elements
@@ -387,6 +439,10 @@ module Mints
       config_key ? config[config_key] : config
     rescue StandardError
       nil
+    end
+
+    def is_singular?(str)
+      str.pluralize != str && str.singularize == str
     end
   end
 end
