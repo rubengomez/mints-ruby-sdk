@@ -92,7 +92,7 @@ module Deals
   #     }
   #     @data = @mints_user.create_deal(data.to_json)
   def create_deal(data, options = nil)
-    @client.raw('post', '/crm/deals', options, data)
+    @client.raw('post', '/crm/deals', options, data_transform(data))
   end
 
   # === Update deal.
@@ -108,6 +108,6 @@ module Deals
   #     }
   #     @data = @mints_user.update_deal(102, data.to_json)
   def update_deal(id, data, options = nil)
-    @client.raw('put', "/crm/deals/#{id}", options, data)
+    @client.raw('put', "/crm/deals/#{id}", options, data_transform(data))
   end
 end

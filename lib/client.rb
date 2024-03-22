@@ -10,12 +10,8 @@ module Mints
   class Client
     extend ActiveSupport::Concern
 
-    attr_reader :host
-    attr_reader :api_key
-    attr_reader :scope
-    attr_reader :base_url
-    attr_accessor :session_token
-    attr_accessor :contact_token_id
+    attr_reader :host, :mode, :api_key, :scope, :base_url
+    attr_accessor :session_token, :contact_token_id
 
     def initialize(
       host,
@@ -52,6 +48,24 @@ module Mints
       base_url = @base_url unless base_url
       uri = ''
 
+      # get the first method called in this instance, example: get_deal(1)
+      method_called = caller[0][/`.*'/][1..-2]
+
+      # this can't be "!url.last.to_i" because we have methods like .me
+      if is_singular?(method_called) && %w[// nil].include?(url)
+        error_class = Errors::DynamicError.new(
+        self,
+          'Unprocessed entity',
+          "Id must be a valid integer number, given URL: #{url}",
+          'undefined_id',
+          nil
+        )
+
+        raise error_class if @debug
+
+        raise error_class.error
+      end
+
       if options&.class == Hash
         need_encoding = %w[jfilters afilters rfilters]
         found_options_with_encoding = options.keys.select { |key| need_encoding.include?(key.to_s.downcase) and options[key]&.class == Hash }
@@ -82,13 +96,12 @@ module Mints
                 url_need_cache = true
                 @redis_server = Redis.new(
                   host: config['redis_cache']['redis_host'],
-                  port: config['redis_cache']['redis_port'] ? config['redis_cache']['redis_port'] : 6379,
-                  db: config['redis_cache']['redis_db'] ? config['redis_cache']['redis_db'] : 1
+                  port: config.dig('redis_cache', 'redis_port') || 6379,
+                  db: config.dig('redis_cache', 'redis_db') || 1
                 )
-                redis_response = @redis_server.get(full_url)
+                response = @redis_server.get(full_url)
 
-                if redis_response
-                  response = redis_response
+                if response
                   result_from_cache = true
 
                   if only_tracking
@@ -126,20 +139,20 @@ module Mints
       verify_response_status(response, config['sdk']['ignore_http_errors'])
 
       begin
-        if result_from_cache
-          if @debug
-            puts "Method: #{action} \nURL: #{url} \nOptions: #{options&.to_json} \nOnly tracking: #{only_tracking} \nResponse from: REDIS"
-            puts "Data: #{data.to_json}" if data
-          end
+        if @debug
+          response_from = if result_from_cache
+                            'REDIS'
+                          else
+                            'CALI'
+                          end
 
+          puts "Method: #{action} \nURL: #{url} \nOptions: #{options&.to_json} \nOnly tracking: #{only_tracking} \nResponse from: #{response_from}"
+          puts "Data: #{data.to_json}" if data
+        end
+
+        if result_from_cache
           return JSON.parse(response)
         else
-
-          if @debug
-            puts "Method: #{action} \nURL: #{url} \nOptions: #{options&.to_json} \nOnly tracking: #{only_tracking} \nResponse from: CALI"
-            puts "Data: #{data.to_json}" if data
-          end
-
           return JSON.parse(response&.body)
         end
       rescue
@@ -155,7 +168,19 @@ module Mints
       name_len = name_splitted.size
       # the action always be the first element
       action = name_splitted.first
-      raise 'NoActionError' unless %w[get create post update put delete destroy verify_response_status].include?(action)
+      valid_actions = %w[
+        get
+        create
+        post
+        update
+        put
+        delete
+        destroy
+        verify_response_status
+      ]
+
+      raise 'NoActionError' unless valid_actions.include?(action)
+
       # the object always be the last element
       object = separator == '__' ? name_splitted.last.gsub('_', '-') : name_splitted.last
       # get intermediate url elements
@@ -387,6 +412,10 @@ module Mints
       config_key ? config[config_key] : config
     rescue StandardError
       nil
+    end
+
+    def is_singular?(str)
+      str.pluralize != str && str.singularize == str
     end
   end
 end

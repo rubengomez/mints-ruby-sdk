@@ -5,6 +5,8 @@ require_relative './appointments'
 require_relative './attribute_groups'
 require_relative './attributes'
 require_relative './calendars'
+require_relative './exports'
+require_relative './export_configuration'
 require_relative './public_folders'
 require_relative './relationships'
 require_relative './roles'
@@ -21,7 +23,9 @@ module Config
   include AttributeGroups
   include Attributes
   include Calendars
-  include UserPublicFolders
+  include Exports
+  include ExportConfiguration
+  include PublicFolders
   include Relationships
   include Roles
   include Seeds
