@@ -21,7 +21,8 @@ module Mints
       contact_token_id = nil,
       visit_id = nil,
       debug = false,
-      timeouts = {}
+      timeouts = {},
+      testing_mode: false
     )
 
       @host = host
@@ -38,6 +39,9 @@ module Mints
       @post_http_timeout = timeouts.fetch(:post, config.fetch('post_http_timeout', @default_http_timeout))
       @put_http_timeout = timeouts.fetch(:put, config.fetch('put_http_timeout', @default_http_timeout))
       @delete_http_timeout = timeouts.fetch(:delete, config.fetch('delete_http_timeout', @default_http_timeout))
+
+      @testing_mode = testing_mode || !!config.dig('testing', 'enabled')
+      @testing_cache_time = config.dig('testing' , 'time_in_cache') || 3600
 
       self.set_scope(scope)
     end
@@ -84,64 +88,73 @@ module Mints
       template = ERB.new File.new("#{Rails.root}/mints_config.yml.erb").read
       config = YAML.safe_load template.result(binding)
       result_from_cache = false
+      result_from_testing_cache = false
 
-      if action === 'get'
-        url_need_cache = false
+      if @testing_mode
+        @redis_server = redis_instance(config)
+        response = @redis_server.get("test:#{full_url}")
+        result_from_testing_cache = !!response
+      end
 
-        if config['redis_cache']['use_cache']
-          config['redis_cache']['groups'].each do |group|
-            group['urls'].each do |url|
-              if full_url.match url
-                time = group['time']
-                url_need_cache = true
-                @redis_server = Redis.new(
-                  host: config['redis_cache']['redis_host'],
-                  port: config.dig('redis_cache', 'redis_port') || 6379,
-                  db: config.dig('redis_cache', 'redis_db') || 1
-                )
-                response = @redis_server.get(full_url)
+      unless response
+        if action === 'get'
+          url_need_cache = false
 
-                if response
-                  result_from_cache = true
+          if config['redis_cache']['use_cache']
+            config['redis_cache']['groups'].each do |group|
+              group['urls'].each do |url|
+                if full_url.match url
+                  time = group['time']
+                  url_need_cache = true
+                  @redis_server = redis_instance(config)
+                  response = @redis_server.get(full_url)
 
-                  if only_tracking
-                    # headers = { 'Only-Tracking' => 'true' }
-                    #when is already in redis notify to California to register the object usage
-                    #cali_response = self.send("#{@scope}_#{action}", full_url, headers, compatibility_options)
+                  if response
+                    result_from_cache = true
+
+                    if only_tracking
+                      # headers = { 'Only-Tracking' => 'true' }
+                      #when is already in redis notify to California to register the object usage
+                      #cali_response = self.send("#{@scope}_#{action}", full_url, headers, compatibility_options)
+                    end
+                  else
+                    response = self.send("#{@scope}_#{action}", full_url, nil, compatibility_options)
+                    @redis_server.setex(full_url, time, response)
                   end
-                else
-                  response = self.send("#{@scope}_#{action}", full_url, nil, compatibility_options)
-                  @redis_server.setex(full_url, time, response)
+                  break
                 end
-                break
               end
+
+              break if url_need_cache
             end
-
-            break if url_need_cache
           end
-        end
 
-        unless url_need_cache
-          response = self.send("#{@scope}_#{action}", full_url, nil, compatibility_options)
-        end
+          unless url_need_cache
+            response = self.send("#{@scope}_#{action}", full_url, nil, compatibility_options)
+          end
 
-      elsif action === 'create' or action === 'post'
-        action = 'post'
-        response = self.send("#{@scope}_#{action}", full_url, data, compatibility_options)
-      elsif action === 'put' or action === 'patch' or action === 'update'
-        action = 'put'
-        response = self.send("#{@scope}_#{action}", full_url, data, compatibility_options)
-      elsif action === 'delete' or action === 'destroy'
-        action = 'delete'
-        response = self.send("#{@scope}_#{action}", full_url, data, compatibility_options)
+        elsif action === 'create' or action === 'post'
+          action = 'post'
+          response = self.send("#{@scope}_#{action}", full_url, data, compatibility_options)
+        elsif action === 'put' or action === 'patch' or action === 'update'
+          action = 'put'
+          response = self.send("#{@scope}_#{action}", full_url, data, compatibility_options)
+        elsif action === 'delete' or action === 'destroy'
+          action = 'delete'
+          response = self.send("#{@scope}_#{action}", full_url, data, compatibility_options)
+        end
       end
 
       verify_response_status(response, config['sdk']['ignore_http_errors'])
+
+      @redis_server.setex("test:#{full_url}", @testing_cache_time, response) if @testing_mode && !result_from_testing_cache
 
       begin
         if @debug
           response_from = if result_from_cache
                             'REDIS'
+                          elsif result_from_testing_cache
+                            'TESTING CACHE'
                           else
                             'CALI'
                           end
@@ -150,7 +163,7 @@ module Mints
           puts "Data: #{data.to_json}" if data
         end
 
-        if result_from_cache
+        if result_from_cache || result_from_testing_cache
           return JSON.parse(response)
         else
           return JSON.parse(response&.body)
@@ -414,8 +427,18 @@ module Mints
       nil
     end
 
+    # Helpers methods
+
     def is_singular?(str)
       str.pluralize != str && str.singularize == str
+    end
+
+    def redis_instance(config)
+      Redis.new(
+        host: config.dig('redis_cache', 'redis_host'),
+        port: config.dig('redis_cache', 'redis_port') || 6379,
+        db: config.dig('redis_cache', 'redis_db') || 1
+      )
     end
   end
 end

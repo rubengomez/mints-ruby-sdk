@@ -36,7 +36,8 @@ module Mints
       session_token = nil,
       contact_token_id = nil,
       debug = false,
-      timeouts = {}
+      timeouts = {},
+      testing_mode: false
     )
       @contact_v1_url = '/api/contact/v1'
       @client = Mints::Client.new(
@@ -47,7 +48,8 @@ module Mints
         contact_token_id,
         nil,
         debug,
-        timeouts
+        timeouts,
+        testing_mode: testing_mode
       )
     end
 
