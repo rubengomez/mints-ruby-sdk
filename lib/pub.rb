@@ -87,7 +87,8 @@ module Mints
       contact_token_id = nil,
       visit_id = nil,
       debug = false,
-      timeouts = {}
+      timeouts = {},
+      testing_mode: false
     )
       @client = Mints::Client.new(
         host,
@@ -97,7 +98,8 @@ module Mints
         contact_token_id,
         visit_id,
         debug,
-        timeouts
+        timeouts,
+        testing_mode: testing_mode
       )
     end
 

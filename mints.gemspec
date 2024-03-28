@@ -2,8 +2,8 @@
 
 Gem::Specification.new do |s|
   s.name = 'mints'
-  s.version = '0.0.36'
-  s.date = '2024-03-22'
+  s.version = '0.0.37'
+  s.date = '2024-03-28'
   s.summary = 'MINTS gem allows to connect your Rails App to MINTS.CLOUD'
   s.authors = 'Ruben Gomez Garcia, Omar Mora, Luis Payan, Oscar Castillo, Fabian Garcia'
   s.homepage = 'https://github.com/rubengomez/mints-ruby-sdk'

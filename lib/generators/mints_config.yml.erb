@@ -14,6 +14,9 @@ redis_cache:
       time: time_that_will_be_applied_to_urls_in_seconds
 sdk:
     debug: false
+    testing:
+      enabled: false
+      time_in_cache: 3600
     # Timeout is specified in seconds
     default_http_timeout: 30 # Allows setting a default timeout for all HTTP calls.
     get_http_timeout: 30 # Allows setting a default timeout for all GET calls.
